@@ -10,6 +10,14 @@ export default {
         router.push({name: 'homeRoute'})
     },
 
+    navigateToLoginView(){
+        router.push({name: 'loginRoute'})
+    },
+
+    navigateToCalculationView(){
+        router.push({name: 'calculationRoute'})
+    },
+
     navigateToNotAuthorizedView() {
         router.push({name: 'notAuthorizedRoute'})
     },

@@ -6,47 +6,50 @@
   />
 
   <div class="d-flex">
-    <div class="sidebar bg-light p-3 vh-100 border-end">
+    <div class="sidebar p-3 vh-100 border-end d-flex flex-column">
       <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-        <router-link class="nav-link d-flex align-items-center gap-2" to="/" exact-active-class="active">
-          <font-awesome-icon icon="house"/>
-          Kodu
-        </router-link>
+        <template v-if="isLoggedIn">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/home" exact-active-class="active">
+            <font-awesome-icon icon="house"/>
+            Kodu
+          </router-link>
 
-        <router-link class="nav-link d-flex align-items-center gap-2" to="/" exact-active-class="active">
-          <font-awesome-icon icon="building-columns"/>
-          Kalkulatsioon
-        </router-link>
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation" exact-active-class="active">
+            <font-awesome-icon icon="calculator"/>
+            Kalkulaator
+          </router-link>
 
-        <router-link class="nav-link d-flex align-items-center gap-2" to="/" exact-active-class="active">
-          <font-awesome-icon icon="chart-line"/>
-          Statistika
-        </router-link>
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/f18-calculator"
+                       exact-active-class="active">
+            <font-awesome-icon icon="calculator"/>
+            F18 kalkulaator
+          </router-link>
 
-        <router-link class="nav-link d-flex align-items-center gap-2" to="/settings" exact-active-class="active">
-          <font-awesome-icon icon="gear"/>
-          Technical
-        </router-link>
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/logs" exact-active-class="active">
+            <font-awesome-icon icon="file-alt"/>
+            Logid
+          </router-link>
+        </template>
+        <!-- Show only if admin and logged in -->
+        <template v-if="isAdmin && isLoggedIn">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/users" exact-active-class="active">
+            <font-awesome-icon icon="users"/>
+            Kasutajad
+          </router-link>
 
-        <template v-if="!isAdmin">
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/login" exact-active-class="active">
-            <font-awesome-icon icon="right-to-bracket"/>
-            Login
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation-settings"
+                       exact-active-class="active">
+            <font-awesome-icon icon="cog"/>
+            Kalkulatosioon sätted
           </router-link>
         </template>
 
-        <template v-else>
-          <template v-if="isAdmin">
-            <router-link class="nav-link d-flex align-items-center gap-2" to="/" exact-active-class="active">
-              <font-awesome-icon icon="map-marker-alt"/>
-              Kontod
-            </router-link>
-          </template>
-
-          <button class="nav-link d-flex align-items-center gap-2 text-start">
-            <font-awesome-icon icon="right-from-bracket"/>
-            Sätted
-          </button>
+        <!-- Show if logged in -->
+        <template v-if="isLoggedIn">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/profile" exact-active-class="active">
+            <font-awesome-icon icon="user"/>
+            Profiil
+          </router-link>
         </template>
       </div>
 
@@ -54,7 +57,7 @@
       <div v-if="isLoggedIn" class="mt-auto pt-3 border-top">
         <button class="nav-link d-flex align-items-center gap-2 text-start w-100" @click="startLogOutProcess">
           <font-awesome-icon icon="right-from-bracket"/>
-          Logi välja
+          Log out
         </button>
       </div>
     </div>
@@ -93,7 +96,7 @@ export default {
       sessionStorage.clear()
       this.updateNavMenu()
       this.closeModal()
-      Navigation.navigateToHomeView()
+      Navigation.navigateToLoginView()
     },
 
     startLogOutProcess() {

@@ -3,12 +3,13 @@ import HomeView from '../views/HomeView.vue'
 import ErrorView from "@/views/ErrorView.vue";
 import LoginView from "@/views/LoginView.vue";
 import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
+import CalculationView from "@/views/CalculationView.vue";
 
 const routes = [
     {
         path: '/',
-        name: 'homeRoute',
-        component: HomeView
+        name: 'loginRoute',
+        component: LoginView
     },
     {
         path: '/error',
@@ -16,14 +17,19 @@ const routes = [
         component: ErrorView
     },
     {
-        path: '/login',
-        name: 'loginRoute',
-        component: LoginView
+        path: '/home',
+        name: 'homeRoute',
+        component: HomeView
     },
     {
         path: '/not-authorized',
         name: 'notAuthorizedRoute',
         component: NotAuthorizedView
+    },
+    {
+        path: '/calculation',
+        name: 'calculationRoute',
+        component: CalculationView
     }
 ]
 

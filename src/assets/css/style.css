@@ -131,7 +131,7 @@ main {
 }
 
  .nav-link.active {
-     background-color: #0d6efd;
+     background-color: #000000;
      color: white;
  }
 .nav-link {
@@ -143,12 +143,12 @@ main {
 }
 
 .nav-link.active {
-    background-color: #0d6efd;
+    background-color: #111113;
     color: white !important;
 }
 
 .nav-link {
-    color: #495057;
+    color: #000000;
     transition: background-color 0.2s;
 }
 
