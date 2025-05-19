@@ -22,10 +22,14 @@ const routes = [
         component: HomeView
     },
     {
+        //kas seda on vaja?
         path: '/not-authorized',
         name: 'notAuthorizedRoute',
         component: NotAuthorizedView
     },
+
+    //rollide põhised pathid - kas lähevad siia või mujale???
+
     {
         path: '/calculation',
         name: 'calculationRoute',

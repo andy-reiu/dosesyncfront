@@ -28,4 +28,9 @@ export default {
     //         query: {locationId: locationId}
     //     })
     // },
+
+    //navigateToPlanningView
+    //navigateToSettingsView
+    //navigateToDozingView
+    //navigateToSecretaryView
 }
