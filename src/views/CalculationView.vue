@@ -61,7 +61,7 @@
 </template>
 <script>
 import AlertDanger from "@/components/alert/AlertDanger.vue";
-import IsotopeDropdown from "@/components/isotrope/IsotropeDropdown.vue";
+import IsotopeDropdown from "@/components/isotope/IsotopeDropdown.vue";
 import Navigation from "@/navigations/Navigation";
 import IsotopeService from "@/services/IsotopeService";
 import MachineService from "@/services/MachineService";
@@ -69,7 +69,7 @@ import MachineDropdown from "@/components/machine/MachineDropdown.vue";
 
 export default {
   name: 'CalculationView',
-  components: {MachineDropdown, IsotopeDropdown, AlertDanger},
+  components: {MachineDropdown, IsotopeDropdown: IsotopeDropdown, AlertDanger},
   data() {
     return {
       // Session storages on väljad stringi kujul seega vaja muuta numbriks, tahame hiljem võrrelda
