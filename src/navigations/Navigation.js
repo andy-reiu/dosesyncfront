@@ -22,10 +22,17 @@ export default {
         router.push({name: 'notAuthorizedRoute'})
     },
 
-    // navigateToLocationView(locationId) {
+    navigateToUsersView(userId) {
+         router.push({
+             name: 'usersRoute',
+             query: {userId: userId}
+         })
+     },
+
+ // navigateToUsersView(userId) {
     //     router.push({
-    //         name: 'locationRoute',
-    //         query: {locationId: locationId}
+    //         name: 'usersRoute',
+    //         query: {userId: userId}
     //     })
     // },
 

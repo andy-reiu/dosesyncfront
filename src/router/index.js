@@ -4,6 +4,7 @@ import ErrorView from "@/views/ErrorView.vue";
 import LoginView from "@/views/LoginView.vue";
 import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
 import CalculationView from "@/views/CalculationView.vue";
+import UsersView from "@/views/UsersView.vue";
 
 const routes = [
     {
@@ -22,10 +23,15 @@ const routes = [
         component: HomeView
     },
     {
-        //kas seda on vaja?
         path: '/not-authorized',
         name: 'notAuthorizedRoute',
         component: NotAuthorizedView
+    },
+
+    {
+        path: "/users",
+        name: 'usersRoute',
+        component: UsersView
     },
 
     //rollide põhised pathid - kas lähevad siia või mujale???
