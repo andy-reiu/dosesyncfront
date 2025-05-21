@@ -22,6 +22,10 @@ export default {
         router.push({name: 'notAuthorizedRoute'})
     },
 
+    navigateTechnicConfigurationView() {
+        router.push({name: 'technicConfigurationRoute'})
+    },
+
     // navigateToLocationView(locationId) {
     //     router.push({
     //         name: 'locationRoute',

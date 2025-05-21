@@ -31,11 +31,16 @@
           </router-link>
         </template>
         <!-- Show only if admin and logged in -->
+
+
+<!--        // tehnik-->
         <template v-if="isAdmin && isLoggedIn">
           <router-link class="nav-link d-flex align-items-center gap-2" to="/users" exact-active-class="active">
             <font-awesome-icon icon="users"/>
-            Kasutajad
+            Tehniku vaade
           </router-link>
+
+
 
           <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation-settings"
                        exact-active-class="active">
@@ -43,6 +48,8 @@
             Kalkulatosioon sätted
           </router-link>
         </template>
+
+
 
         <!-- Show if logged in -->
         <template v-if="isLoggedIn">

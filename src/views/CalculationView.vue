@@ -116,13 +116,13 @@ export default {
     }
   },
   methods: {
-    getAllIsotopes() {
+    getAllActiveIsotopes() {
       IsotopeService.sendGetIsotopesRequest()
           .then(response => this.handleGetIsotopesSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },
 
-    getAllMachines() {
+    getAllActiveMachines() {
       MachineService.sendGetMachineRequest()
           .then(response => this.handleGetMachineSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
@@ -161,8 +161,8 @@ export default {
   },
 
   beforeMount() {
-    this.getAllIsotopes()
-    this.getAllMachines()
+    this.getAllActiveIsotopes()
+    this.getAllActiveMachines()
   },
 }
 

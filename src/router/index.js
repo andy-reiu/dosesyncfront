@@ -4,6 +4,7 @@ import ErrorView from "@/views/ErrorView.vue";
 import LoginView from "@/views/LoginView.vue";
 import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
 import CalculationView from "@/views/CalculationView.vue";
+import TechnicConfigurationView from "@/views/TechnicConfigurationView.vue";
 
 const routes = [
     {
@@ -30,7 +31,13 @@ const routes = [
         path: '/calculation',
         name: 'calculationRoute',
         component: CalculationView
-    }
+    },
+    {
+        path: '/technic',
+        name: 'technicRoute',
+        component: TechnicConfigurationView
+    },
+
 ]
 
 const router = createRouter({
