@@ -1,6 +1,6 @@
 <template>
   <div class="input-group mb-3">
-    <span class="input-group-text">Uuringu kogu aktiivsus (MBq)</span>
+    <span class="input-group-text">Kalibreeritud aktiivsus (MBq)</span>
     <input type="number" class="form-control"
            :value="studiesTotalActivity"
            @input="$emit('event-update-studies-total-activity', Number($event.target.value))"

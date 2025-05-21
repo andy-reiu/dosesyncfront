@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <NewStudyModal :modal-is-open="newStudyModalIsOpen"
+                   @event-close-modal="closeStudyModal"
+                   @event-execute-new-study="newStudyModal"
+    />
     <div class="container text-center">
       <div class="row">
         <div class="col mt-4">
@@ -11,6 +15,9 @@
         <StudyTable :studies="studies"
                     :selected-study-id="selectedStudyId"
         />
+        <div class="text-end">
+          <button type="submit" @click="openNewStudyModal()" class="btn btn-primary">Lisa uus plaan</button>
+        </div>
         <div class="col col-6 form-select-lg">
         </div>
       </div>
@@ -23,12 +30,15 @@
 import StudyService from "@/services/StudyService";
 import Navigation from "@/navigations/Navigation";
 import StudyTable from "@/components/study/StudyTable.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
+import NewStudyModal from "@/components/modal/NewStudyModal.vue";
 
 export default {
   name: 'HomeView',
-  components: {StudyTable},
+  components: {NewStudyModal, AlertDanger, StudyTable},
   data() {
     return {
+      newStudyModalIsOpen: false,
       userId: Number(sessionStorage.getItem('userId')),
       roleName: sessionStorage.getItem('roleName'),
       selectedStudyId: 0,
@@ -56,6 +66,19 @@ export default {
   },
 
   methods: {
+
+    openNewStudyModal(){
+      this.newStudyModalIsOpen = true;
+    },
+
+    closeStudyModal(){
+      this.newStudyModalIsOpen = false;
+    },
+
+    newStudyModal(){
+      this.newStudyModalIsOpen = false;
+      Navigation.navigateToStudyView();
+    },
 
     getAllStudies() {
       StudyService.sendGetStudiesRequest()

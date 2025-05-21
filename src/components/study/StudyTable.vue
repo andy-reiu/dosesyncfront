@@ -1,23 +1,20 @@
 <template>
   <div>
     <div>
-      <NewStudyModal :modal-is-open="newStudyModalIsOpen"
-                     @event-close-modal="closeStudyModal"
-                     @event-execute-new-study="newStudyModal"
-      />
+
     </div>
     <table class="table table-dark table table-striped-columns mt-4">
       <thead>
       <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Isotope</th>
-        <th scope="col">Patients</th>
-        <th scope="col">Start Time</th>
-        <th scope="col">End Time</th>
-        <th scope="col">Total Activity (MBq)</th>
-        <th scope="col">Rinse Volume (mL)</th>
-        <th scope="col">Rinse Activity (MBq)</th>
-        <th scope="col">Study comment</th>
+        <th scope="col">Kuupäev</th>
+        <th scope="col">Isotoop</th>
+        <th scope="col">Patsientide arv</th>
+        <th scope="col">Uuringute alguse aeg</th>
+        <th scope="col">Uuringute lõpu aeg</th>
+        <th scope="col">Kalibratsiooni aktiivsus (MBq)</th>
+        <th scope="col">Loputusmahl (mL)</th>
+        <th scope="col">Jääk aktiivsus (MBq)</th>
+        <th scope="col">Uuringu kommentaar</th>
         <th scope="col">Vaata</th>
         <th v-if="isAdmin" scope="col"> Muuda</th>
       </tr>
@@ -34,27 +31,26 @@
         <td>{{ study.calculationMachineRinseActivity }}</td>
         <td>{{ study.studyComment }}</td>
         <td>
-          <div class="icon-cell" @click="viewStudyDetailedView(study.studyId)">
+          <div class="icon-cell" @click="">
             <font-awesome-icon class="cursor-pointer"
                                :icon="['fas', 'expand']"/>
           </div>
         </td>
         <td v-if="isAdmin">
-          <div class="icon-cell" @click="viewStudyEditView(study.studyId)">
+          <div class="icon-cell" @click="">
             <font-awesome-icon class="cursor-pointer" :icon="['fas', 'pen-to-square']"/>
           </div>
         </td>
       </tr>
       </tbody>
     </table>
-    <div class="text-end">
-      <button type="submit" @click="addNewStudyView()" class="btn btn-primary">Lisa uus plaan</button>
-    </div>
+
   </div>
 </template>
 <script>
 import RoleService from "@/services/RoleService";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
+import Navigation from "@/navigations/Navigation";
 
 export default {
   name: "StudyTable",
@@ -67,7 +63,6 @@ export default {
   data() {
     return {
       viewStudyModalIsOpen: false,
-      newStudyModalIsOpen: false,
       editStudyModalIsOpen: false,
       isAdmin: false,
       study: [
@@ -85,21 +80,6 @@ export default {
           isotopeName: '',
         }
       ],
-    }
-  },
-
-  methods: {
-
-    addNewStudyView(){
-      this.newStudyModalIsOpen = true;
-    },
-
-    closeStudyModal(){
-      this.newStudyModalIsOpen = false;
-    },
-
-    newStudyModal(){
-      this.newStudyModalIsOpen = false;
     }
   },
 

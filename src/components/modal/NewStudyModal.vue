@@ -1,52 +1,37 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #title>
-      <div class="text-center">
+      <div class="d-flex flex-column align-items-center">
         <h5>Alusta uue plaaniga</h5>
       </div>
     </template>
     <template #body>
       <form>
         <div class="mb-3">
+          <AlertDanger :error-message="errorMessage"></AlertDanger>
           <label class="form-label">Vali seade</label>
           <MachineDropdown :machines="machines"
-                           :selected-machine-id="selectedMachine"
-                           @event-new-machine-selected="updateSelectedMachineTable"
+                           :selected-machine-id="study.machineId"
+                           @event-new-machine-selected="setStudyMachineId"
           />
         </div>
         <div class="mb-3">
           <label class="form-label">Vali isotoop</label>
           <IsotopeDropdown :isotopes="isotopes"
-                           :selected-isotope-id="selectedIsotope"
-                           @event-new-isotope-selected="updateSelectedIsotopeTable"
+                           :selected-isotope-id="study.isotopeId"
+                           @event-new-isotope-selected="setStudyIsotope"
           />
         </div>
-        <div class="mb-3">
-          <PatientsNumber :numberOfPatiens="selectedNumberOfPatients"
-                          @event-update-patients-number="updatePatientsNumber"
+
+        <div class="col col-6">
+          <label class="form-label">Uuringu tegemise kuupäev</label>
+          <input type="date" class="form-control" v-model="study.studyDate"
           />
-        </div>
-        <div class="mb-3">
-          <StudiesTotalActivity :studiesTotalActivity="selectedTotalActivity"
-                                @event-update-studies-total-activity="updateSelectedTotalActivity"
-          />
-        </div>
-        <div class="row">
-          <div class="col col-6">
-            <label class="form-label">Uuringu kuupäev</label>
-            <input type="date" class="form-control" v-model="selectedDate"
-            />
-          </div>
-          <div class="col col-6">
-            <label class="form-label">Uuringu kellaaeg</label>
-            <input type="time" class="form-control" v-model="selectedTime" step="60"
-            />
-          </div>
         </div>
       </form>
     </template>
     <template #footer>
-      <button @click="executeNewStudy" type="button" class="btn btn-outline-success">Alusta uue uuringuga</button>
+      <button @click="executeAddNewStudy" type="button" class="btn btn-outline-success">Lisa plaan</button>
     </template>
   </Modal>
 </template>
@@ -59,28 +44,48 @@ import MachineDropdown from "@/components/machine/MachineDropdown.vue";
 import MachineService from "@/services/MachineService";
 import PatientsNumber from "@/components/patientsnumber/PatientsNumber.vue";
 import StudiesTotalActivity from "@/components/activity/StudiesTotalActivity.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
+import StudyService from "@/services/StudyService";
 
 export default {
   name: "NewStudyModal",
-  components: {StudiesTotalActivity, PatientsNumber, MachineDropdown, IsotopeDropdown: IsotopeDropdown, Modal},
+  components: {
+    AlertDanger,
+    StudiesTotalActivity, PatientsNumber, MachineDropdown, IsotopeDropdown: IsotopeDropdown, Modal
+  },
   props: {
     modalIsOpen: Boolean,
-    study: Object
   },
   data() {
     return {
-      selectedDate: null,
-      selectedTime: null,
-      selectedIsotope: 0,
-      selectedMachine: 0,
-      selectedNumberOfPatients: 0,
-      selectedTotalActivity: 0,
+      studyId: 0,
+      selectedIsotopeId: 0,
+      errorMessage: '',
+      study: {
+        userId: Number(sessionStorage.getItem('userId')),
+        machineId: 0,
+        isotopeId: 0,
+        studyDate: ''
+      },
+
+      machines: [
+        {
+          machineId: 0,
+          machineName: ''
+        }
+      ],
+
       isotopes: [
         {
           isotopeId: 0,
           isotopeName: ''
         }
-      ]
+      ],
+
+      errorResponse: {
+        message: '',
+        errorCode: 0
+      },
     }
   },
   methods: {
@@ -95,16 +100,29 @@ export default {
       this.isotopes = response.data
     },
 
-    updateSelectedIsotopeTable(selectedIsotope) {
-      this.selectedIsotope = selectedIsotope;
+    setStudyIsotope(isotopeId) {
+      this.study.isotopeId = isotopeId;
     },
 
-    updateSelectedMachineTable(selectedMachine) {
-      this.selectedMachine = selectedMachine;
+    setStudyMachineId(machineId) {
+      this.study.machineId = machineId;
     },
 
-    executeNewStudy() {
-      this.$emit('event-execute-new-study')
+    executeAddNewStudy() {
+      if (this.allFieldsAreWithCorrectInput()) {
+        StudyService.sendPostStudyRequest(this.study)
+            .then(response => Navigation.navigateToStudyView(response.data, this.selectedIsotopeId))
+            .catch(reason => Navigation.navigateToErrorView())
+
+      } else {
+        this.errorMessage = 'Täida kõik väljad'
+        setTimeout(this.resetErrorMessage, 4000)
+      }
+    },
+
+    allFieldsAreWithCorrectInput() {
+      // todo: kuupäeva kontroll
+      return this.selectedMachineId !== 0
     },
 
     getAllMachines() {
@@ -116,14 +134,10 @@ export default {
     handleGetMachineSuccessResponse(response) {
       this.machines = response.data
     },
+  },
 
-    updatePatientsNumber(selectedNumberOfPatients) {
-      this.selectedNumberOfPatients = selectedNumberOfPatients;
-    },
-
-    updateSelectedTotalActivity(selectedTotalActivity) {
-      this.selectedTotalActivity = selectedTotalActivity;
-    }
+  resetErrorMessage() {
+    this.errorMessage = ''
   },
 
   beforeMount() {

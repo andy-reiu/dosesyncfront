@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ErrorView from "@/views/ErrorView.vue";
 import LoginView from "@/views/LoginView.vue";
 import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
-import CalculationView from "@/views/CalculationView.vue";
+import StudyView from "@/views/StudyView.vue";
 
 const routes = [
     {
@@ -27,10 +27,10 @@ const routes = [
         component: NotAuthorizedView
     },
     {
-        path: '/calculation',
-        name: 'calculationRoute',
-        component: CalculationView
-    }
+        path: '/study',
+        name: 'studyRoute',
+        component: StudyView
+    },
 ]
 
 const router = createRouter({
