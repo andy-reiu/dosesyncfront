@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div>
-
-    </div>
     <table class="table table-dark table table-striped-columns mt-4">
       <thead>
       <tr>
@@ -37,7 +34,7 @@
           </div>
         </td>
         <td v-if="isAdmin">
-          <div class="icon-cell" @click="">
+          <div class="icon-cell" @click="openSelectedStudy(study.studyId)">
             <font-awesome-icon class="cursor-pointer" :icon="['fas', 'pen-to-square']"/>
           </div>
         </td>
@@ -51,6 +48,7 @@
 import RoleService from "@/services/RoleService";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
 import Navigation from "@/navigations/Navigation";
+import StudyService from "@/services/StudyService";
 
 export default {
   name: "StudyTable",
@@ -80,6 +78,15 @@ export default {
           isotopeName: '',
         }
       ],
+    }
+  },
+
+  methods:{
+    openSelectedStudy(studyId){
+      Navigation.navigateToPendingStudyView(studyId)
+      StudyService.sendGetStudyRequest(studyId)
+          .then(response => Navigation.navigateToStudyView(response))
+          .catch(reason => Navigation.navigateToErrorView())
     }
   },
 

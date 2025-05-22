@@ -14,11 +14,20 @@ export default {
         router.push({name: 'loginRoute'})
     },
 
-    navigateToStudyView(studyId) {
+    navigateToStudyView(studyId, isotopeId) {
         router.push({
             name: 'studyRoute',
             query: {
-                studyId: studyId
+                studyId: studyId,
+                isotopeId: isotopeId
+            }
+        })
+    },
+    navigateToPendingStudyView(studyId) {
+        router.push({
+            name: 'studyRoute',
+            query: {
+                studyId: studyId,
             }
         })
     },

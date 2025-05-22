@@ -19,7 +19,7 @@
           <label class="form-label">Vali isotoop</label>
           <IsotopeDropdown :isotopes="isotopes"
                            :selected-isotope-id="study.isotopeId"
-                           @event-new-isotope-selected="setStudyIsotope"
+                           @event-new-isotope-selected="setStudyIsotopeId"
           />
         </div>
 
@@ -100,7 +100,7 @@ export default {
       this.isotopes = response.data
     },
 
-    setStudyIsotope(isotopeId) {
+    setStudyIsotopeId(isotopeId) {
       this.study.isotopeId = isotopeId;
     },
 
@@ -111,7 +111,7 @@ export default {
     executeAddNewStudy() {
       if (this.allFieldsAreWithCorrectInput()) {
         StudyService.sendPostStudyRequest(this.study)
-            .then(response => Navigation.navigateToStudyView(response.data, this.selectedIsotopeId))
+            .then(response => Navigation.navigateToStudyView(response.data, this.study.isotopeId))
             .catch(reason => Navigation.navigateToErrorView())
 
       } else {
@@ -144,7 +144,6 @@ export default {
     this.getAllIsotopes()
     this.getAllMachines()
   }
-
 }
 </script>,
 
