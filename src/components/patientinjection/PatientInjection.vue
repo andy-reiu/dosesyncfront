@@ -67,9 +67,6 @@ export default {
       ],
     }
   },
-
-  methods: {},
-
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()
   }

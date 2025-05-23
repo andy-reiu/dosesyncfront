@@ -38,7 +38,7 @@
           <h4>Patsiendid ja süstimine</h4>
           <PatientInjection :patientInjections="patientInjections"
                             :study-id="studyId"
-                            @event-update-patient-injection="getAllStudiesPatientInjections"
+                            @event-update-patient-injection="updatePatientInjectionsAndMachineFills"
           />
           <div class="text-end">
             <button type="submit" @click="addPatientInjectionsView()" class="btn btn-primary">Lisa uus patsiendi
@@ -107,6 +107,7 @@ import CalculationProfileService from "@/services/CalculationProfileService";
 import Navigation from "@/navigations/Navigation";
 import NewPatientInjectionModal from "@/components/modal/NewPatientInjectionModal.vue";
 import PatientInjectionService from "@/services/PatientInjectionService";
+import MachineFillService from "@/services/MachineFillService";
 
 export default {
   name: "StudyView",
@@ -156,31 +157,15 @@ export default {
           injectedActivity: 0
         }
       ],
-
       machineFills: [
         {
-          machineFillId: 1,
-          vialActivityBeforeInjection: 1919.00,
-          vialActivityAfterInjection: 1744.00,
-          injectedVolume: 1.00,
-          remainingVolume: 10.00
-        },
-        {
-          machineFillId: 2,
-          vialActivityBeforeInjection: 1443.00,
-          vialActivityAfterInjection: 1268.00,
-          injectedVolume: 1.21,
-          remainingVolume: 8.78
-        },
-        {
-          machineFillId: 3,
-          vialActivityBeforeInjection: 1049.00,
-          vialActivityAfterInjection: 874.00,
-          injectedVolume: 1.47,
-          remainingVolume: 7.32
+          machineFillId: 0,
+          vialActivityBeforeInjection: 0,
+          vialActivityAfterInjection: 0,
+          injectedVolume: 0,
+          remainingVolume: 0
         }
       ],
-
       errorResponse: {
         message: '',
         errorCode: 0
@@ -188,6 +173,7 @@ export default {
     }
   },
   methods: {
+
     getAllStudiesCalculationProfiles() {
       CalculationProfileService.sendGetStudiesCalculationProfilesRequest(this.studyId)
           .then(response => this.handleGetCalculationProfilesSuccessResponse(response))
@@ -208,6 +194,17 @@ export default {
     handleGetStudiesPatientInjectionSuccessResponse(response) {
       this.patientInjections = response.data
       this.closePatientInjectionsView()
+      this.getAllStudiesMachineFills()
+    },
+
+    getAllStudiesMachineFills(){
+      MachineFillService.sendGetMachineFillRequest(this.studyId)
+          .then(value => this.handleGetStudiesMachineFillSuccessResponse(value))
+          .catch(reason => Navigation.navigateToErrorView())
+    },
+
+    handleGetStudiesMachineFillSuccessResponse(response) {
+      this.machineFills = response.data
     },
 
     addCalculationProfileView() {
@@ -224,12 +221,12 @@ export default {
     closePatientInjectionsView() {
       this.newPatientInjectionIsOpen = false;
     },
-
   },
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()
     this.getAllStudiesCalculationProfiles()
     this.getAllStudiesPatientInjections()
+    this.getAllStudiesMachineFills()
   },
 }
 </script>

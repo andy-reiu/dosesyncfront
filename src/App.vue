@@ -4,18 +4,6 @@
       @event-close-modal="closeModal"
       @event-logout-confirmed="executeLogOut"
   />
-
-  <div>Tere tulemast DoseSynki! </div>
-
-  <nav>
-      <template v-if="isLoggedIn">
-       <font-awesome-icon @click="startLogOutProcess" class="cursor-pointer" icon="right-from-bracket" />
-  </template>
-
-
-  </nav>
-
-
   <div class="d-flex">
     <div class="sidebar p-3 vh-100 border-end d-flex flex-column">
       <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
