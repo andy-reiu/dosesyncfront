@@ -155,3 +155,17 @@ main {
 .nav-link:hover {
     background-color: #e9ecef;
 }
+
+.icon-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; /* or any consistent size you want */
+    height: 16px;
+    background-color: #1f1f1f; /* optional: match your table background */
+    border-radius: 4px; /* optional: rounded corners */
+}
+
+.icon-cell .fa-icon {
+    font-size: 1.1rem; /* consistent icon size */
+}

@@ -3,8 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import ErrorView from "@/views/ErrorView.vue";
 import LoginView from "@/views/LoginView.vue";
 import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
-import CalculationView from "@/views/CalculationView.vue";
+import StudyView from "@/views/StudyView.vue";
+import UsersView from "@/views/UsersView.vue";
 import TechnicConfigurationView from "@/views/TechnicConfigurationView.vue";
+
 
 const routes = [
     {
@@ -28,9 +30,14 @@ const routes = [
         component: NotAuthorizedView
     },
     {
-        path: '/calculation',
-        name: 'calculationRoute',
-        component: CalculationView
+        path: '/study',
+        name: 'studyRoute',
+        component: StudyView
+    },
+    {
+        path: "/users",
+        name: 'usersRoute',
+        component: UsersView
     },
     {
         path: '/technic',

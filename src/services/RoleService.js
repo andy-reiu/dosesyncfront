@@ -9,4 +9,6 @@ export default {
         let roleName = sessionStorage.getItem('roleName')
         return this.isLoggedIn() && roleName === 'admin'
     }
+
+    // rollipõhiselt kas iga rolli jaoks eraldi?
 }
