@@ -100,10 +100,9 @@ export default {
       this.$emit('event-save-machine', this.newMachine)
       this.$emit('event-close-modal')
     }
-    
+
   },
   beforeMount() {
-    this.
   }
 };
 </script>
