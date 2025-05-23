@@ -293,7 +293,7 @@ export default {
     },
 
     getAllIsotopes() {
-      IsotopeService.sendGetIsotopesRequest()
+      IsotopeService.sendGetIsotopeRequest()
           .then(response => this.isotopes = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
