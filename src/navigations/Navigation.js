@@ -42,4 +42,8 @@ export default {
             query: {userId: userId}
         })
     },
+
+    navigateTechnicConfigurationView() {
+        router.push({name: 'technicConfigurationRoute'})
+    },
 }

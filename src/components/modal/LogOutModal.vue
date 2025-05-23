@@ -19,7 +19,7 @@
 import Modal from "@/components/modal/Modal.vue";
 
 export default {
-  name: "LogOutModal",
+  name: 'LogOutModal',
   components: {Modal},
   props: {
     modalIsOpen: Boolean
