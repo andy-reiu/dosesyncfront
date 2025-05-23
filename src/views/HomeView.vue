@@ -55,6 +55,7 @@ export default {
           studyStatus: '',
           calculationMachineRinseVolume: null,
           calculationMachineRinseActivity: null,
+          isotopeId:'',
           isotopeName: '',
         }
       ],

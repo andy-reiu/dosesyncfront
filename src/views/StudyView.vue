@@ -229,6 +229,7 @@ export default {
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()
     this.getAllStudiesCalculationProfiles()
+    this.getAllStudiesPatientInjections()
   },
 }
 </script>

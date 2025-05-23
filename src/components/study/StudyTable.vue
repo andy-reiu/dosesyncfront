@@ -34,7 +34,7 @@
           </div>
         </td>
         <td v-if="isAdmin">
-          <div class="icon-cell" @click="openSelectedStudy(study.studyId)">
+          <div class="icon-cell" @click="openSelectedStudy(study.studyId, study.isotopeId)">
             <font-awesome-icon class="cursor-pointer" :icon="['fas', 'pen-to-square']"/>
           </div>
         </td>
@@ -48,7 +48,6 @@
 import RoleService from "@/services/RoleService";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
 import Navigation from "@/navigations/Navigation";
-import StudyService from "@/services/StudyService";
 
 export default {
   name: "StudyTable",
@@ -75,18 +74,16 @@ export default {
           studyStatus: '',
           calculationMachineRinseVolume: null,
           calculationMachineRinseActivity: null,
+          isotopeId: 0,
           isotopeName: '',
         }
       ],
     }
   },
 
-  methods:{
-    openSelectedStudy(studyId){
-      Navigation.navigateToPendingStudyView(studyId)
-      StudyService.sendGetStudyRequest(studyId)
-          .then(response => Navigation.navigateToStudyView(response))
-          .catch(reason => Navigation.navigateToErrorView())
+  methods: {
+    openSelectedStudy(studyId, isotopeId) {
+      Navigation.navigateToStudyView(studyId, isotopeId)
     }
   },
 

@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th scope="col"></th>
-        <th scope="col">Süstimise ID</th>
+        <th scope="col">Süstimise ACC</th>
         <th scope="col">Patsiendi ID</th>
         <th scope="col">Patsiendi kaal</th>
         <th scope="col">MBq/kg</th>

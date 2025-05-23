@@ -9,7 +9,7 @@
       <form>
         <div class="mb-3">
           <AlertDanger :error-message="errorMessage"></AlertDanger>
-          <label class="form-label"> Kalibreerimise aeg</label>
+          <label class="form-label"> Kalibreerimise aeg (9:30)</label>
           <input type="time" class="form-control" v-model="calculationProfile.calibrationTime"
           />
         </div>
@@ -59,9 +59,9 @@ export default {
       },
       calculationProfile: {
         calculationProfileId: 0,
-        calibratedActivity: 0,
-        calibrationTime: '',
-        fillVolume: 0
+        calibratedActivity: 4500,
+        calibrationTime: '09:30:00',
+        fillVolume: 6
       }
     }
   },
@@ -73,7 +73,7 @@ export default {
         this.calculationProfile.studyId = this.studyId
         this.calculationProfile.isotopeId = this.isotopeId
         CalculationProfileService.sendPostCalculationProfileRequest(this.calculationProfile)
-            .then(value => this.handleAddNewCalculationProfile(value))
+            .then(value => this.handleAddNewCalculationProfile())
             .catch(reason => Navigation.navigateToErrorView())
       } else {
         this.errorMessage = 'Täida kõik väljad'
@@ -87,9 +87,8 @@ export default {
           this.calculationProfile.fillVolume !== 0
     },
 
-    handleAddNewCalculationProfile(value) {
+    handleAddNewCalculationProfile() {
       this.$emit('event-new-calculation-profile-made')
-      return value;
     },
 
     resetErrorMessage() {
