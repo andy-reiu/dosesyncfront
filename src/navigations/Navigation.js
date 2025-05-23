@@ -3,7 +3,7 @@ import router from "@/router";
 export default {
 
     navigateToErrorView() {
-        router.push({name: 'errorRoute'})
+        // router.push({name: 'errorRoute'})
     },
 
     navigateToHomeView() {
@@ -14,18 +14,25 @@ export default {
         router.push({name: 'loginRoute'})
     },
 
-    navigateToCalculationView(){
-        router.push({name: 'calculationRoute'})
+    navigateToStudyView(studyId, isotopeId) {
+        router.push({
+            name: 'studyRoute',
+            query: {
+                studyId: studyId,
+                isotopeId: isotopeId
+            }
+        })
+    },
+    navigateToPendingStudyView(studyId) {
+        router.push({
+            name: 'studyRoute',
+            query: {
+                studyId: studyId,
+            }
+        })
     },
 
     navigateToNotAuthorizedView() {
         router.push({name: 'notAuthorizedRoute'})
     },
-
-    // navigateToLocationView(locationId) {
-    //     router.push({
-    //         name: 'locationRoute',
-    //         query: {locationId: locationId}
-    //     })
-    // },
 }
