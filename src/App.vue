@@ -25,7 +25,7 @@
             Kodu
           </router-link>
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation" exact-active-class="active">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
             <font-awesome-icon icon="calculator"/>
             Kalkulaator
           </router-link>
@@ -51,7 +51,7 @@
           <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation-settings"
                        exact-active-class="active">
             <font-awesome-icon icon="cog"/>
-            Kalkulatosioon sätted
+            Kalkulatsiooni sätted
           </router-link>
         </template>
 

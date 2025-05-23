@@ -14,8 +14,22 @@ export default {
         router.push({name: 'loginRoute'})
     },
 
-    navigateToCalculationView(){
-        router.push({name: 'calculationRoute'})
+    navigateToStudyView(studyId, isotopeId) {
+        router.push({
+            name: 'studyRoute',
+            query: {
+                studyId: studyId,
+                isotopeId: isotopeId
+            }
+        })
+    },
+    navigateToPendingStudyView(studyId) {
+        router.push({
+            name: 'studyRoute',
+            query: {
+                studyId: studyId,
+            }
+        })
     },
 
     navigateToNotAuthorizedView() {
@@ -23,21 +37,9 @@ export default {
     },
 
     navigateToUsersView(userId) {
-         router.push({
-             name: 'usersRoute',
-             query: {userId: userId}
-         })
-     },
-
- // navigateToUsersView(userId) {
-    //     router.push({
-    //         name: 'usersRoute',
-    //         query: {userId: userId}
-    //     })
-    // },
-
-    //navigateToPlanningView
-    //navigateToSettingsView
-    //navigateToDozingView
-    //navigateToSecretaryView
+        router.push({
+            name: 'usersRoute',
+            query: {userId: userId}
+        })
+    },
 }

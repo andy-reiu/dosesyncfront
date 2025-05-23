@@ -2,6 +2,6 @@ import axios from "axios";
 
 export default {
     sendGetMachineRequest() {
-        return axios.get('/machines')
+        return axios.get('/active-machines')
     },
 }
