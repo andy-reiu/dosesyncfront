@@ -1,81 +1,208 @@
 <template>
   <div>
 
-    <!-- ISOTOPES TABLE -->
-    <h2>Isotoobid</h2>
-    <table class="table w-75 table-hover table-light table-striped-columns mb-5">
-      <thead class="table-dark">
-      <tr>
-        <th>ID</th><th>Isotoobi nimetus</th><th>Half-Life (hr)</th><th>Unit</th><th>Staatus</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="isotope in isotopes" :key="isotope.isotopeId">
-        <td>{{ isotope.isotopeId }}</td>
-        <td>{{ isotope.isotopeName }}</td>
-        <td>{{ isotope.halfLifeHr }}</td>
-        <td>{{ isotope.unit }}</td>
-        <td>{{ isotope.isotopeStatus }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <!-- ISOTOOPID  -->
+    <div class="w-75 mx-auto mb-5">
+      <h2 class="text-center mb-3">Isotoobid</h2>
+      <table class="table table-hover table-light table-striped-columns">
+        <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Isotoobi nimetus</th>
+          <th>Half-Life (hr)</th>
+          <th>Unit</th>
+          <th>Staatus</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="iso in isotopes" :key="iso.isotopeId">
+          <td>{{ iso.isotopeId }}</td>
+          <td>{{ iso.isotopeName }}</td>
+          <td>{{ iso.halfLifeHr }}</td>
+          <td>{{ iso.unit }}</td>
+          <td>{{ iso.isotopeStatus }}</td>
+          <td>
+            <font-awesome-icon
+                icon="pen-to-square"
+                class="text-warning me-2"
+                role="button"/>
+            <!--
+                            @click="startEditIsotope"
+            -->
 
-    <!-- CALCULATION SETTINGS TABLE -->
-    <h2>Kalkulatsiooni sätted</h2>
-    <table class="table w-75 table-hover table-light table-striped-columns">
-      <thead class = "table-dark">
-      <tr>
-        <th>ID</th><th>Min Activity</th><th>Max Activity</th><th>Min Volume</th><!-- etc. -->
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="calculationSetting in calculationSettings" :key="calculationSetting.settingId">
-        <td>{{ calculationSetting.settingId }}</td>
-        <td>{{ calculationSetting.settingMinActivity }}</td>
-        <td>{{ calculationSetting.settingMaxActivity }}</td>
-        <td>{{ calculationSetting.settingMinVolume }}</td>
+            <font-awesome-icon
+                icon="trash"
+                class="text-danger"
+                role="button"/>
+            <!--
+                            @click="deleteIsotope(isotopeId)"
+            -->
 
-      </tr>
-      </tbody>
-    </table>
+          </td>
 
-    <!-- MACHINES TABLE -->
-    <h2>Masinad</h2>
-    <table class="table w-75 table-hover table-light table-striped-columns">
-      <thead class = "table-dark">
-      <tr>
-        <th>ID</th><th>Masina nimetus</th><th>Serial</th><th>Tutvustus</th><th>Staatus</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="machine in machines" :key="machine.machineId">
-        <td>{{ machine.machineId }}</td>
-        <td>{{ machine.machineName }}</td>
-        <td>{{ machine.machineSerial }}</td>
-        <td>{{ machine.machineDescription }}</td>
-        <td>{{ machine.machineStatus }}</td>
-      </tr>
-      </tbody>
-    </table>
+        </tr>
+        </tbody>
+      </table>
 
-    <!-- ERROR MESSAGE -->
-    <div v-if="errorResponse.message" class="alert alert-danger">
-      {{ errorResponse.errorCode }} — {{ errorResponse.message }}
+      <!-- + button -->
+      <div class="d-flex justify-content-end mt-2">
+        <font-awesome-icon
+            icon="plus"
+            class="fa-2x text-success"
+            role="button"
+            @click="startAddIsotope"/>
+      </div>
+      <!-- isotope modal -->
+      <AddIsotopeModal
+          :modal-is-open="showAddIsotope"
+          @event-close-modal="closeAddIsotope"
+          @event-save-isotope="createIsotope"
+      />
     </div>
+
+
+    <!-- KALKULATSIOONI SÄTTED  -->
+    <div class="w-75 mx-auto mb-5">
+      <h2 class="text-center mb-3">Kalkulatsiooni sätted</h2>
+      <table class="table table-hover table-light table-striped-columns">
+        <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Min Activity</th>
+          <th>Max Activity</th>
+          <th>Min Volume</th>
+          <th>Injection Interval</th>
+          <th>Patsiendi kaal</th>
+          <th>Aktiivsus süstlas</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="cs in calculationSettings" :key="cs.settingId">
+          <td>{{ cs.settingId }}</td>
+          <td>{{ cs.settingMinActivity }}</td>
+          <td>{{ cs.settingMaxActivity }}</td>
+          <td>{{ cs.settingMinVolume }}</td>
+          <td>{{ cs.injectionInterval }}</td>
+          <td>{{ cs.defaultPatientWeight }}</td>
+          <td>{{ cs.activityPerKg }}</td>
+          <td>
+            <font-awesome-icon
+                icon="pen-to-square"
+                class="text-warning me-2"
+                role="button"/>
+            <!--
+                            @click="startEditCalculationSetting"
+            -->
+
+            <font-awesome-icon
+                icon="trash"
+                class="text-danger"
+                role="button"/>
+            <!--
+                            @click="deleteCalculationSetting"
+            -->
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-end mt-2">
+        <font-awesome-icon
+            icon="plus"
+            class="fa-2x text-success"
+            role="button"
+            @click="startAddCalculationSetting"
+        />
+        <AddCalculationSettingModal
+            :modal-is-open="showAddCalculationSetting"
+            @event-close-modal="closeAddCalculationSetting"
+            @event-save-calculation-setting="createCalculationSetting"
+
+        />
+      </div>
+    </div>
+
+
+    <!-- MASINAD -->
+    <div class="w-75 mx-auto mb-5">
+      <h2 class="text-center mb-3">Masinad</h2>
+      <table class="table table-hover table-light table-striped-columns">
+        <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Masina nimetus</th>
+          <th>Serial</th>
+          <th>Masina kirjeldus</th>
+          <th>Staatus</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="m in machines" :key="m.machineId">
+          <td>{{ m.machineId }}</td>
+          <td>{{ m.machineName }}</td>
+          <td>{{ m.machineSerial }}</td>
+          <td>{{ m.machineDescription }}</td>
+          <td>{{ m.machineStatus }}</td>
+          <td>
+            <font-awesome-icon
+                icon="pen-to-square"
+                class="text-warning me-2"
+                role="button"/>
+            <!--                @click="startEditMachine"-->
+
+            <font-awesome-icon
+                icon="trash"
+                class="text-danger"
+                role="button"/>
+            <!--
+                            @click="deleteMachine"
+            -->
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-end mt-2">
+        <font-awesome-icon
+            icon="plus"
+            class="fa-2x text-success"
+            role="button"
+            @click="startAddMachine"
+        />
+        <AddMachineModal
+            :modal-is-open="showAddMachine"
+            @event-close-modal="closeAddMachine"
+            @event-save-machine="createMachine"
+        />
+      </div>
+    </div>
+
   </div>
 </template>
 
+
 <script>
-import axios from "axios";
 import IsotopeService from "@/services/IsotopeService";
 import Navigation from "@/navigations/Navigation";
 import MachineService from "@/services/MachineService";
 import CalculationSettingService from "@/services/CalculationSettingService";
+import AddIsotopeModal from "@/components/modal/AddIsotopeModal.vue";
+import AddCalculationSettingModal from "@/components/modal/AddCalculationSettingModal.vue";
+import AddMachineModal from "@/components/modal/AddMachineModal.vue";
 
 export default {
   name: 'TechnicConfigurationView',
-  data(){
+  components: {AddIsotopeModal, AddCalculationSettingModal, AddMachineModal},
+  data() {
     return {
+      showAddIsotope: false,
+      showAddCalculationSetting: false,
+      showAddMachine: false,
 
       userId: Number(sessionStorage.getItem(('userId'))),
       roleName: sessionStorage.getItem('roleName'),
@@ -84,9 +211,9 @@ export default {
         {
           isotopeId: 0,
           isotopeName: '',
-          halfLifeHr: '',
+          halfLifeHr: 0,
           unit: '',
-          isotopeStatus:''
+          isotopeStatus: ''
         },
       ],
 
@@ -97,7 +224,10 @@ export default {
           settingMaxActivity: 0,
           settingMinVolume: 0,
           settingMachineVolumeMax: 0,
-          settingMachineVolumeMin: 0
+          settingMachineVolumeMin: 0,
+          injectionInterval: '',
+          defaultPatientWeight: 0,
+          activityPerKg: 0,
         },
       ],
 
@@ -120,6 +250,47 @@ export default {
     }
   },
   methods: {
+
+    createMachine(machineData) {
+      MachineService.sendPostMachineRequest(machineData)
+          .then(() => this.getAllMachines())
+          .catch(error => console.error(error))
+    },
+
+    createCalculationSetting(calculationSettingData) {
+      CalculationSettingService.sendPostCalculationSettingRequest(calculationSettingData)
+          .then(() => this.getAllCalculationSettings())
+          .catch(error => console.error(error))
+    },
+
+    createIsotope(isotopeData) {
+      IsotopeService.sendPostIsotopeRequest(isotopeData)
+          //refresh list
+          .then(() => this.getAllIsotopes())
+          .catch(error => console.error(error))
+    },
+
+    startAddIsotope() {
+      this.showAddIsotope = true
+    },
+    closeAddIsotope() {
+      this.showAddIsotope = false
+    },
+    startAddCalculationSetting() {
+      this.showAddCalculationSetting = true
+    },
+
+    closeAddCalculationSetting() {
+      this.showAddCalculationSetting = false
+    },
+
+    startAddMachine() {
+      this.showAddMachine = true
+    },
+
+    closeAddMachine() {
+      this.showAddMachine = false
+    },
 
     getAllIsotopes() {
       IsotopeService.sendGetIsotopesRequest()
