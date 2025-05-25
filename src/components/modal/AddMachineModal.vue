@@ -19,8 +19,12 @@
                 required
             >
               <option disabled value="">Please select one</option>
-              <option v-for="h in hospitals" :key="h.id" :value="h.id">
-                {{ h.name }}
+              <option
+                  v-for="h in hospitals"
+                  :key="h.hospitalId"
+                  :value="h.hospitalId"
+              >
+                {{ h.hospitalName }}
               </option>
             </select>
           </div>
@@ -76,6 +80,8 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
+import HospitalService from "@/services/HospitalService";
+import Navigation from "@/navigations/Navigation";
 
 export default {
   name: 'AddMachineModal',
@@ -99,10 +105,18 @@ export default {
     addNewMachine() {
       this.$emit('event-save-machine', this.newMachine)
       this.$emit('event-close-modal')
-    }
+    },
+    getAllHospitals() {
+      HospitalService.sendGetHospitalRequest()
+          .then(response => this.hospitals = response.data)
+          .catch(() => Navigation.navigateToErrorView())
+    },
+
 
   },
   beforeMount() {
+    this.getAllHospitals()
+
   }
-};
+}
 </script>
