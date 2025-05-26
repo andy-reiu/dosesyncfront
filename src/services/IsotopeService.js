@@ -12,6 +12,4 @@ export default {
     sendPostIsotopeRequest(isotopeData) {
         return axios.post('/isotopes', isotopeData)
     },
-
-
 };

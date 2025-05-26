@@ -2,16 +2,17 @@
   <div class="home">
     <NewCalculationProfileModal :modal-is-open="newCalculationProfileIsOpen"
                                 @event-close-modal="closeCalculationProfileView"
-                                :isotope-id="isotopeId"
                                 :study-id="studyId"
                                 @event-new-calculation-profile-made="getAllStudiesCalculationProfiles"
     />
     <NewPatientInjectionModal :modal-is-open="newPatientInjectionIsOpen"
                               @event-close-modal="closePatientInjectionsView"
                               :study-id="studyId"
+                              :isotope-id="isotopeId"
                               @event-new-patient-injection-made="getAllStudiesPatientInjections"
     />
     <div class="container text-center">
+
       <!-- Header Section -->
       <div class="row">
         <h1>study id: {{ studyId }} </h1>
@@ -20,37 +21,39 @@
         </div>
       </div>
 
+      <!-- Calculation Profile Section -->
       <div class="col">
-        <!-- Calculation Profile Section -->
-        <h4>Kalkulatsiooni profiili koostamine</h4>
-        <CalculationProfile :calculationProfiles="calculationProfiles"
-                            :study-id="studyId"
-                            @event-update-calculation-profile="getAllStudiesCalculationProfiles"
-        />
-        <div class="text-end">
-          <button type="submit" @click="addCalculationProfileView()" class="btn btn-primary">Lisa uus profiil</button>
-        </div>
+        <h2 class="text-center mb-3">Kalkulatsiooni profiilid</h2>
+          <CalculationProfile :calculationProfiles="calculationProfiles"
+                              :study-id="studyId"
+                              @event-update-calculation-profile="getAllStudiesCalculationProfiles"
+          />
+          <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
+                               @click="addCalculationProfileView()"
+            />
+          </div>
       </div>
 
+      <!-- Patients && Injection Section -->
       <div class="row">
         <div class="col">
-          <!-- Patients && Injection Section -->
-          <h4>Patsiendid ja süstimine</h4>
+          <h2 class="text-center mb-3">Patsiendi süstid</h2>
           <PatientInjection :patientInjections="patientInjections"
                             :study-id="studyId"
-                            @event-update-patient-injection="getAllStudiesPatientInjections"
+                            @event-update-patient-injections="getAllStudiesPatientInjections"
           />
-          <div class="text-end">
-            <button type="submit" @click="addPatientInjectionsView()" class="btn btn-primary">Lisa uus patsiendi
-              süstimine
-            </button>
+          <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
+                               @click="addPatientInjectionsView()"
+            />
           </div>
         </div>
 
       </div>
       <div class="col">
         <!-- Machine fill Section -->
-        <h4>Kalkuleeritud kogused</h4>
+        <h2 class="text-center mb-3">Viaali aktiivsus ja täitmised</h2>
         <MachineFill :machineFills="machineFills"/>
       </div>
       <div class="row mt-4 justify-content-center">
@@ -107,6 +110,7 @@ import CalculationProfileService from "@/services/CalculationProfileService";
 import Navigation from "@/navigations/Navigation";
 import NewPatientInjectionModal from "@/components/modal/NewPatientInjectionModal.vue";
 import PatientInjectionService from "@/services/PatientInjectionService";
+import MachineFillService from "@/services/MachineFillService";
 
 export default {
   name: "StudyView",
@@ -156,31 +160,15 @@ export default {
           injectedActivity: 0
         }
       ],
-
       machineFills: [
         {
-          machineFillId: 1,
-          vialActivityBeforeInjection: 1919.00,
-          vialActivityAfterInjection: 1744.00,
-          injectedVolume: 1.00,
-          remainingVolume: 10.00
-        },
-        {
-          machineFillId: 2,
-          vialActivityBeforeInjection: 1443.00,
-          vialActivityAfterInjection: 1268.00,
-          injectedVolume: 1.21,
-          remainingVolume: 8.78
-        },
-        {
-          machineFillId: 3,
-          vialActivityBeforeInjection: 1049.00,
-          vialActivityAfterInjection: 874.00,
-          injectedVolume: 1.47,
-          remainingVolume: 7.32
+          machineFillId: 0,
+          vialActivityBeforeInjection: 0,
+          vialActivityAfterInjection: 0,
+          injectedVolume: 0,
+          remainingVolume: 0
         }
       ],
-
       errorResponse: {
         message: '',
         errorCode: 0
@@ -188,6 +176,7 @@ export default {
     }
   },
   methods: {
+
     getAllStudiesCalculationProfiles() {
       CalculationProfileService.sendGetStudiesCalculationProfilesRequest(this.studyId)
           .then(response => this.handleGetCalculationProfilesSuccessResponse(response))
@@ -197,6 +186,7 @@ export default {
     handleGetCalculationProfilesSuccessResponse(response) {
       this.calculationProfiles = response.data
       this.closeCalculationProfileView()
+      this.getAllStudiesMachineFills()
     },
 
     getAllStudiesPatientInjections() {
@@ -208,6 +198,17 @@ export default {
     handleGetStudiesPatientInjectionSuccessResponse(response) {
       this.patientInjections = response.data
       this.closePatientInjectionsView()
+      this.getAllStudiesMachineFills()
+    },
+
+    getAllStudiesMachineFills() {
+      MachineFillService.sendGetMachineFillRequest(this.studyId)
+          .then(value => this.handleGetStudiesMachineFillSuccessResponse(value))
+          .catch(reason => Navigation.navigateToErrorView())
+    },
+
+    handleGetStudiesMachineFillSuccessResponse(response) {
+      this.machineFills = response.data
     },
 
     addCalculationProfileView() {
@@ -224,12 +225,12 @@ export default {
     closePatientInjectionsView() {
       this.newPatientInjectionIsOpen = false;
     },
-
   },
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()
     this.getAllStudiesCalculationProfiles()
     this.getAllStudiesPatientInjections()
+    this.getAllStudiesMachineFills()
   },
 }
 </script>

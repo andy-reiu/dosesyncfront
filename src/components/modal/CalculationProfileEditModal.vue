@@ -10,20 +10,15 @@
         <div class="mb-3">
           <AlertDanger :error-message="errorMessage"></AlertDanger>
           <label class="form-label"> Kalibreerimise aeg</label>
-          <input type="time" class="form-control" v-model="calculationProfile.calibrationTime"
-          />
+          <input type="time" class="form-control" v-model="calculationProfile.calibrationTime"/>
         </div>
         <div class="mb-3">
           <label class="form-label"> Kalibratsiooni aktiivsus (MBq)</label>
-          <input type="number" class="form-control"
-                 v-model="calculationProfile.calibratedActivity"
-          >
+          <input type="number" class="form-control" v-model="calculationProfile.calibratedActivity">
         </div>
         <div class="mb-3">
           <label class="form-label"> Viaali maht (mL)</label>
-          <input type="number" class="form-control"
-                 v-model="calculationProfile.fillVolume"
-          >
+          <input type="number" class="form-control" v-model="calculationProfile.fillVolume">
         </div>
       </form>
     </template>
@@ -65,7 +60,6 @@ export default {
           })
           .catch(() => Navigation.navigateToErrorView())
     },
-
   }
 }
 </script>

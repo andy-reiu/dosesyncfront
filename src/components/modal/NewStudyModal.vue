@@ -126,7 +126,7 @@ export default {
     },
 
     getAllMachines() {
-      MachineService.sendGetMachineRequest()
+      MachineService.sendGetActiveMachineRequest()
           .then(response => this.handleGetMachineSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },
