@@ -14,7 +14,12 @@
             <slot name="body"></slot>
           </div>
           <div class="modal-footer mt-3">
-            <button type="button" class="btn btn-secondary me-2" @click="$emit('event-close-modal')">Sulge</button>
+            <button v-if="!hideDefaultFooterAction"
+                    type="button"
+                    class="btn btn-secondary me-2"
+                    @click="$emit('event-close-modal')">
+              Sulge
+            </button>
 
             <slot name="footer"></slot>
           </div>
@@ -26,9 +31,13 @@
 
 <script>
 export default {
-  name: "Modal",
-  props:{
-    modalIsOpen: Boolean
+  name: 'Modal',
+  props: {
+    modalIsOpen: Boolean,
+    hideDefaultFooterAction: {
+      type: Boolean,
+      default: false
+    }
   }
 };
 </script>

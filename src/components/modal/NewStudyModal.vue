@@ -91,7 +91,7 @@ export default {
   methods: {
 
     getAllIsotopes() {
-      IsotopeService.sendGetIsotopesRequest()
+      IsotopeService.sendGetActiveIsotopesRequest()
           .then(response => this.handleGetIsotopesSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },

@@ -34,10 +34,8 @@
             <font-awesome-icon
                 icon="trash"
                 class="text-danger"
-                role="button"/>
-            <!--
-                            @click="deleteIsotope(isotopeId)"
-            -->
+                role="button"
+                @click="openDeleteConfirmation('isotope', iso.isotopeId, iso.isotopeName)"/>
 
           </td>
 
@@ -58,6 +56,12 @@
           :modal-is-open="showAddIsotope"
           @event-close-modal="closeAddIsotope"
           @event-save-isotope="createIsotope"
+      />
+      <ConfirmDeleteModal
+          :show="showDeleteModal"
+          :item-name="openDeleteConfirmation.label"
+          @confirm="runDelete"
+          @cancel="cancelDelete"
       />
     </div>
 
@@ -141,12 +145,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="m in machines" :key="m.machineId">
-          <td>{{ m.machineId }}</td>
-          <td>{{ m.machineName }}</td>
-          <td>{{ m.machineSerial }}</td>
-          <td>{{ m.machineDescription }}</td>
-          <td>{{ m.machineStatus }}</td>
+        <tr v-for="machine in machines"
+                :key="machine.machineId"
+                :class="{ 'table-danger': machine.machineStatus === 'D' }">
+          <td>{{ machine.machineId }}</td>
+          <td>{{ machine.machineName }}</td>
+          <td>{{ machine.machineSerial }}</td>
+          <td>{{ machine.machineDescription }}</td>
+          <td><select
+              v-model="machine.machineStatus"
+              @change="updateMachineStatus(machine)"
+              class="form-select form-select-sm"
+          >
+            <option value="A">Active</option>
+            <option value="D">Deactive</option>
+          </select></td>
           <td>
             <font-awesome-icon
                 icon="pen-to-square"
@@ -194,18 +207,26 @@ import CalculationSettingService from "@/services/CalculationSettingService";
 import AddIsotopeModal from "@/components/modal/AddIsotopeModal.vue";
 import AddCalculationSettingModal from "@/components/modal/AddCalculationSettingModal.vue";
 import AddMachineModal from "@/components/modal/AddMachineModal.vue";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal.vue";
 
 export default {
   name: 'TechnicConfigurationView',
-  components: {AddIsotopeModal, AddCalculationSettingModal, AddMachineModal},
+  components: {AddIsotopeModal, AddCalculationSettingModal, AddMachineModal, ConfirmDeleteModal},
   data() {
     return {
       showAddIsotope: false,
       showAddCalculationSetting: false,
       showAddMachine: false,
+      showDeleteModal: false,
 
       userId: Number(sessionStorage.getItem(('userId'))),
       roleName: sessionStorage.getItem('roleName'),
+
+      deleteTarget: {
+        id: null,
+        type: null,
+        label: ""
+      },
 
       isotopes: [
         {
@@ -251,6 +272,34 @@ export default {
   },
   methods: {
 
+    openDeleteConfirmation(type, id, name) {
+      this.deleteTarget = {
+        id, type, label:name
+      }
+      this.showDeleteModal = true
+    },
+
+    cancelDelete() {
+      this.showDeleteModal = false
+      this.deleteTarget = {
+        id: null, type: null, label: ""
+      }
+    },
+
+    runDelete() {
+      const {id, type} = this.deleteTarget
+      let call
+      if(type === "machine") {
+        call = MachineService.send
+      }
+    },
+
+    updateMachineStatus(machine) {
+      MachineService.sendUpdateMachineStatusRequest(machine.machineId, machine.machineStatus)
+          .then(() => this.getAllMachines())
+          .catch(error => console.error(error))
+    },
+
     createMachine(machineData) {
       MachineService.sendPostMachineRequest(machineData)
           .then(() => this.getAllMachines())
@@ -293,7 +342,7 @@ export default {
     },
 
     getAllIsotopes() {
-      IsotopeService.sendGetIsotopesRequest()
+      IsotopeService.sendGetIsotopeRequest()
           .then(response => this.isotopes = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },

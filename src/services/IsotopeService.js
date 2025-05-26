@@ -1,9 +1,14 @@
 import axios from "axios";
 
 export default {
-    sendGetIsotopesRequest() {
+    sendGetActiveIsotopesRequest() {
         return axios.get('/active-isotopes')
     },
+
+    sendGetIsotopeRequest() {
+        return axios.get('/isotopes')
+    },
+
     sendPostIsotopeRequest(isotopeData) {
         return axios.post('/isotopes', isotopeData)
     },

@@ -43,7 +43,7 @@ export default {
         })
     },
 
-    navigateTechnicConfigurationView() {
-        router.push({name: 'technicConfigurationRoute'})
-    },
+    // navigateTechnicConfigurationView() {
+    //     router.push({name: 'technicConfigurationRoute'})
+    // },
 }
