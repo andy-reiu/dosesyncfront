@@ -12,21 +12,15 @@
         <form>
 
           <div class="mb-3">
+
             <label class="form-label">Haigla</label>
-            <select
-                v-model.number="newMachine.hospitalId"
-                class="form-control"
-                required
-            >
-              <option disabled value="">Please select one</option>
-              <option
-                  v-for="h in hospitals"
-                  :key="h.hospitalId"
-                  :value="h.hospitalId"
-              >
-                {{ h.hospitalName }}
-              </option>
-            </select>
+            <HospitalsDropdown
+                :hospitals="hospitals"
+                :selected-hospital-id="newMachine.hospitalId"
+                @event-new-hospital-selected="newMachine.hospitalId = $event"
+            />
+
+
           </div>
 
           <div class="mb-3">
@@ -58,11 +52,15 @@
 
           <div class="mb-3">
             <label class="form-label">Masina staatus</label>
-            <input v-model="newMachine.machineStatus"
-                   type="text"
-                   class="form-control"
-                   required
-            />
+            <select
+                v-model="newMachine.machineStatus"
+                class="form-control"
+                required
+            >
+              <option disabled value="">Vali staatus</option>
+              <option value="A">Active</option>
+              <option value="D">Deactive</option>
+            </select>
           </div>
 
         </form>
@@ -83,9 +81,11 @@ import AlertDanger from "@/components/alert/AlertDanger.vue";
 import HospitalService from "@/services/HospitalService";
 import Navigation from "@/navigations/Navigation";
 
+import HospitalsDropdown from "@/components/hospital/HospitalsDropdown.vue";
+
 export default {
   name: 'AddMachineModal',
-  components: {AlertDanger, Modal},
+  components: {AlertDanger, Modal, HospitalsDropdown},
   props: {
     modalIsOpen: Boolean
   },
