@@ -34,17 +34,20 @@
 
 <!--        // tehnik-->
         <template v-if="isAdmin && isLoggedIn">
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/users" exact-active-class="active">
-            <font-awesome-icon icon="users"/>
-            Tehniku vaade
+          <router-link class="nav-link d-flex align-items-center gap-2"
+                       to="/technic"
+                       exact-active-class="active">
+            <font-awesome-icon icon="cog"/>
+              Tehniku vaade
           </router-link>
 
 
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/calculation-settings"
+          <router-link class="nav-link d-flex align-items-center gap-2"
+                       to="/users"
                        exact-active-class="active">
-            <font-awesome-icon icon="cog"/>
-            Kalkulatsiooni sätted
+            <font-awesome-icon icon="users"/>
+            User
           </router-link>
         </template>
 
