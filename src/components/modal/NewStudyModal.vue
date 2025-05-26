@@ -91,7 +91,7 @@ export default {
   methods: {
 
     getAllIsotopes() {
-      IsotopeService.sendGetIsotopesRequest()
+      IsotopeService.sendGetActiveIsotopesRequest()
           .then(response => this.handleGetIsotopesSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },
@@ -126,7 +126,7 @@ export default {
     },
 
     getAllMachines() {
-      MachineService.sendGetMachineRequest()
+      MachineService.sendGetActiveMachineRequest()
           .then(response => this.handleGetMachineSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },

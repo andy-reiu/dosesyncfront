@@ -15,4 +15,23 @@ export default {
             }
         )
     },
+
+    sendPutPatientInjectionRequest(studyId, patientInjection) {
+        return axios.put('/patient-injection', patientInjection, {
+            params: {
+                studyId: studyId,
+            }
+        });
+    },
+
+    sendDeletePatientInjectionRequest(patientInjectionId) {
+        return axios.delete('/patient-injection', {
+            params: {
+                patientInjectionId: patientInjectionId,
+            }
+        });
+    }
+
+
+
 }
