@@ -36,10 +36,10 @@
         <td v-if="isAdmin">
           <div class="d-flex align-items-center">
             <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-                               @click="editSelectedStudy(study.studyId, study.isotopeId)"
+                               @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
             />
             <font-awesome-icon icon="trash" class="text-danger" role="button"
-                               @click="editSelectedStudy(study.studyId, study.isotopeId)"
+                               @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
             />
           </div>
         </td>
@@ -86,8 +86,8 @@ export default {
   },
 
   methods: {
-    editSelectedStudy(studyId, isotopeId) {
-      Navigation.navigateToStudyView(studyId, isotopeId)
+    editSelectedStudy(studyId, isotopeId, isotopeName) {
+      Navigation.navigateToStudyView(studyId, isotopeId, isotopeName)
     }
   },
 
