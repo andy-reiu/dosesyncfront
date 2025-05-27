@@ -4,14 +4,17 @@ export default {
     sendGetStudiesPatientInjectionRequest(studyId) {
         return axios.get('/patient-injections', {
                 params: {
-                    studyId: studyId
+                    studyId: studyId,
                 }
             }
         )
     },
 
-    sendPostPatientInjectionRequest(patientInjection) {
+    sendPostPatientInjectionRequest(isotopeId, patientInjection) {
         return axios.post('/patient-injection', patientInjection, {
+                params: {
+                    isotopeId: isotopeId
+                }
             }
         )
     },
@@ -30,8 +33,13 @@ export default {
                 patientInjectionId: patientInjectionId,
             }
         });
-    }
+    },
 
-
-
+    sendGetStudiesPatientInjectionTemplateRequest(studyId) {
+        return axios.get('/patient-injection/template', {
+            params: {
+                studyId: studyId,
+            }
+        })
+    },
 }

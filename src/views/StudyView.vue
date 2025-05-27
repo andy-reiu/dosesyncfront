@@ -8,14 +8,21 @@
     <NewPatientInjectionModal :modal-is-open="newPatientInjectionIsOpen"
                               @event-close-modal="closePatientInjectionsView"
                               :study-id="studyId"
+                              :patient-injection="patientInjection"
                               :isotope-id="isotopeId"
                               @event-new-patient-injection-made="getAllStudiesPatientInjections"
+                              @event-update-patient-id="setPatientInjectionPatientId"
+                              @event-update-patient-weight="setPatientInjectionInjectionWeight"
+                              @event-update-injection-mbq-kg="setPatientInjectionMbqKg"
+                              @event-update-injected-time="setPatientInjectionTime"
+                              @event-update-injected-activity="setPatientInjectionActivity"
     />
     <div class="container text-center">
 
       <!-- Header Section -->
       <div class="row">
-        <h1>study id: {{ studyId }} </h1>
+        <h2>StudyId: {{ studyId }} </h2>
+        <h2>Päevaplaan isotoobi {{ isotopeName }} kasutamiseks. </h2>
         <div class="col mt-4">
           <AlertDanger :error-message="errorMessage"/>
         </div>
@@ -59,7 +66,7 @@
       <div class="row mt-4 justify-content-center">
         <div class="col-md-4 text-center">
           <!-- Rinse Calculation Button -->
-          <button class="btn btn-warning w-100" @click="calculateRinseValues">
+          <button class="btn btn-warning w-100" @click="getCalculationMachineRinseVolume()">
             Arvuta Loputusmaht
           </button>
         </div>
@@ -111,6 +118,7 @@ import Navigation from "@/navigations/Navigation";
 import NewPatientInjectionModal from "@/components/modal/NewPatientInjectionModal.vue";
 import PatientInjectionService from "@/services/PatientInjectionService";
 import MachineFillService from "@/services/MachineFillService";
+import StudyService from "@/services/StudyService";
 
 export default {
   name: "StudyView",
@@ -130,6 +138,7 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       studyId: Number(useRoute().query.studyId),
       isotopeId: Number(useRoute().query.isotopeId),
+      isotopeName: useRoute().query.isotopeName,
       errorMessage: '',
       successMessage: '',
       isAdmin: false,
@@ -137,8 +146,8 @@ export default {
       newCalculationProfileIsOpen: false,
       newPatientInjectionIsOpen: false,
 
-      calculationMachineRinseVolume: 2,
-      calculationMachineRinseActivity: 548,
+      calculationMachineRinseVolume: 0,
+      calculationMachineRinseActivity: 0,
 
       calculationProfiles: [
         {
@@ -148,6 +157,16 @@ export default {
           fillVolume: 0
         }
       ],
+
+      patientInjection: {
+        studyId: 0,
+        acc: '',
+        patientNationalId: '',
+        injectionWeight: 0,
+        injectionMbqKg: 0,
+        injectedTime: '',
+        injectedActivity: 0
+      },
 
       patientInjections: [
         {
@@ -169,6 +188,7 @@ export default {
           remainingVolume: 0
         }
       ],
+
       errorResponse: {
         message: '',
         errorCode: 0
@@ -211,21 +231,85 @@ export default {
       this.machineFills = response.data
     },
 
-    addCalculationProfileView() {
-      this.newCalculationProfileIsOpen = true;
+    executeGetPatientInjectionTemplate() {
+      PatientInjectionService.sendGetStudiesPatientInjectionTemplateRequest(this.studyId)
+          .then(value => this.handleGetStudiesPatientInjectionTemplateSuccessResponse(value))
+          .catch(reason => Navigation.navigateToErrorView())
     },
+
+    handleGetStudiesPatientInjectionTemplateSuccessResponse(value) {
+      this.patientInjection = value.data
+      this.patientInjection.studyId = this.studyId
+    },
+
+    getCalculationMachineRinseVolume(){
+      StudyService.sendGetCalculateStudiesMachineRinseVolumeRequest(this.studyId)
+          .then(value => this.handleGetStudiesMachineRinseVolumeSuccessResponse(value))
+          .catch(reason => Navigation.navigateToErrorView())
+    },
+
+    handleGetStudiesMachineRinseVolumeSuccessResponse(value){
+      this.calculationMachineRinseVolume = value.data
+      this.getCalculationLastMachineRinseActivity()
+    },
+
+    getCalculationLastMachineRinseActivity(){
+      StudyService.sendGetStudiesLastMachineRinseActivityRequest(this.studyId)
+          .then(value => this.handleGetStudiesMachineActivitySuccessResponse(value))
+          .catch(reason => Navigation.navigateToErrorView())
+    },
+
+    handleGetStudiesMachineActivitySuccessResponse(value){
+      this.calculationMachineRinseActivity = value.data
+    },
+
+    setPatientInjectionPatientId(patientNationalId){
+      this.patientInjection.patientNationalId = patientNationalId
+    },
+
+    setPatientInjectionInjectionWeight(injectionWeight) {
+      this.patientInjection.injectionWeight = injectionWeight
+    },
+
+    setPatientInjectionMbqKg(activityWeight){
+      this.patientInjection.injectionMbqKg = activityWeight
+    },
+
+    setPatientInjectionTime(injectedTime){
+      this.patientInjection.injectedTime = injectedTime
+    },
+
+    setPatientInjectionActivity(injectedActivity){
+      this.patientInjection.injectedActivity = injectedActivity;
+    },
+
+    addCalculationProfileView() {
+      this.newCalculationProfileIsOpen = true
+    },
+
     closeCalculationProfileView() {
-      this.newCalculationProfileIsOpen = false;
+      this.newCalculationProfileIsOpen = false
     },
 
     addPatientInjectionsView() {
-      this.newPatientInjectionIsOpen = true;
+      if (this.calculationProfiles.length === 0){
+        this.errorMessage = 'Pole lisatud kalkulatsiooniprofiil.'
+        setTimeout(this.resetErrorMessage, 4000)
+      } else {
+        this.executeGetPatientInjectionTemplate()
+        this.newPatientInjectionIsOpen = true
+      }
     },
 
     closePatientInjectionsView() {
-      this.newPatientInjectionIsOpen = false;
+      this.newPatientInjectionIsOpen = false
+    },
+
+    resetErrorMessage() {
+      this.errorMessage = ''
     },
   },
+
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()
     this.getAllStudiesCalculationProfiles()

@@ -15,6 +15,24 @@ export default {
                     studyId: studyId,
                 }
             }
-        );
+        )
+    },
+
+    sendGetCalculateStudiesMachineRinseVolumeRequest(studyId) {
+        return axios.get('/study/machine-rinse-volume', {
+                params: {
+                    studyId: studyId,
+                }
+            }
+        )
+    },
+
+    sendGetStudiesLastMachineRinseActivityRequest(studyId) {
+        return axios.get('/study/machine-remaining-activity', {
+                params: {
+                    studyId: studyId,
+                }
+            }
+        )
     }
 }
