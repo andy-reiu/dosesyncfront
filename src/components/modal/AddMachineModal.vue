@@ -27,7 +27,7 @@
             <label class="form-label">Masina nimetus</label>
             <input v-model="newMachine.machineName"
                    type="text"
-                   class="form-control"
+                   class="form-control "
                    required
             />
           </div>
