@@ -3,7 +3,30 @@
 
     <!-- KASUTAJATE HALDUS  -->
     <div class="w-75 mx-auto mb-5">
-      <h2 class="text-center mb-3">Kasutajad</h2>
+      <h2 class="text-center mb-3">Kasutaja kontod</h2>
+
+<!--      Muuta ära nii, et tabel ise läheb UsersTable komponendi alla ja siin
+kutsutakse komponendina välja ning lisatakse ettepoole staatuse ja rolli dropdownid-->
+
+      <!--      source: component StatusDropdown (veel tegemata)-->
+<!--    <div class="col col-2">-->
+<!--      <RoleDropdown :roles="roles"-->
+<!--                      :selected-role-id="selectedRoleId"-->
+<!--                      @event-new-role-selected="updateUsersTable"-->
+<!--      />-->
+<!--    </div>-->
+
+      <!--      source: component RoleDropdown-->
+
+      <!--    <div class="col col-2">-->
+<!--      <RoleDropdown :roles="roles"-->
+<!--                      :selected-role-id="selectedRoleId"-->
+<!--                      @event-new-role-selected="updateUsersTable"-->
+<!--      />-->
+<!--    </div>-->
+
+<!--NB! muuda esilehele kuvatava tabeli sisu nii, et see võtaks userist ja profiilist
+kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-->
       <table class="table table-hover table-light table-striped-columns">
         <thead class="table-dark">
         <tr>
@@ -17,19 +40,6 @@
         </tr>
         </thead>
         <tbody>
-        <!--        <tr>-->
-        <!--          <th scope="row">1</th>-->
-        <!--          <td>testkasutaja</td>-->
-        <!--          <td>39104152516</td>-->
-        <!--          <td>Otto</td>-->
-        <!--          <td>Motto</td>-->
-        <!--          <td>Planeerimine</td>-->
-        <!--          <td>A</td>-->
-        <!--          <td>-->
-
-
-
-
 
         <tr v-for="user in users" :key="user.userId">
           <td>{{ user.userId }}</td>
@@ -44,7 +54,7 @@
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"/>
-            <!--@click="startEditUserAccount"-->
+                @click="startEditUserAccount"
           </td>
 
         </tr>
@@ -141,7 +151,7 @@ export default {
           .then(response => this.users = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
-    //
+    // //
     // getAllProfiles() {
     //   ProfileService.sindGetProfileRequest()
     //       .then(response => this.profiles =response.data())

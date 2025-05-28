@@ -6,6 +6,7 @@ import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
 import StudyView from "@/views/StudyView.vue";
 import UsersView from "@/views/UsersView.vue";
 import TechnicConfigurationView from "@/views/TechnicConfigurationView.vue";
+import UserAccountView from "@/views/UserAccountView.vue";
 
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
         path: "/users",
         name: 'usersRoute',
         component: UsersView
+    },
+   {
+       path: "/user-account",
+        name: 'userAccountRoute',
+        component: UserAccountView
     },
     {
         path: '/technic',

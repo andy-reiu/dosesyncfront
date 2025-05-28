@@ -1,14 +1,18 @@
+import axios from "axios";
+
 export default {
 
     isLoggedIn() {
         let roleName = sessionStorage.getItem('roleName')
-        return  roleName !== null
+        return roleName !== null
     },
 
     isAdmin() {
         let roleName = sessionStorage.getItem('roleName')
         return this.isLoggedIn() && roleName === 'admin'
-    }
+    },
 
-    // rollipõhiselt kas iga rolli jaoks eraldi?
+    sendGetRolesRequest() {
+        return axios.get('/roles')
+    },
 }
