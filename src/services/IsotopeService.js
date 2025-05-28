@@ -20,7 +20,7 @@ export default {
                     status: isotopeStatus
                 }
             }
-            )
+        )
     },
 
     sendUpdateIsotopeRequest(id, isotopeUpdate) {

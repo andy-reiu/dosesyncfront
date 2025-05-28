@@ -4,18 +4,6 @@
       @event-close-modal="closeModal"
       @event-logout-confirmed="executeLogOut"
   />
-
-  <div>Tere tulemast DoseSynki! </div>
-
-  <nav>
-      <template v-if="isLoggedIn">
-       <font-awesome-icon @click="startLogOutProcess" class="cursor-pointer" icon="right-from-bracket" />
-  </template>
-
-
-  </nav>
-
-
   <div class="d-flex">
     <div class="sidebar p-3 vh-100 border-end d-flex flex-column">
       <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
@@ -25,10 +13,12 @@
             Kodu
           </router-link>
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
-            <font-awesome-icon icon="calculator"/>
-            Kalkulaator
-          </router-link>
+          <template v-if="isAdmin && isLoggedIn">
+            <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
+              <font-awesome-icon icon="calculator"/>
+              Kalkulaator
+            </router-link>
+          </template>
 
           <router-link class="nav-link d-flex align-items-center gap-2" to="/f18-calculator"
                        exact-active-class="active">
@@ -44,15 +34,14 @@
         <!-- Show only if admin and logged in -->
 
 
-<!--        // tehnik-->
+        <!--        // tehnik-->
         <template v-if="isAdmin && isLoggedIn">
           <router-link class="nav-link d-flex align-items-center gap-2"
                        to="/technic"
                        exact-active-class="active">
             <font-awesome-icon icon="cog"/>
-              Tehniku vaade
+            Tehniku vaade
           </router-link>
-
 
 
           <router-link class="nav-link d-flex align-items-center gap-2"
@@ -62,7 +51,6 @@
             User
           </router-link>
         </template>
-
 
 
         <!-- Show if logged in -->

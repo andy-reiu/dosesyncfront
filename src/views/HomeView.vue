@@ -8,18 +8,31 @@
       <div class="row">
         <div class="col mt-4">
           <AlertDanger :error-message="errorMessage"></AlertDanger>
-          <h1>Päevaplaan</h1>
+          <h2 class="text-center mb-3">Päevaplaan</h2>
         </div>
       </div>
       <div class="row">
-        <StudyTable :studies="studies"
-                    :selected-study-id="selectedStudyId"
-        />
-        <div class="text-end">
-          <button type="submit" @click="openNewStudyModal()" class="btn btn-primary">Lisa uus plaan</button>
+        <div class="row">
+          <div class="col-12">
+            <h4 class="mt-4">🟠 Planeeritav uuring</h4>
+            <StudyPlannedTable :pending-studies="pendingStudies"
+                               :selected-study-id="selectedStudyId"
+                               @event-study-updated="getAllStudies"
+
+            />
+          </div>
+          <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
+                               @click="openNewStudyModal()"
+            />
+          </div>
+          <div class="col-12">
+            <h4 class="mt-4">🟢 Lõpetatud uuringud</h4>
+            <StudyTable :studies="completedStudies"
+                        :selected-study-id="selectedStudyId" />
+          </div>
         </div>
-        <div class="col col-6 form-select-lg">
-        </div>
+
       </div>
     </div>
   </div>
@@ -32,10 +45,20 @@ import Navigation from "@/navigations/Navigation";
 import StudyTable from "@/components/study/StudyTable.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
+import RoleService from "@/services/RoleService";
+import StudyPlannedTable from "@/components/study/StudyPlannedTable.vue";
 
 export default {
   name: 'HomeView',
-  components: {NewStudyModal, AlertDanger, StudyTable},
+  components: {StudyPlannedTable, NewStudyModal, AlertDanger, StudyTable},
+  computed: {
+    pendingStudies() {
+      return this.studies.filter(study => study.studyStatus === 'P');
+    },
+    completedStudies() {
+      return this.studies.filter(study => study.studyStatus === 'C');
+    }
+  },
   data() {
     return {
       newStudyModalIsOpen: false,
@@ -43,9 +66,12 @@ export default {
       roleName: sessionStorage.getItem('roleName'),
       selectedStudyId: 0,
       errorMessage: '',
+      isAdmin: false,
       studies: [
         {
           studyId: 0,
+          machineId: 0,
+          machineName: '',
           studyDate: '',
           studyNrPatients: 0,
           studyStartTime: '',
@@ -97,6 +123,7 @@ export default {
   },
 
   beforeMount() {
+    this.isAdmin = RoleService.isAdmin()
     this.getAllStudies();
   }
 }

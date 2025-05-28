@@ -1,47 +1,50 @@
 <template>
-  <div>
-    <table class="table table-dark table table-striped-columns mt-4">
-      <thead>
+  <div class="">
+    <table class="table table-hover table-light table-striped-columns">
+      <thead class="table-dark">
       <tr>
-        <th scope="col">Kuupäev</th>
-        <th scope="col">Isotoop</th>
-        <th scope="col">Patsientide arv</th>
-        <th scope="col">Uuringute alguse aeg</th>
-        <th scope="col">Uuringute lõpu aeg</th>
-        <th scope="col">Kalibratsiooni aktiivsus (MBq)</th>
-        <th scope="col">Loputusmahl (mL)</th>
-        <th scope="col">Jääk aktiivsus (MBq)</th>
-        <th scope="col">Uuringu kommentaar</th>
-        <th scope="col">Vaata</th>
-        <th v-if="isAdmin" scope="col"> Muuda</th>
+        <th>Kuupäev</th>
+        <th>Isotoop</th>
+        <th>Seade</th>
+        <th>Patsientide arv</th>
+        <th>Esimene süstimine</th>
+        <th>Viimane süstimine</th>
+        <th>Kalibratsiooni aktiivsus (MBq)</th>
+        <th>Loputusmahl (mL)</th>
+        <th>Jääk aktiivsus (MBq)</th>
+        <th></th>
+        <th v-if="isAdmin"></th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="study in studies" :key="study.studyId">
         <td>{{ study.studyDate }}</td>
         <td>{{ study.isotopeName }}</td>
+        <td>{{ study.machineName }}</td>
         <td>{{ study.studyNrPatients }}</td>
         <td>{{ study.studyStartTime }}</td>
         <td>{{ study.studyEndTime }}</td>
         <td>{{ study.studyTotalActivity }}</td>
         <td>{{ study.calculationMachineRinseVolume }}</td>
         <td>{{ study.calculationMachineRinseActivity }}</td>
-        <td>{{ study.studyComment }}</td>
         <td>
-          <div class="icon-cell" @click="">
-            <font-awesome-icon class="cursor-pointer"
-                               :icon="['fas', 'expand']"/>
-          </div>
+          <font-awesome-icon class="text-primary" :icon="['fas', 'expand']" role="button"
+                             @click="viewStudyDetails(study.studyId)"
+          />
         </td>
         <td v-if="isAdmin">
-          <div class="icon-cell" @click="openSelectedStudy(study.studyId, study.isotopeId)">
-            <font-awesome-icon class="cursor-pointer" :icon="['fas', 'pen-to-square']"/>
+          <div class="d-flex align-items-center">
+            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
+                               @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
+            />
+            <font-awesome-icon icon="trash" class="text-danger" role="button"
+                               @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
+            />
           </div>
         </td>
       </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 <script>
@@ -82,8 +85,8 @@ export default {
   },
 
   methods: {
-    openSelectedStudy(studyId, isotopeId) {
-      Navigation.navigateToStudyView(studyId, isotopeId)
+    editSelectedStudy(studyId, isotopeId, isotopeName) {
+      Navigation.navigateToStudyView(studyId, isotopeId, isotopeName)
     }
   },
 

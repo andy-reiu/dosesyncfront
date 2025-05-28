@@ -5,36 +5,48 @@
                                  @event-close-modal="closeCalculationProfileEditModal"
                                  :studyId="studyId"
     />
-    <table class="table table-dark table table-striped-columns mt-4">
-      <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Kalibreerimise aeg (HH:mm)</th>
-        <th scope="col">Kalibratsiooni aktiivsus (MBq)</th>
-        <th scope="col">Viaali maht (mL)</th>
-        <th v-if="isAdmin" scope="col"></th>
-        <th v-if="isAdmin" scope="col"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(calculationProfile, index) in calculationProfiles" :key="calculationProfile.calculationProfileId">
-        <td>{{ index + 1 }}</td>
-        <td>{{ calculationProfile.calibrationTime }}</td>
-        <td>{{ calculationProfile.calibratedActivity }}</td>
-        <td>{{ calculationProfile.fillVolume }}</td>
-        <td v-if="isAdmin">
-          <div class="icon-cell" @click="viewCalculationProfileEditView(calculationProfile.calculationProfileId)">
-            <font-awesome-icon class="cursor-pointer" :icon="['fas', 'pen-to-square']"/>
-          </div>
-        </td>
-        <td v-if="isAdmin">
-          <div class="icon-cell" @click="executeDeleteCalculationProfile(calculationProfile.calculationProfileId)">
-            <font-awesome-icon class="cursor-pointer" :icon="['fas', 'trash']"/>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <ConfirmDeleteModal
+        :show="viewDeleteModalIsOpen"
+        :item-name="calculationProfileToDelete?.name || 'selle profiili'"
+        @confirm="confirmDeleteCalculationProfile"
+        @cancel="viewDeleteModalIsOpen = false"
+    />
+
+    <div>
+      <table class="table table-hover table-light table-striped-columns">
+        <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Kalibreerimise aeg (HH:mm)</th>
+          <th>Kalibratsiooni aktiivsus (MBq)</th>
+          <th>Viaali maht (mL)</th>
+          <th v-if="isAdmin"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(calculationProfile, index) in calculationProfiles" :key="calculationProfile.calculationProfileId">
+          <td>{{ index + 1 }}</td>
+          <td>{{ calculationProfile.calibrationTime }}</td>
+          <td>{{ calculationProfile.calibratedActivity }}</td>
+          <td>{{ calculationProfile.fillVolume }}</td>
+          <td v-if="isAdmin">
+            <font-awesome-icon
+                icon="pen-to-square"
+                class="text-warning me-2"
+                role="button"
+                @click="viewCalculationProfileEditView(calculationProfile.calculationProfileId)"
+            />
+            <font-awesome-icon
+                icon="trash"
+                class="text-danger"
+                role="button"
+                @click="executeDeleteCalculationProfile(calculationProfile.calculationProfileId)"
+            />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <script>
@@ -43,10 +55,12 @@ import RoleService from "@/services/RoleService";
 import CalculationProfileEditModal from "@/components/modal/CalculationProfileEditModal.vue";
 import CalculationProfileService from "@/services/CalculationProfileService";
 import Navigation from "@/navigations/Navigation";
+import AddIsotopeModal from "@/components/modal/AddIsotopeModal.vue";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal.vue";
 
 export default {
   name: "CalculationProfile",
-  components: {CalculationProfileEditModal, NewStudyModal},
+  components: {ConfirmDeleteModal, AddIsotopeModal, CalculationProfileEditModal, NewStudyModal},
   props: {
     calculationProfiles: {
       type: Array
@@ -57,8 +71,9 @@ export default {
     return {
       isAdmin: false,
       viewModalIsOpen: false,
+      viewDeleteModalIsOpen: false,
       calculationProfileId: 0,
-
+      calculationProfileToDelete: null,
       calculationProfile: [
         {
           calculationProfileId: 0,
@@ -71,6 +86,7 @@ export default {
   },
 
   methods: {
+
     viewCalculationProfileEditView(calculationProfileId) {
       for (let i = 0; i < this.calculationProfiles.length; i++) {
         const calculationProfile = this.calculationProfiles[i];
@@ -82,17 +98,28 @@ export default {
       }
     },
 
-
     executeDeleteCalculationProfile(calculationProfileId) {
-      CalculationProfileService.sendDeleteCalculationProfileRequest(calculationProfileId)
-          .then(value => {
-                console.log(3232)
-                this.$emit('event-update-calculation-profile')
-              }
-          )
-          .catch(reason => Navigation.navigateToErrorView())
+      for (let i = 0; i < this.calculationProfiles.length; i++) {
+        const profile = this.calculationProfiles[i];
+        if (profile.calculationProfileId === calculationProfileId) {
+          this.calculationProfileToDelete = profile;
+          this.viewDeleteModalIsOpen = true;
+          break;
+        }
+      }
     },
 
+    confirmDeleteCalculationProfile() {
+      CalculationProfileService.sendDeleteCalculationProfileRequest(this.calculationProfileToDelete.calculationProfileId)
+          .then(() => this.handleSendDeleteCalculationProfileResponse())
+          .catch(() => Navigation.navigateToErrorView());
+    },
+
+    handleSendDeleteCalculationProfileResponse() {
+      this.$emit('event-update-calculation-profile');
+      this.calculationProfileToDelete = null;
+      this.viewDeleteModalIsOpen = false;
+    },
 
     openCalculationProfileEditModal() {
       this.viewModalIsOpen = true;

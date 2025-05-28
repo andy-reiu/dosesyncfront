@@ -48,7 +48,6 @@ export default {
   props: {
     modalIsOpen: Boolean,
     studyId: Number,
-    isotopeId: Number,
   },
   data() {
     return {

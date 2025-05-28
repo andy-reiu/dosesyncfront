@@ -65,6 +65,7 @@ export default {
         userId: Number(sessionStorage.getItem('userId')),
         machineId: 0,
         isotopeId: 0,
+        isotopeName: '',
         studyDate: ''
       },
 
@@ -102,6 +103,13 @@ export default {
 
     setStudyIsotopeId(isotopeId) {
       this.study.isotopeId = isotopeId;
+      this.study.isotopeName = '';
+      for (let i = 0; i < this.isotopes.length; i++) {
+        if (this.isotopes[i].isotopeId === isotopeId) {
+          this.study.isotopeName = this.isotopes[i].isotopeName;
+          break;
+        }
+      }
     },
 
     setStudyMachineId(machineId) {
@@ -111,7 +119,7 @@ export default {
     executeAddNewStudy() {
       if (this.allFieldsAreWithCorrectInput()) {
         StudyService.sendPostStudyRequest(this.study)
-            .then(response => Navigation.navigateToStudyView(response.data, this.study.isotopeId))
+            .then(response => Navigation.navigateToStudyView(response.data, this.study.isotopeId, this.study.isotopeName))
             .catch(reason => Navigation.navigateToErrorView())
 
       } else {
@@ -126,7 +134,7 @@ export default {
     },
 
     getAllMachines() {
-      MachineService.sendGetMachineRequest()
+      MachineService.sendGetActiveMachineRequest()
           .then(response => this.handleGetMachineSuccessResponse(response))
           .catch(() => Navigation.navigateToErrorView())
     },

@@ -14,29 +14,38 @@
         </div>
         <div class="mb-3">
           <label class="form-label"> Patsiendi ID</label>
-          <input type="number" class="form-control" v-model="patientInjection.patientNationalId">
-        </div>
-        <div class="mb-3">
-          <label class="form-label"> Patsiendi kaal</label>
-          <input type="number" class="form-control" v-model="patientInjection.injectionWeight">
-        </div>
-        <div class="mb-3">
-          <label class="form-label"> MBq/kg</label>
-          <input type="number" class="form-control" v-model="patientInjection.injectionMbqKg"
+          <input type="number" class="form-control" :value="patientInjection.patientNationalId"
+                 @input="$emit('event-update-patient-id', Number($event.target.value))"
           >
         </div>
         <div class="mb-3">
+          <label class="form-label"> Patsiendi kaal</label>
+          <input type="number" class="form-control" :value="patientInjection.injectionWeight"
+                 @input="$emit('event-update-patient-weight', Number($event.target.value))"
+          >
+        </div>
+        <div class="mb-3">
+          <label class="form-label"> MBq/kg</label>
+          <input type="number" class="form-control" :value="patientInjection.injectionMbqKg"
+                 @input="$emit('event-update-injection-mbq-kg', Number($event.target.value))"          >
+        </div>
+        <div class="mb-3">
           <label class="form-label"> Süstimise aeg</label>
-          <input type="time" class="form-control" v-model="patientInjection.injectedTime"/>
+          <input type="time" class="form-control" :value="patientInjection.injectedTime"
+                 @input="$emit('event-update-injected-time', $event.target.value)"
+          />
         </div>
         <div class="mb-3">
           <label class="form-label"> Süsimise aktiivsus (MBq)</label>
-          <input type="number" class="form-control" v-model="patientInjection.injectedActivity">
+          <input type="number" class="form-control" :value="patientInjection.injectedActivity" readonly
+                 @input="$emit('event-update-injected-activity', $event.target.value)"
+          >
         </div>
       </form>
     </template>
     <template #footer>
-      <button @click="executeAddNewPatientInjection" type="button" class="btn btn-outline-success">Lisa uus patsiendi süstimine
+      <button @click="executeAddNewPatientInjection" type="button" class="btn btn-outline-success">Lisa uus patsiendi
+        süstimine
       </button>
     </template>
   </Modal>
@@ -44,7 +53,6 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
-import CalculationProfileService from "@/services/CalculationProfileService";
 import Navigation from "@/navigations/Navigation";
 import PatientInjectionService from "@/services/PatientInjectionService";
 
@@ -55,6 +63,7 @@ export default {
     modalIsOpen: Boolean,
     studyId: Number,
     isotopeId: Number,
+    patientInjection: Object
   },
   data() {
     return {
@@ -63,22 +72,19 @@ export default {
         message: '',
         errorCode: 0
       },
-      patientInjection: {
-        studyId: 0,
-        acc:'Patsient 1',
-        patientNationalId: '33399966631',
-        injectionWeight: 70,
-        injectionMbqKg: 2.5,
-        injectedTime: '10:30',
-        injectedActivity: 175
-      },
     }
   },
+
+  watch: {
+    'patientInjection.injectionWeight': 'updateInjectedActivity',
+    'patientInjection.injectionMbqKg': 'updateInjectedActivity',
+  },
+
   methods: {
     executeAddNewPatientInjection() {
       if (this.allFieldsAreWithCorrectInput()) {
         this.patientInjection.studyId = this.studyId;
-        PatientInjectionService.sendPostPatientInjectionRequest(this.patientInjection)
+        PatientInjectionService.sendPostPatientInjectionRequest(this.isotopeId, this.patientInjection)
             .then(value => this.handleAddNewCalculationProfile())
             .catch(reason => Navigation.navigateToErrorView())
       } else {
@@ -90,17 +96,28 @@ export default {
     allFieldsAreWithCorrectInput() {
       return this.patientInjection.injectionWeight !== 0 &&
           this.patientInjection.injectionMbqKg !== 0 &&
-          this.patientInjection.injectedTime !== '' &&
-          this.patientInjection.injectedActivity !== 0
+          this.patientInjection.injectedTime !== ''
     },
 
     handleAddNewCalculationProfile() {
       this.$emit('event-new-patient-injection-made')
     },
 
+    updateInjectedActivity() {
+      const weight = parseFloat(this.patientInjection.injectionWeight);
+      const mbqKg = parseFloat(this.patientInjection.injectionMbqKg);
+
+      if (!isNaN(weight) && !isNaN(mbqKg)) {
+        this.patientInjection.injectedActivity = +(weight * mbqKg).toFixed(2);
+      } else {
+        this.patientInjection.injectedActivity = 0;
+      }
+    },
+
     resetErrorMessage() {
       this.errorMessage = ''
-    },
-  }
+    }
+  },
+
 }
 </script>
