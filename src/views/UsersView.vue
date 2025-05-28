@@ -9,6 +9,8 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Kasutajanimi</th>
+          <th scope="col">Parool</th>
+          <th scope="col">Roll</th>
           <th scope="col">Staatus</th>
           <th scope="col">""""</th>
 
@@ -25,16 +27,15 @@
         <!--          <td>A</td>-->
         <!--          <td>-->
 
-<!--                  <th scope="col">Isikukood</th>
-          <th scope="col">Eesnimi</th>
-          <th scope="col">Perekonnanimi</th>
-          <th scope="col">Roll</th>-->
+
 
 
 
         <tr v-for="user in users" :key="user.userId">
           <td>{{ user.userId }}</td>
           <td>{{ user.username }}</td>
+          <td>{{ user.password }}</td>
+          <td>{{ user.role }}</td>
           <td>{{ user.status }}</td>
 
           <td>
@@ -49,11 +50,6 @@
         </tr>
         </tbody>
       </table>
-
-
-      <!--    <div>-->
-      <!--      <button type="button"-->
-      <!--              class="btn btn-warning">Lisa kasutaja</button>-->
 
 
       <!-- + button -->
@@ -151,6 +147,10 @@ export default {
     //       .then(response => this.profiles =response.data())
     //       .catch(() => Navigation. navigateToErrorView())
     // }
+  },
+
+  beforeMount() {
+    this.getAllUsers()
   }
 
 }
