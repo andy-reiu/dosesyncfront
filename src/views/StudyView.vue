@@ -24,7 +24,8 @@
         <h2>StudyId: {{ studyId }} </h2>
         <h2>Päevaplaan isotoobi {{ isotopeName }} kasutamiseks. </h2>
         <div class="col mt-4">
-          <AlertDanger :error-message="errorMessage"/>
+<!--          <AlertDanger :error-message="errorMessage"/>-->
+<!--          <AlertSuccess :success-message="successMessage"/>-->
         </div>
       </div>
 
@@ -56,13 +57,17 @@
             />
           </div>
         </div>
-
       </div>
+
       <div class="col">
         <!-- Machine fill Section -->
         <h2 class="text-center mb-3">Viaali aktiivsus ja täitmised</h2>
         <MachineFill :machineFills="machineFills"/>
       </div>
+
+      <AlertDanger :error-message="errorMessage"/>
+      <AlertSuccess :success-message="successMessage"/>
+
       <div class="row mt-4 justify-content-center">
         <div class="col-md-4 text-center">
           <!-- Rinse Calculation Button -->
@@ -81,6 +86,7 @@
       <!-- Rinse Result Cards -->
       <div class="row mt-4">
         <div class="col-md-6">
+
           <div class="card text-white bg-primary">
             <div class="card-body">
               <h5 class="card-title">Loputusmahl</h5>
@@ -119,10 +125,12 @@ import NewPatientInjectionModal from "@/components/modal/NewPatientInjectionModa
 import PatientInjectionService from "@/services/PatientInjectionService";
 import MachineFillService from "@/services/MachineFillService";
 import StudyService from "@/services/StudyService";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: "StudyView",
   components: {
+    AlertSuccess,
     NewPatientInjectionModal,
     NewCalculationProfileModal,
     MachineFill,
@@ -261,6 +269,25 @@ export default {
 
     handleGetStudiesMachineActivitySuccessResponse(value){
       this.calculationMachineRinseActivity = value.data
+      this.getAllStudiesMachineFills()
+      this.successMessage = 'Loputusmaht arvutatud.'
+      setTimeout(this.resetSuccessMessage, 4000)
+    },
+
+    saveStudy(){
+      if(this.calculationMachineRinseVolume !== 0){
+        StudyService.sendPostSaveStudyRequest(this.studyId)
+            .then(value => this.handleSendPostSaveStudyRequest())
+            .catch(reason => Navigation.navigateToErrorView())
+      } else {
+        this.errorMessage = 'Pole kalkulatsiooni tehtud.'
+        setTimeout(this.resetErrorMessage, 4000)
+      }
+    },
+
+    handleSendPostSaveStudyRequest(){
+      this.successMessage = 'Uuring edukalt salvestatud.'
+      setTimeout(this.resetSuccessMessage, 4000)
     },
 
     setPatientInjectionPatientId(patientNationalId){
@@ -308,6 +335,10 @@ export default {
     resetErrorMessage() {
       this.errorMessage = ''
     },
+
+    resetSuccessMessage(){
+      this.successMessage = ''
+    }
   },
 
   beforeMount() {
