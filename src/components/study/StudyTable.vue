@@ -1,18 +1,17 @@
 <template>
   <div class="">
-    <h2 class="text-center mb-3">Uuringud</h2>
     <table class="table table-hover table-light table-striped-columns">
       <thead class="table-dark">
       <tr>
         <th>Kuupäev</th>
         <th>Isotoop</th>
+        <th>Seade</th>
         <th>Patsientide arv</th>
-        <th>Uuringute alguse aeg</th>
-        <th>Uuringute lõpu aeg</th>
+        <th>Esimene süstimine</th>
+        <th>Viimane süstimine</th>
         <th>Kalibratsiooni aktiivsus (MBq)</th>
         <th>Loputusmahl (mL)</th>
         <th>Jääk aktiivsus (MBq)</th>
-        <th>Uuringu kommentaar</th>
         <th></th>
         <th v-if="isAdmin"></th>
       </tr>
@@ -21,13 +20,13 @@
       <tr v-for="study in studies" :key="study.studyId">
         <td>{{ study.studyDate }}</td>
         <td>{{ study.isotopeName }}</td>
+        <td>{{ study.machineName }}</td>
         <td>{{ study.studyNrPatients }}</td>
         <td>{{ study.studyStartTime }}</td>
         <td>{{ study.studyEndTime }}</td>
         <td>{{ study.studyTotalActivity }}</td>
         <td>{{ study.calculationMachineRinseVolume }}</td>
         <td>{{ study.calculationMachineRinseActivity }}</td>
-        <td>{{ study.studyComment }}</td>
         <td>
           <font-awesome-icon class="text-primary" :icon="['fas', 'expand']" role="button"
                              @click="viewStudyDetails(study.studyId)"

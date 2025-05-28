@@ -5,6 +5,13 @@
                                  @event-close-modal="closeCalculationProfileEditModal"
                                  :studyId="studyId"
     />
+    <ConfirmDeleteModal
+        :show="viewDeleteModalIsOpen"
+        :item-name="calculationProfileToDelete?.name || 'selle profiili'"
+        @confirm="confirmDeleteCalculationProfile"
+        @cancel="viewDeleteModalIsOpen = false"
+    />
+
     <div>
       <table class="table table-hover table-light table-striped-columns">
         <thead class="table-dark">
@@ -49,10 +56,11 @@ import CalculationProfileEditModal from "@/components/modal/CalculationProfileEd
 import CalculationProfileService from "@/services/CalculationProfileService";
 import Navigation from "@/navigations/Navigation";
 import AddIsotopeModal from "@/components/modal/AddIsotopeModal.vue";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal.vue";
 
 export default {
   name: "CalculationProfile",
-  components: {AddIsotopeModal, CalculationProfileEditModal, NewStudyModal},
+  components: {ConfirmDeleteModal, AddIsotopeModal, CalculationProfileEditModal, NewStudyModal},
   props: {
     calculationProfiles: {
       type: Array
@@ -63,8 +71,9 @@ export default {
     return {
       isAdmin: false,
       viewModalIsOpen: false,
+      viewDeleteModalIsOpen: false,
       calculationProfileId: 0,
-
+      calculationProfileToDelete: null,
       calculationProfile: [
         {
           calculationProfileId: 0,
@@ -77,6 +86,7 @@ export default {
   },
 
   methods: {
+
     viewCalculationProfileEditView(calculationProfileId) {
       for (let i = 0; i < this.calculationProfiles.length; i++) {
         const calculationProfile = this.calculationProfiles[i];
@@ -88,16 +98,28 @@ export default {
       }
     },
 
-
     executeDeleteCalculationProfile(calculationProfileId) {
-      CalculationProfileService.sendDeleteCalculationProfileRequest(calculationProfileId)
-          .then(value => {
-                this.$emit('event-update-calculation-profile')
-              }
-          )
-          .catch(reason => Navigation.navigateToErrorView())
+      for (let i = 0; i < this.calculationProfiles.length; i++) {
+        const profile = this.calculationProfiles[i];
+        if (profile.calculationProfileId === calculationProfileId) {
+          this.calculationProfileToDelete = profile;
+          this.viewDeleteModalIsOpen = true;
+          break;
+        }
+      }
     },
 
+    confirmDeleteCalculationProfile() {
+      CalculationProfileService.sendDeleteCalculationProfileRequest(this.calculationProfileToDelete.calculationProfileId)
+          .then(() => this.handleSendDeleteCalculationProfileResponse())
+          .catch(() => Navigation.navigateToErrorView());
+    },
+
+    handleSendDeleteCalculationProfileResponse() {
+      this.$emit('event-update-calculation-profile');
+      this.calculationProfileToDelete = null;
+      this.viewDeleteModalIsOpen = false;
+    },
 
     openCalculationProfileEditModal() {
       this.viewModalIsOpen = true;
