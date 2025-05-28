@@ -10,8 +10,8 @@
       </template>
       <template #body>
         <form>
-          <div class="mb-3">
 
+          <div class="mb-3">
             <label class="form-label">Min Activity</label>
             <input
                 v-model="newCalculationSetting.settingMinActivity"
@@ -90,7 +90,6 @@
                 required
             />
           </div>
-
 
         </form>
       </template>

@@ -5,13 +5,13 @@
     >
       <template #title>
         <div class="d-flex flex-column align-items-center">
-          <h5>Lisa uus kalkulatsioon</h5>
+          <h5>Lisa uus masin</h5>
         </div>
       </template>
       <template #body>
         <form>
-
-          <div class="mb-3">
+        <div class="mb-3">
+          <div >
 
             <label class="form-label">Haigla</label>
             <HospitalsDropdown
@@ -23,7 +23,7 @@
 
           </div>
 
-          <div class="mb-3">
+          <div >
             <label class="form-label">Masina nimetus</label>
             <input v-model="newMachine.machineName"
                    type="text"
@@ -32,7 +32,7 @@
             />
           </div>
 
-          <div class="mb-3">
+          <div>
             <label class="form-label">Masina seerialnumber</label>
             <input v-model="newMachine.machineSerial"
                    type="text"
@@ -41,7 +41,7 @@
             />
           </div>
 
-          <div class="mb-3">
+          <div>
             <label class="form-label">Masina kirjeldus</label>
             <input v-model="newMachine.machineDescription"
                    type="text"
@@ -50,7 +50,7 @@
             />
           </div>
 
-          <div class="mb-3">
+          <div>
             <label class="form-label">Masina staatus</label>
             <select
                 v-model="newMachine.machineStatus"
@@ -62,7 +62,7 @@
               <option value="D">Deactive</option>
             </select>
           </div>
-
+        </div>
         </form>
       </template>
       <template #footer>

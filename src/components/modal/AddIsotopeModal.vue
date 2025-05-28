@@ -11,19 +11,18 @@
 
       <template #body>
         <form>
-
           <div class="mb-3">
+          <div>
             <label class="form-label">Isotoobi nimetus</label>
             <input
                 v-model="newIsotope.isotopeName"
                 type="text"
                 class="form-control"
                 required
-
             />
           </div>
 
-          <div class="mb-3">
+          <div>
             <label class="form-label">Half-life(hr)</label>
             <input
                 v-model="newIsotope.halfLifeHr"
@@ -33,7 +32,7 @@
             />
           </div>
 
-          <div class="mb-3">
+          <div>
             <label class="form-label">Unit</label>
             <input
                 v-model="newIsotope.unit"
@@ -43,17 +42,18 @@
             />
           </div>
 
-          <div class="mb-3">
-
+          <div>
             <label class="form-label">Staatus</label>
-            <input
+            <select
                 v-model="newIsotope.isotopeStatus"
-                type="text"
                 class="form-control"
                 required
-
-            />
-
+            >
+              <option disabled value="">Vali staatus</option>
+              <option value="A">Active</option>
+              <option value="D">Deactive</option>
+            </select>
+          </div>
           </div>
 
         </form>
@@ -88,11 +88,9 @@ export default {
   },
   methods: {
     addIsotope() {
-      // emit new isotope data
       this.$emit('event-save-isotope', this.newIsotope)
       this.$emit('event-close-modal')
     }
   }
-
 }
 </script>
