@@ -34,5 +34,30 @@ export default {
                 }
             }
         )
+    },
+
+    sendPostSaveStudyRequest(studyId) {
+        return axios.post('/study/save-all', null, {
+                params: {
+                    studyId: studyId,
+                }
+            }
+        )
+    },
+
+    sendPutStudyPendingRequest(studyId, study) {
+        return axios.put('/study-pending', study, {
+            params: {
+                studyId: studyId
+            }
+        })
+    },
+
+    sendDeleteStudyPendingRequest(studyId) {
+        return axios.delete('/study-pending', {
+            params: {
+                studyId: studyId
+            }
+        });
     }
 }

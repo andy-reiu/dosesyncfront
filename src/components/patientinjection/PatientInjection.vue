@@ -6,6 +6,13 @@
         @event-close-modal="closePatientInjectionEditModal"
         :studyId="studyId"
     />
+    <ConfirmDeleteModal
+        :show="viewDeleteModalIsOpen"
+        :item-name="patientInjectionToDelete?.acc || 'selle süsti'"
+        @confirm="confirmDeletePatientInjection"
+        @cancel="viewDeleteModalIsOpen = false"
+    />
+
     <table class="table table-hover table-light table-striped-columns">
       <thead class="table-dark">
       <tr>
@@ -30,10 +37,10 @@
         <td>{{ patientInjection.injectedActivity }}</td>
         <td v-if="isAdmin">
           <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-              @click="viewPatientInjectionEditView(patientInjection.injectionId)"
+                             @click="viewPatientInjectionEditView(patientInjection.injectionId)"
           />
           <font-awesome-icon icon="trash" class="text-danger" role="button"
-              @click="deletePatientInjection(patientInjection.injectionId)"
+                             @click="deletePatientInjection(patientInjection.injectionId)"
           />
         </td>
       </tr>
@@ -48,10 +55,11 @@ import CalculationProfileEditModal from "@/components/modal/CalculationProfileEd
 import PatientInjectionService from "@/services/PatientInjectionService";
 import PatientInjectionEditModal from "@/components/modal/PatientInjectionEditModal.vue";
 import Navigation from "@/navigations/Navigation";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal.vue";
 
 export default {
   name: "PatientInjection",
-  components: {PatientInjectionEditModal, CalculationProfileEditModal, NewStudyModal},
+  components: {ConfirmDeleteModal, PatientInjectionEditModal, CalculationProfileEditModal, NewStudyModal},
   props: {
     studyId: Number,
     patientInjections: {
@@ -63,10 +71,12 @@ export default {
       newCalculationProfileIsOpen: false,
       isAdmin: false,
       viewModalIsOpen: false,
+      viewDeleteModalIsOpen: false,
+      patientInjectionToDelete: null,
       patientInjection: [
         {
           injectionId: 0,
-          acc:'',
+          acc: '',
           patientNationalId: '',
           injectionWeight: 0,
           injectionMbqKg: 0,
@@ -77,13 +87,13 @@ export default {
     }
   },
 
-  methods:{
+  methods: {
 
     viewPatientInjectionEditView(injectionId) {
       for (let i = 0; i < this.patientInjections.length; i++) {
         const injection = this.patientInjections[i];
         if (injection.injectionId === injectionId) {
-          this.patientInjection = { ...injection };
+          this.patientInjection = {...injection};
           this.viewModalIsOpen = true;
           break;
         }
@@ -91,10 +101,28 @@ export default {
     },
 
     deletePatientInjection(injectionId) {
-      PatientInjectionService.sendDeletePatientInjectionRequest(injectionId)
-          .then(() => this.$emit('event-update-patient-injections'))
+      for (let i = 0; i < this.patientInjections.length; i++) {
+        const injection = this.patientInjections[i];
+        if (injection.injectionId === injectionId) {
+          this.patientInjectionToDelete = injection;
+          this.viewDeleteModalIsOpen = true;
+          break;
+        }
+      }
+    },
+
+    confirmDeletePatientInjection() {
+      PatientInjectionService.sendDeletePatientInjectionRequest(this.patientInjectionToDelete.injectionId)
+          .then(() => this.handleSendDeletePatientInjectionResponse())
           .catch(() => Navigation.navigateToErrorView());
     },
+
+    handleSendDeletePatientInjectionResponse() {
+      this.$emit('event-update-patient-injections');
+      this.viewDeleteModalIsOpen = false;
+      this.patientInjectionToDelete = null;
+    },
+
     closePatientInjectionEditModal() {
       this.viewModalIsOpen = false;
       this.$emit('event-update-patient-injections');

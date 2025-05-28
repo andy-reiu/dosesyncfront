@@ -13,10 +13,12 @@
             Kodu
           </router-link>
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
-            <font-awesome-icon icon="calculator"/>
-            Kalkulaator
-          </router-link>
+          <template v-if="isAdmin && isLoggedIn">
+            <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
+              <font-awesome-icon icon="calculator"/>
+              Kalkulaator
+            </router-link>
+          </template>
 
           <router-link class="nav-link d-flex align-items-center gap-2" to="/f18-calculator"
                        exact-active-class="active">
@@ -32,15 +34,14 @@
         <!-- Show only if admin and logged in -->
 
 
-<!--        // tehnik-->
+        <!--        // tehnik-->
         <template v-if="isAdmin && isLoggedIn">
           <router-link class="nav-link d-flex align-items-center gap-2"
                        to="/technic"
                        exact-active-class="active">
             <font-awesome-icon icon="cog"/>
-              Tehniku vaade
+            Tehniku vaade
           </router-link>
-
 
 
           <router-link class="nav-link d-flex align-items-center gap-2"
@@ -50,7 +51,6 @@
             User
           </router-link>
         </template>
-
 
 
         <!-- Show if logged in -->
