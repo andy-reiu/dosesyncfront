@@ -1,4 +1,10 @@
 <template>
+  <ViewStudyDetails
+      v-if="viewStudyModalIsOpen"
+      :modalIsOpen="viewStudyModalIsOpen"
+      :studyId="selectedStudyId"
+      @event-close-modal="viewStudyModalIsOpen = false"
+  />
   <div class="">
     <table class="table table-hover table-light table-striped-columns">
       <thead class="table-dark">
@@ -51,10 +57,11 @@
 import RoleService from "@/services/RoleService";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
 import Navigation from "@/navigations/Navigation";
+import ViewStudyDetails from "@/components/modal/ViewStudyDetailsModal.vue";
 
 export default {
   name: "StudyTable",
-  components: {NewStudyModal},
+  components: {ViewStudyDetails, NewStudyModal},
   props: {
     studies: {
       type: Array
@@ -65,6 +72,7 @@ export default {
       viewStudyModalIsOpen: false,
       editStudyModalIsOpen: false,
       isAdmin: false,
+      selectedStudyId: 0,
       study: [
         {
           studyId: 0,
@@ -87,6 +95,11 @@ export default {
   methods: {
     editSelectedStudy(studyId, isotopeId, isotopeName) {
       Navigation.navigateToStudyView(studyId, isotopeId, isotopeName)
+    },
+
+    viewStudyDetails(studyId){
+      this.selectedStudyId = studyId;
+      this.viewStudyModalIsOpen = true;
     }
   },
 

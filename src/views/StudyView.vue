@@ -24,8 +24,6 @@
         <h2>StudyId: {{ studyId }} </h2>
         <h2>Päevaplaan isotoobi {{ isotopeName }} kasutamiseks. </h2>
         <div class="col mt-4">
-<!--          <AlertDanger :error-message="errorMessage"/>-->
-<!--          <AlertSuccess :success-message="successMessage"/>-->
         </div>
       </div>
 
@@ -288,6 +286,7 @@ export default {
     handleSendPostSaveStudyRequest(){
       this.successMessage = 'Uuring edukalt salvestatud.'
       setTimeout(this.resetSuccessMessage, 4000)
+      Navigation.navigateToHomeView()
     },
 
     setPatientInjectionPatientId(patientNationalId){
