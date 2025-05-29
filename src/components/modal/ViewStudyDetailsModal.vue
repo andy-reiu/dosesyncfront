@@ -76,7 +76,6 @@
             Salvesta PDF-na
           </button>
         </div>
-
       </div>
     </div>
   </div>
@@ -92,7 +91,6 @@ import PatientInjectionService from "@/services/PatientInjectionService"
 import MachineFillService from "@/services/MachineFillService"
 import ProfileService from "@/services/ProfileService";
 import html2pdf from 'html2pdf.js';
-import RoleService from "@/services/RoleService";
 
 export default {
   name: 'ViewStudyDetails',
@@ -193,9 +191,9 @@ export default {
       const opt = {
         margin: 0.5,
         filename: `${this.study.studyDate}.${this.study.isotopeName} study-${this.studyId}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        image: {type: 'jpeg', quality: 0.98},
+        html2canvas: {scale: 2},
+        jsPDF: {unit: 'in', format: 'a4', orientation: 'landscape'}
       };
 
       html2pdf()
