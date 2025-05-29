@@ -4,7 +4,7 @@
            @event-close-modal="handleCloseModal"
     >
       <template #title>
-        <div class="text-center mb-4">
+        <div class="mb-4">
           <h5>Lisa uued kalkulatsiooni parameetrid</h5>
         </div>
       </template>
