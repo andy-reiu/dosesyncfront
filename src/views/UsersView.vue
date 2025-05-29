@@ -35,10 +35,8 @@
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"
-                @click="startEditUserAccount"
-
             />
-            <!--                @click="startEditUserAccount"-->
+            <!--                @click="navigateToUserAccountView(user.userId)"-->
           </td>
 
         </tr>
@@ -182,7 +180,13 @@ export default {
       UserProfileService.sendGetUsersProfilesRequest()
           .then(response => this.profiles = response.data)
           .catch(() => Navigation.navigateToErrorView())
-    }
+    },
+
+    // navigateToUserAccountView(userId) {
+    //   Navigation.navigateToUserAccountView(userId)
+    // },
+
+
     // //
     // getAllProfiles() {
     //   ProfileService.sindGetProfileRequest()

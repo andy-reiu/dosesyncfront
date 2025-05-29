@@ -1,70 +1,119 @@
-
 <template>
 
-<!--  KASUTAJA INFO source tables: user, role-->
-<div>
-  <h1>Kasutja info</h1>
-
-
-
   <div class="container text-center">
-    <div class="row">
-      <div class="col">
-        <div class="row">Kasutjanimi:</div>
-        <div class="row">Parool: </div>
-        <div class="row">Roll: </div>
-        <div class="row">Staatus:</div>
-      </div>
-      <div class="col">
-        <div class="row">KASUTAJA1</div>
-        <div class="row">12345</div>
-        <div class="row">Planeerimine</div>
-        <div class="row">A</div>
+
+    <div class="row justify-content-center">
+      <div class="col col-5">
+        <AlertSuccess :success-message="successMessage"/>
+        <AlertDanger :error-message="errorMessage"/>
+        <h1 v-if="isEdit">Muuda kasutaja infot</h1>
+        <h1 v-else>Lisa kasutaja</h1>
       </div>
     </div>
   </div>
 
-  <div>NUPP muuda kasutaja infot</div>
 
-</div>
+  <!--  KASUTAJA INFO source tables: user, role-->
+<!--  <div>-->
+
+    <h2>Kasutja info</h2>
+
+    <!--  näide pangast-->
+    <!--          <LocationDetailsInput :atm-location="atmLocation"
+                                @event-update-location-name="setAtmLocationLocationName"
+                                @event-update-number-of-atms="setAtmLocationNumberOfAtms"
+                                @event-update-transaction-type="updateTransactionTypeIsAvailable"
+                                @event-new-image-selected="setAtmLocationImageData"
+
+
+          <button @click="navigateToAtmsView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>
+          <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>
+          <button v-else @click="addAtmLocation" type="button" class="btn btn-outline-success">Lisa asukoht</button>
+          />-->
+
+    <!--        <UserDetailsInput :user="user"-->
+    <!--                              @event-update-username="setUserUsername"-->
+    <!--                              @event-update-password="setUserPassword"-->
+    <!--                              @event-update-role="updateRole"-->
+    <!--                              @event-update-user-status="updateUserStatus"-->
+    <!--                              -->
+    <!--                              -->
+    <!--        <button @click="navigateToUsersView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>-->
+    <!--        <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>-->
+    <!--        <button v-else @click="addUser" type="button" class="btn btn-outline-success">Lisa kasutaja</button>-->
+    <!--        />-->
+
+
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <div class="row">Kasutjanimi: {{userinfo.username}}</div>
+          <div class="row">Parool: {{userinfo.password}}</div>
+          <div class="row">Roll:{{userinfo.roleName}}</div>
+          <div class="row">Staatus: {{userinfo.status}}</div>
+        </div>
+<!--        <div class="col">-->
+<!--          <div class="row">KASUTAJA1</div>-->
+<!--          <div class="row">12345</div>-->
+<!--          <div class="row">Planeerimine</div>-->
+<!--          <div class="row">A</div>-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+
+    <div>NUPP muuda kasutaja infot</div>
+
+  </div>
 
   <!--  PROFIILI INFO source tables: profile, userImage, hospital-->
 
-<div>
-<h1>Profiili info</h1>
+  <div>
+    <h2>Profiili info</h2>
 
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
-        <div class="row">Eesnimi:</div>
-        <div class="row">Perekonnanimi</div>
-        <div class="row">E-post:</div>
-        <div class="row">Telefoninumber:</div>
-        <div class="row">Amet:</div>
-        <div class="row">Haigla:</div>
-        <div class="row">Kasutaja loodud (või profiil?):</div>
-        <div class="row">Kasutaja muudetud (või profiil?):</div>
-        <div class="row">""</div>
-        <div class="row"> LisaPilt:/vali pilt/</div>
-      </div>
-      <div class="col">
-        <div class="row">Eesnimi:</div>
-        <div class="row">Perekonnanimi</div>
-        <div class="row">E-post:</div>
-        <div class="row">Telefoninumber:</div>
-        <div class="row">Amet:</div>
-        <div class="row">Haigla:</div>
-        <div class="row">Kasutaja loodud (või profiil?):</div>
-        <div class="row">Kasutaja muudetud (või profiil?):</div>
+    <!--  näide pangast-->
+    <!--          <LocationDetailsInput :atm-location="atmLocation"
+                                @event-update-location-name="setAtmLocationLocationName"
+                                @event-update-number-of-atms="setAtmLocationNumberOfAtms"
+                                @event-update-transaction-type="updateTransactionTypeIsAvailable"
+                                @event-new-image-selected="setAtmLocationImageData"
 
+
+          <button @click="navigateToAtmsView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>
+          <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>
+          <button v-else @click="addAtmLocation" type="button" class="btn btn-outline-success">Lisa asukoht</button>
+          />-->
+
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <div class="row">Eesnimi:</div>
+          <div class="row">Perekonnanimi</div>
+          <div class="row">E-post:</div>
+          <div class="row">Telefoninumber:</div>
+          <div class="row">Amet:</div>
+          <div class="row">Haigla:</div>
+          <div class="row">Kasutaja loodud (või profiil?):</div>
+          <div class="row">Kasutaja muudetud (või profiil?):</div>
+          <div class="row">""</div>
+          <div class="row"> LisaPilt:/vali pilt/</div>
+        </div>
+        <div class="col">
+          <div class="row">Eesnimi:</div>
+          <div class="row">Perekonnanimi</div>
+          <div class="row">E-post:</div>
+          <div class="row">Telefoninumber:</div>
+          <div class="row">Amet:</div>
+          <div class="row">Haigla:</div>
+          <div class="row">Kasutaja loodud (või profiil?):</div>
+          <div class="row">Kasutaja muudetud (või profiil?):</div>
+
+        </div>
       </div>
-    </div>
-      <div class="col">
-        PILDI KOHT
+      <div class="col col-3">
+        <!--        <UserImage :image-data="userProfile.userImage"/>  //kontollida üle, kus image asub-->
       </div>
     </div>
   </div>
-
 
 
 </template>
@@ -73,10 +122,30 @@
 <script>
 import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
-import UserProfileService from "@/services/UserProfileService";
 
 export default {
-  name: "UserAccountView"
+  name: "UserAccountView",
+  // components: {AlertSuccess, AlertDanger, UserImage, UserDetailsInput, RoleDropdown},
+  // LOO USERSDETAILSINPUT!!!
+  data(){
+    return {
+      userinfo:{
+        userId: 0,
+        roleId: 0,
+        roleName: '',
+        username: '',
+        password: '',
+        status: ''
+      },
+
+      userId: Number(sessionStorage.getItem('userId')),
+      username:'',
+      password:'',
+      role:'',
+      status:''
+    }
+  },
+
 
 //   data() {
 //     return {
@@ -115,41 +184,36 @@ export default {
 //
 //     },
 //
-//   methods: {
-// getUser() {
-// UserService.sendGetUserRequest()
-//     .then(response => this.user = response.data)
-//     .catch(() => Navigation.navigateToErrorView())
-// },
-//
-// // getProfile() {
-// //   UserProfileService.
-// //       .then(response => this.user = response.data)
-// //       .catch(() => Navigation.navigateToErrorView())
-//
-//
-// }
-//
-//
-//   }
+
+  methods: {
 
 
-  //   getAllUsers() {
-  //     UserService.sendGetUsersRequest()
-  //         .then(response => this.users = response.data)
-  //         .catch(() => Navigation.navigateToErrorView())
-  //   },
-  //
-  //   getAllProfiles() {
-  //     UserProfileService.sendGetUsersProfilesRequest()
-  //         .then(response => this.profiles = response.data)
-  //         .catch(() => Navigation.navigateToErrorView())
-  //   }
-  // // },
-  //
-  // beforeMount() {
-  //   this.getUser()
-   }
+    getUser() {
+      UserService.sendGetUserRequest(this.userId)
+          .then(response => this.handGetUserResponse(response))
+          .catch(error => this.handleGetUserErrorResponse(error))
+    },
+
+    // navigateToUsersView() {
+    //   Navigation.navigate
+    //   this.navigateToUsersView()
+    // },
+    handGetUserResponse(response) {
+      this.userinfo = response.data
+    },
+    //
+    // handleGetUserErrorResponse(error) {
+    //   this.someDataBlockErrorResponseObject = error.response.data
+    // },
+
+//Lsada: validateCorrectUserInput() vt pank LocationView r194
 
 
+  },
+  beforeMount() {
+    this.getUser()
+
+  }
+
+}
 </script>
