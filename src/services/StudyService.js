@@ -10,7 +10,7 @@ export default {
     },
 
     sendGetStudyRequest(studyId) {
-        return axios.put('/study', {
+        return axios.get('/study', {
                 params: {
                     studyId: studyId,
                 }

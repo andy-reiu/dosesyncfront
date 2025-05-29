@@ -169,3 +169,7 @@ main {
 .icon-cell .fa-icon {
     font-size: 1.1rem; /* consistent icon size */
 }
+
+.fc-daygrid-day-number {
+    color: black !important;
+}

@@ -3,12 +3,18 @@
     <NewStudyModal :modal-is-open="newStudyModalIsOpen"
                    @event-close-modal="closeStudyModal"
                    @event-execute-new-study="newStudyModal"
+                   @event-update-study-table="getAllStudies"
     />
     <div class="container text-center">
       <div class="row">
         <div class="col mt-4">
           <AlertDanger :error-message="errorMessage"></AlertDanger>
-          <h2 class="text-center mb-3">Päevaplaan</h2>
+          <h2 class="text-center mb-3">Planeerimine</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <StudyCalendar :studies="studies"/>
         </div>
       </div>
       <div class="row">
@@ -18,7 +24,6 @@
             <StudyPlannedTable :pending-studies="pendingStudies"
                                :selected-study-id="selectedStudyId"
                                @event-study-updated="getAllStudies"
-
             />
           </div>
           <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
@@ -27,12 +32,11 @@
             />
           </div>
           <div class="col-12">
-            <h4 class="mt-4">🟢 Lõpetatud uuringud</h4>
+            <h4 class="mt-4">🟢 Salvestatud uuringud</h4>
             <StudyTable :studies="completedStudies"
                         :selected-study-id="selectedStudyId" />
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -47,10 +51,11 @@ import AlertDanger from "@/components/alert/AlertDanger.vue";
 import NewStudyModal from "@/components/modal/NewStudyModal.vue";
 import RoleService from "@/services/RoleService";
 import StudyPlannedTable from "@/components/study/StudyPlannedTable.vue";
+import StudyCalendar from "@/components/study/StudyCalendar.vue";
 
 export default {
   name: 'HomeView',
-  components: {StudyPlannedTable, NewStudyModal, AlertDanger, StudyTable},
+  components: {StudyPlannedTable, NewStudyModal, AlertDanger, StudyTable, StudyCalendar},
   computed: {
     pendingStudies() {
       return this.studies.filter(study => study.studyStatus === 'P');
