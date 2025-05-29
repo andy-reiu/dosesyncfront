@@ -5,28 +5,9 @@
     <div class="w-75 mx-auto mb-5">
       <h2 class="text-center mb-3">Kasutaja kontod</h2>
 
-<!--      Muuta ära nii, et tabel ise läheb UsersTable komponendi alla ja siin
-kutsutakse komponendina välja ning lisatakse ettepoole staatuse ja rolli dropdownid-->
 
-      <!--      source: component StatusDropdown (veel tegemata)-->
-<!--    <div class="col col-2">-->
-<!--      <RoleDropdown :roles="roles"-->
-<!--                      :selected-role-id="selectedRoleId"-->
-<!--                      @event-new-role-selected="updateUsersTable"-->
-<!--      />-->
-<!--    </div>-->
-
-      <!--      source: component RoleDropdown-->
-
-      <!--    <div class="col col-2">-->
-<!--      <RoleDropdown :roles="roles"-->
-<!--                      :selected-role-id="selectedRoleId"-->
-<!--                      @event-new-role-selected="updateUsersTable"-->
-<!--      />-->
-<!--    </div>-->
-
-<!--NB! muuda esilehele kuvatava tabeli sisu nii, et see võtaks userist ja profiilist
-kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-->
+      <!--NB! muuda esilehele kuvatava tabeli sisu nii, et see võtaks userist ja profiilist
+      kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-->
       <table class="table table-hover table-light table-striped-columns">
         <thead class="table-dark">
         <tr>
@@ -54,7 +35,7 @@ kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"/>
-                @click="startEditUserAccount"
+            <!--                @click="startEditUserAccount"-->
           </td>
 
         </tr>
@@ -77,6 +58,47 @@ kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-
           @event-save-isotope="createUser"
       />
 
+
+      <!-- PROFIILID  -->
+      <div class="w-75 mx-auto mb-5">
+        <h2 class="text-center mb-3">Profiilid</h2>
+        <table class="table table-hover table-light table-striped-columns">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Amet</th>
+            <th scope="col">Isikukood</th>
+            <th scope="col">Eesnimi</th>
+            <th scope="col">Perekonnanimi</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Loodud</th>
+            <th scope="col">Muudetud</th>
+
+
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr v-for="profile in profiles" :key="profile.profileId">
+            <td>{{ profile.profileId }}</td>
+            <td>{{ profile.occupation }}</td>
+            <td>{{ profile.nationalId }}</td>
+            <td>{{ profile.firstName }}</td>
+            <td>{{ profile.lastName }}</td>
+            <td>{{ profile.email }}</td>
+            <td>{{ profile.phoneNumber }}</td>
+            <td>{{ profile.createdAt }}</td>
+            <td>{{ profile.updatedAt }}</td>
+
+
+
+          </tr>
+          </tbody>
+        </table>
+
+
+      </div>
     </div>
   </div>
 
@@ -85,6 +107,7 @@ kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-
 import AddUserModal from "@/components/modal/AddUserModal.vue";
 import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
+import UserProfileService from "@/services/UserProfileService";
 
 export default {
   name: 'UsersView',
@@ -117,7 +140,7 @@ export default {
           phoneNumber: '',
           createdAt: '',
           updatedAt: '',
-          hospitalName: '',
+
         }
       ],
 
@@ -147,10 +170,16 @@ export default {
     },
 
     getAllUsers() {
-      UserService.sendGetUserRequest()
+      UserService.sendGetUsersRequest()
           .then(response => this.users = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
+
+    getAllProfiles() {
+      UserProfileService.sendGetUsersProfilesRequest()
+          .then(response => this.profiles = response.data)
+          .catch(() => Navigation.navigateToErrorView())
+    }
     // //
     // getAllProfiles() {
     //   ProfileService.sindGetProfileRequest()
@@ -161,6 +190,7 @@ export default {
 
   beforeMount() {
     this.getAllUsers()
+    this.getAllProfiles()
   }
 
 }

@@ -11,8 +11,8 @@
     <div class="row">
       <div class="col">
         <div class="row">Kasutjanimi:</div>
-        <div class="row">Parool:</div>
-        <div class="row">Roll:</div>
+        <div class="row">Parool: </div>
+        <div class="row">Roll: </div>
         <div class="row">Staatus:</div>
       </div>
       <div class="col">
@@ -58,6 +58,7 @@
         <div class="row">Kasutaja muudetud (või profiil?):</div>
 
       </div>
+    </div>
       <div class="col">
         PILDI KOHT
       </div>
@@ -65,21 +66,90 @@
   </div>
 
 
-</div>
-
-
 
 </template>
 
 
 <script>
+import UserService from "@/services/UserService";
+import Navigation from "@/navigations/Navigation";
+import UserProfileService from "@/services/UserProfileService";
+
 export default {
   name: "UserAccountView"
 
+//   data() {
+//     return {
+//           userId: 0,
+//           username: '',
+//           password: '',
+//           status: '',
+//           roles: [
+//             {
+//               selectedRoleId: 0,
+//               roleName:''
+//             }
+//           ]
+//
+//         }
+//
+//       // profile: [
+//       //   {
+//       //     profileId: 0,
+//       //     occupation: '',
+//       //     nationalId: '',
+//       //     firstName: '',
+//       //     lastName: '',
+//       //     email: '',
+//       //     phoneNumber: '',
+//       //     createdAt: '',
+//       //     updatedAt: '',
+//       //
+//       //   }
+//       // ],
+//
+//       errorResponse: {
+//         message: '',
+//         errorCode: ''
+//       }
+//
+//     },
+//
+//   methods: {
+// getUser() {
+// UserService.sendGetUserRequest()
+//     .then(response => this.user = response.data)
+//     .catch(() => Navigation.navigateToErrorView())
+// },
+//
+// // getProfile() {
+// //   UserProfileService.
+// //       .then(response => this.user = response.data)
+// //       .catch(() => Navigation.navigateToErrorView())
+//
+//
+// }
+//
+//
+//   }
 
-//   olemasoleva kasutaja accoundi info vaatamine muutmine käib siitkaudu
-// get ja update meetodid luua siia?
+
+  //   getAllUsers() {
+  //     UserService.sendGetUsersRequest()
+  //         .then(response => this.users = response.data)
+  //         .catch(() => Navigation.navigateToErrorView())
+  //   },
+  //
+  //   getAllProfiles() {
+  //     UserProfileService.sendGetUsersProfilesRequest()
+  //         .then(response => this.profiles = response.data)
+  //         .catch(() => Navigation.navigateToErrorView())
+  //   }
+  // // },
+  //
+  // beforeMount() {
+  //   this.getUser()
+   }
 
 
-}
 </script>

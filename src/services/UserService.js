@@ -1,7 +1,11 @@
 import axios from "axios";
 
 export default {
-   sendGetUserRequest(){
+   sendGetUserRequest() {
+       return axios.get('/user')
+   },
+
+    sendGetUsersRequest(){
        return axios.get('/users')
    },
 
