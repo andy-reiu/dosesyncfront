@@ -34,7 +34,10 @@
             <font-awesome-icon
                 icon="pen-to-square"
                 class="text-warning me-2"
-                role="button"/>
+                role="button"
+                @click="startEditUserAccount"
+
+            />
             <!--                @click="startEditUserAccount"-->
           </td>
 
