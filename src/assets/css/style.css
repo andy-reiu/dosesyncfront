@@ -173,3 +173,102 @@ main {
 .fc-daygrid-day-number {
     color: black !important;
 }
+
+@media print {
+    /* Hide all buttons */
+    button {
+        display: none !important;
+    }
+
+    /* Hide close button specifically */
+    .btn-close {
+        display: none !important;
+    }
+
+    /* Hide modal footer (usually contains buttons) */
+    .modal-footer {
+        display: none !important;
+    }
+
+    /* Only show modal content */
+    body * {
+        visibility: hidden;
+    }
+
+    .modal-content, .modal-content * {
+        visibility: visible;
+    }
+
+    .modal-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+.badge-status {
+    padding: 4px 8px;
+    border-radius: 0.375rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+}
+
+.badge-pending {
+    background-color: #ffc107; /* yellow */
+}
+
+.badge-in-progress {
+    background-color: #17a2b8; /* blue */
+}
+
+.badge-completed {
+    background-color: #28a745; /* green */
+}
+
+.badge-unknown {
+    background-color: #6c757d; /* gray */
+}
+
+.login-page {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/39/Viru_Raba_Aerofoto.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(255, 255, 255, 0.85); /* Optional soft white overlay */
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    border: none;
+    background-color: #ffffffee; /* Semi-transparent white */
+    border-radius: 1rem;
+}
+
+.logout-card-content {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    background-color: #ffffffee;
+    border-radius: 1rem;
+    font-size: 0.95rem;
+}
+
+.logout-image {
+    max-height: 140px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+

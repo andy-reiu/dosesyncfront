@@ -36,12 +36,14 @@
         <td>{{ patientInjection.injectedTime }}</td>
         <td>{{ patientInjection.injectedActivity }}</td>
         <td v-if="isAdmin">
-          <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-                             @click="viewPatientInjectionEditView(patientInjection.injectionId)"
-          />
-          <font-awesome-icon icon="trash" class="text-danger" role="button"
-                             @click="deletePatientInjection(patientInjection.injectionId)"
-          />
+          <div class="no-print">
+            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
+                               @click="viewPatientInjectionEditView(patientInjection.injectionId)"
+            />
+            <font-awesome-icon icon="trash" class="text-danger" role="button"
+                               @click="deletePatientInjection(patientInjection.injectionId)"
+            />
+          </div>
         </td>
       </tr>
       </tbody>
@@ -75,6 +77,7 @@ export default {
       patientInjectionToDelete: null,
       patientInjection: [
         {
+          studyId: this.studyId,
           injectionId: 0,
           acc: '',
           patientNationalId: '',

@@ -24,6 +24,7 @@ export default {
             }
         })
     },
+
     navigateToPendingStudyView(studyId) {
         router.push({
             name: 'studyRoute',

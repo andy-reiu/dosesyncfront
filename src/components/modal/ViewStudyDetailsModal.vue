@@ -7,7 +7,7 @@
         <div class="row mb-4" v-if="study.studyId">
           <div class="col">
             <h2 class="fw-bold">
-              Uuringu kuupäev: {{study.studyDate}}
+              Uuringu kuupäev: {{ study.studyDate }}
             </h2>
             <h3 class="fw-bold" style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">
               Uuringu ID: {{ study.studyId }}, Isotoop: {{ study.isotopeName }}
@@ -24,12 +24,14 @@
             <!-- Study Info -->
             <div class="row mb-4">
               <h2>Kalkulatsiooni profiilid</h2>
-              <CalculationProfile :calculationProfiles="calculationProfiles" :study-id="studyId"/>
+              <CalculationProfile :calculationProfiles="calculationProfiles" :study-id="studyId"
+              />
             </div>
 
             <div class="row mb-4">
               <h2>Patsiendi süstid</h2>
-              <PatientInjection :patientInjections="patientInjections" :study-id="studyId"/>
+              <PatientInjection :patientInjections="patientInjections" :study-id="studyId"
+              />
             </div>
 
             <div class="row mb-4">
@@ -69,6 +71,10 @@
           <button type="button" class="btn btn-secondary ms-3"
                   @click="$emit('event-close-modal')">Sulge
           </button>
+          <button type="button" class="btn btn-primary ms-3"
+                  @click="printStudyDetails">
+            Salvesta PDF-na
+          </button>
         </div>
 
       </div>
@@ -85,6 +91,8 @@ import CalculationProfileService from "@/services/CalculationProfileService"
 import PatientInjectionService from "@/services/PatientInjectionService"
 import MachineFillService from "@/services/MachineFillService"
 import ProfileService from "@/services/ProfileService";
+import html2pdf from 'html2pdf.js';
+import RoleService from "@/services/RoleService";
 
 export default {
   name: 'ViewStudyDetails',
@@ -107,9 +115,10 @@ export default {
       calculationProfiles: [],
       patientInjections: [],
       machineFills: [],
-      profileInfo:[],
+      profileInfo: [],
       calculationMachineRinseVolume: 0,
       calculationMachineRinseActivity: 0,
+      originalRole: null,
     }
   },
 
@@ -160,7 +169,7 @@ export default {
           .catch(reason => Navigation.navigateToErrorView(reason))
     },
 
-    getStudyProfile(){
+    getStudyProfile() {
       ProfileService.sendGetProfileRequest(this.studyId)
           .then(response => this.profileInfo = response.data)
           .catch(reason => Navigation.navigateToErrorView())
@@ -173,6 +182,34 @@ export default {
     closeStudyModal() {
       this.isStudyModalOpen = false;
     },
+
+    printStudyDetails() {
+      const modalContent = this.$el.querySelector('.modal-content');
+
+      // Hide all buttons before print
+      const buttons = modalContent.querySelectorAll('button');
+      buttons.forEach(btn => btn.style.display = 'none');
+
+      const opt = {
+        margin: 0.5,
+        filename: `${this.study.studyDate}.${this.study.isotopeName} study-${this.studyId}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      };
+
+      html2pdf()
+          .set(opt)
+          .from(modalContent)
+          .save()
+          .then(() => {
+            buttons.forEach(btn => btn.style.display = '');
+          })
+          .catch(err => {
+            console.error('Failed to generate PDF:', err);
+            buttons.forEach(btn => btn.style.display = '');
+          });
+    }
   },
 
   beforeMount() {
