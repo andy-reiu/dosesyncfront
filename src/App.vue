@@ -18,9 +18,9 @@
             Doosi kalkulaator
           </router-link>
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/logs" exact-active-class="active">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/all-studies" exact-active-class="active">
             <font-awesome-icon icon="file-alt"/>
-            Logid
+            Kõik uuringud
           </router-link>
         </template>
 
