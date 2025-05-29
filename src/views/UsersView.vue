@@ -35,8 +35,9 @@
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"
+                @click="navigateToUserAccountView(user.userId)"
             />
-            <!--                @click="navigateToUserAccountView(user.userId)"-->
+
           </td>
 
         </tr>
@@ -93,7 +94,6 @@
             <td>{{ profile.updatedAt }}</td>
 
 
-
           </tr>
           </tbody>
         </table>
@@ -108,7 +108,7 @@
 import AddUserModal from "@/components/modal/AddUserModal.vue";
 import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
-import UserProfileService from "@/services/UserProfileService";
+import ProfileService from "@/services/ProfileService";
 
 export default {
   name: 'UsersView',
@@ -170,6 +170,8 @@ export default {
       this.showAddUser = false
     },
 
+
+
     getAllUsers() {
       UserService.sendGetUsersRequest()
           .then(response => this.users = response.data)
@@ -177,14 +179,14 @@ export default {
     },
 
     getAllProfiles() {
-      UserProfileService.sendGetUsersProfilesRequest()
+      ProfileService.sendGetUsersProfilesRequest()
           .then(response => this.profiles = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
 
-    // navigateToUserAccountView(userId) {
-    //   Navigation.navigateToUserAccountView(userId)
-    // },
+    navigateToUserAccountView(userId) {
+      Navigation.navigateToUserAccountView(userId)
+    },
 
 
     // //

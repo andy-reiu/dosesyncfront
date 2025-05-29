@@ -14,54 +14,67 @@
 
 
   <!--  KASUTAJA INFO source tables: user, role-->
-<!--  <div>-->
+  <!--  <div>-->
 
-    <h2>Kasutja info</h2>
+  <h2>Kasutja info</h2>
 
-    <!--  näide pangast-->
-    <!--          <LocationDetailsInput :atm-location="atmLocation"
-                                @event-update-location-name="setAtmLocationLocationName"
-                                @event-update-number-of-atms="setAtmLocationNumberOfAtms"
-                                @event-update-transaction-type="updateTransactionTypeIsAvailable"
-                                @event-new-image-selected="setAtmLocationImageData"
-
-
-          <button @click="navigateToAtmsView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>
-          <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>
-          <button v-else @click="addAtmLocation" type="button" class="btn btn-outline-success">Lisa asukoht</button>
-          />-->
-
-    <!--        <UserDetailsInput :user="user"-->
-    <!--                              @event-update-username="setUserUsername"-->
-    <!--                              @event-update-password="setUserPassword"-->
-    <!--                              @event-update-role="updateRole"-->
-    <!--                              @event-update-user-status="updateUserStatus"-->
-    <!--                              -->
-    <!--                              -->
-    <!--        <button @click="navigateToUsersView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>-->
-    <!--        <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>-->
-    <!--        <button v-else @click="addUser" type="button" class="btn btn-outline-success">Lisa kasutaja</button>-->
-    <!--        />-->
+  <!--  näide pangast-->
+  <!--          <LocationDetailsInput :atm-location="atmLocation"
+                              @event-update-location-name="setAtmLocationLocationName"
+                              @event-update-number-of-atms="setAtmLocationNumberOfAtms"
+                              @event-update-transaction-type="updateTransactionTypeIsAvailable"
+                              @event-new-image-selected="setAtmLocationImageData"
 
 
-    <div class="container text-center">
-      <div class="row">
-        <div class="col">
-          <div class="row">Kasutjanimi: {{userinfo.username}}</div>
-          <div class="row">Parool: {{userinfo.password}}</div>
-          <div class="row">Roll:{{userinfo.roleName}}</div>
-          <div class="row">Staatus: {{userinfo.status}}</div>
-        </div>
-<!--        <div class="col">-->
-<!--          <div class="row">KASUTAJA1</div>-->
-<!--          <div class="row">12345</div>-->
-<!--          <div class="row">Planeerimine</div>-->
-<!--          <div class="row">A</div>-->
-<!--        </div>-->
-<!--      </div>-->
+        <button @click="navigateToAtmsView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>
+        <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>
+        <button v-else @click="addAtmLocation" type="button" class="btn btn-outline-success">Lisa asukoht</button>
+        />-->
+
+  <!--        <UserDetailsInput :user="user"-->
+  <!--                              @event-update-username="setUserUsername"-->
+  <!--                              @event-update-password="setUserPassword"-->
+  <!--                              @event-update-role="updateRole"-->
+  <!--                              @event-update-user-status="updateUserStatus"-->
+  <!--                              -->
+  <!--                              -->
+  <!--        <button @click="navigateToUsersView" type="button" class="btn btn-outline-secondary me-4">Tagasi</button>-->
+  <!--        <button v-if="isEdit" @click="updateAtmLocation" type="button" class="btn btn-outline-success">Salvesta</button>-->
+  <!--        <button v-else @click="addUser" type="button" class="btn btn-outline-success">Lisa kasutaja</button>-->
+  <!--        />-->
+
+
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <div class="row">Kasutjanimi:</div>
+        <div class="row">Parool:</div>
+        <div class="row">Roll:</div>
+        <div class="row">Staatus:</div>
+      </div>
+
+      <div class="col">
+        <div class="row"> {{ userinfo.username }}</div>
+        <div class="row"> {{ userinfo.password }}</div>
+        <div class="row"> {{ userinfo.roleName }}</div>
+        <div class="row"> {{ userinfo.status }}</div>
+      </div>
+
+      <div class="col">
+      </div>
+      <!--        <div class="col">-->
+      <!--          <div class="row">KASUTAJA1</div>-->
+      <!--          <div class="row">12345</div>-->
+      <!--          <div class="row">Planeerimine</div>-->
+      <!--          <div class="row">A</div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
 
-    <div>NUPP muuda kasutaja infot</div>
+    <div>
+      <button type="button" class="btn btn-outline-success">Salvesta kasutaja info muudatused</button>
+      <!--         @click="updateUserInfo" -->
+    </div>
 
   </div>
 
@@ -87,25 +100,43 @@
       <div class="row">
         <div class="col">
           <div class="row">Eesnimi:</div>
-          <div class="row">Perekonnanimi</div>
-          <div class="row">E-post:</div>
-          <div class="row">Telefoninumber:</div>
+          <div class="row">Perekonnanimi:</div>
+          <div class="row">Isikukood:</div>
           <div class="row">Amet:</div>
           <div class="row">Haigla:</div>
-          <div class="row">Kasutaja loodud (või profiil?):</div>
-          <div class="row">Kasutaja muudetud (või profiil?):</div>
+          <div class="row">E-post:</div>
+          <div class="row">Telefoninumber:</div>
+          <div class="row">Kasutaja loodud:</div>
+          <div class="row">Kasutaja muudetud:</div>
           <div class="row">""</div>
-          <div class="row"> LisaPilt:/vali pilt/</div>
+          <div class="row"> LisaPilt:/vali pilt/KASTIKE LUUA</div>
         </div>
+
         <div class="col">
-          <div class="row">Eesnimi:</div>
-          <div class="row">Perekonnanimi</div>
-          <div class="row">E-post:</div>
-          <div class="row">Telefoninumber:</div>
-          <div class="row">Amet:</div>
-          <div class="row">Haigla:</div>
-          <div class="row">Kasutaja loodud (või profiil?):</div>
-          <div class="row">Kasutaja muudetud (või profiil?):</div>
+          <div class="row"> {{ profileInfo.firstName }}</div>
+          <div class="row"> {{ profileInfo.lastName }}</div>
+          <div class="row"> {{ profileInfo.nationalId }}</div>
+          <div class="row"> {{ profileInfo.nationalId }}</div>
+          <div class="row"> {{ profileInfo.hospitalName }}</div>
+          <div class="row"> {{ profileInfo.email }}</div>
+          <div class="row"> {{ profileInfo.phoneNumber }}</div>
+          <div class="row"> {{ profileInfo.createdAt }}</div>
+          <div class="row"> {{ profileInfo.updatedAt }}</div>
+          <div class="row">""</div>
+          <div class="row"> LisaPilt:/vali pilt/KASTIKE LUUA</div>
+        </div>
+
+        <div class="col">
+          SIIA TULEB PILT
+        </div>
+
+        <div>
+          <button type="button" class="btn btn-outline-success">Salvesta profiili info muudatused</button>
+          <!--         @click="updateProfileInfo" -->
+        </div>
+
+        <div class="col">
+
 
         </div>
       </div>
@@ -121,15 +152,20 @@
 
 <script>
 import UserService from "@/services/UserService";
-import Navigation from "@/navigations/Navigation";
+import ProfileService from "@/services/ProfileService";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: "UserAccountView",
+  components: {AlertSuccess, AlertDanger},
   // components: {AlertSuccess, AlertDanger, UserImage, UserDetailsInput, RoleDropdown},
   // LOO USERSDETAILSINPUT!!!
-  data(){
+  data() {
     return {
-      userinfo:{
+      userId: Number(sessionStorage.getItem('userId')),
+
+      userinfo: {
         userId: 0,
         roleId: 0,
         roleName: '',
@@ -138,11 +174,20 @@ export default {
         status: ''
       },
 
-      userId: Number(sessionStorage.getItem('userId')),
-      username:'',
-      password:'',
-      role:'',
-      status:''
+
+      profileInfo: {
+        profileId: 0,
+        hospitalName: '',
+        occupation: '',
+        nationalId: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        createdAt: '',
+        updatedAt: ''
+      },
+
     }
   },
 
@@ -209,10 +254,21 @@ export default {
 //Lsada: validateCorrectUserInput() vt pank LocationView r194
 
 
+    getUserProfile() {
+      ProfileService.sendGetUserProfileRequest(this.userId)
+          .then(response => this.handleGetProfileResponse(response))
+          .catch(error => this.handleGetProfileErrorResponse(error))
+    },
+
+    handleGetProfileResponse(response) {
+      this.profileInfo = response.data
+    }
+
+
   },
   beforeMount() {
     this.getUser()
-
+    this.getUserProfile()
   }
 
 }
