@@ -1,11 +1,11 @@
 <template>
   <div>
     <Modal :modal-is-open="modalIsOpen"
-           @event-close-modal="$emit('event-close-modal')"
+           @event-close-modal="handleCloseModal"
     >
       <template #title>
         <div class="text-center mb-4">
-          <h5>Lisa uus kalkulatsioon</h5>
+          <h5>Lisa uued kalkulatsiooni parameetrid</h5>
         </div>
       </template>
       <template #body>
@@ -23,7 +23,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label">Max Activity</label>
             <input
@@ -33,7 +32,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label">Min Volume</label>
             <input
@@ -43,7 +41,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label">Machine Volume Min</label>
             <input
@@ -53,7 +50,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label">Machine Volume Max</label>
             <input
@@ -63,7 +59,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label"> Injection interval</label>
             <input
@@ -73,13 +68,10 @@
                 min="1"
                 max="60"
                 step="1"
-                placeholder="Minutes"
+                placeholder="Minutid"
                 required
             />
           </div>
-
-
-
           <div class="mb-3">
             <label class="form-label">Patsiendi Kaal(kg)</label>
             <input
@@ -89,7 +81,6 @@
                 required
             />
           </div>
-
           <div class="mb-3">
             <label class="form-label">Aktiivsus süstlas</label>
             <input
@@ -99,11 +90,10 @@
                 required
             />
           </div>
-
         </form>
       </template>
       <template #footer>
-        <button @click="addNewCalculationSetting" type="button" class="btn btn-success ">Salvesta</button>
+        <button @click="addNewCalculationSetting" type="button" class="btn btn-success">Salvesta</button>
       </template>
     </Modal>
   </div>
@@ -111,7 +101,6 @@
 
 <script>
 import Modal from "@/components/modal/Modal.vue";
-import AlertDanger from "@/components/alert/AlertDanger.vue";
 import AlertAllFields from "@/components/alert/AlertAllFields.vue";
 
 export default {
@@ -122,6 +111,7 @@ export default {
   },
   data() {
     return {
+
       newCalculationSetting: {
         settingMinActivity: null,
         settingMaxActivity: null,
@@ -137,28 +127,49 @@ export default {
   },
   methods: {
 
+    handleCloseModal() {
+      this.resetModalDataFields()
+      this.$emit('event-close-modal')
+    },
+
+    resetModalDataFields() {
+      this.newCalculationSetting = {
+        settingMinActivity: null,
+        settingMaxActivity: null,
+        settingMinVolume: null,
+        settingMachineVolumeMin: null,
+        settingMachineVolumeMax: null,
+        injectionInterval: null,
+        defaultPatientWeight: null,
+        activityPerKg: null,
+      }
+      this.errorMessage = ''
+    },
+
     addNewCalculationSetting() {
       if (this.allFieldsAreWithCorrectInput()) {
-        this.$emit('event-save-calculation-setting', this.newCalculationSetting);
-        this.$emit('event-close-modal');
+        this.$emit('event-save-calculation-setting', this.newCalculationSetting)
+        this.resetModalDataFields()
+        this.$emit('event-close-modal')
       } else {
-        this.errorMessage = 'Täida kõik väljad';
-        setTimeout(() => this.errorMessage = '', 4000);
+        this.errorMessage = 'Täida kõik väljad'
+        setTimeout(() => this.errorMessage = '', 4000)
       }
     },
     allFieldsAreWithCorrectInput() {
-      const s = this.newCalculationSetting;
+      const setting = this.newCalculationSetting
       return (
-          s.settingMinActivity !== null &&
-          s.settingMaxActivity !== null &&
-          s.settingMinVolume !== null &&
-          s.settingMachineVolumeMin !== null &&
-          s.settingMachineVolumeMax !== null &&
-          s.injectionInterval !== null &&
-          s.defaultPatientWeight !== null &&
-          s.activityPerKg !== null
-      )},
-
+          setting.settingMinActivity !== null &&
+          setting.settingMaxActivity !== null &&
+          setting.settingMinVolume !== null &&
+          setting.settingMachineVolumeMin !== null &&
+          setting.settingMachineVolumeMax !== null &&
+          setting.injectionInterval !== null &&
+          setting.defaultPatientWeight !== null &&
+          setting.activityPerKg !== null
+      )
+    },
   }
+
 }
 </script>
