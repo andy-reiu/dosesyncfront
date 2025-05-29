@@ -22,16 +22,19 @@
                            @event-new-isotope-selected="setStudyIsotopeId"
           />
         </div>
-
         <div class="col col-6">
           <label class="form-label">Uuringu tegemise kuupäev</label>
-          <input type="date" class="form-control" v-model="study.studyDate"
-          />
+          <input type="date" class="form-control" v-model="study.studyDate"/>
         </div>
       </form>
     </template>
     <template #footer>
-      <button @click="executeAddNewStudy" type="button" class="btn btn-outline-success">Lisa plaan</button>
+      <button @click="submitStudy(false)" type="button" class="btn btn-info me-2">
+        Lisa plaan
+      </button>
+      <button @click="submitStudy(true)" type="button" class="btn btn-success">
+        Lisa plaan ja alusta plaaniga
+      </button>
     </template>
   </Modal>
 </template>
@@ -89,6 +92,7 @@ export default {
       },
     }
   },
+
   methods: {
 
     getAllIsotopes() {
@@ -103,34 +107,44 @@ export default {
 
     setStudyIsotopeId(isotopeId) {
       this.study.isotopeId = isotopeId;
-      this.study.isotopeName = '';
-      for (let i = 0; i < this.isotopes.length; i++) {
-        if (this.isotopes[i].isotopeId === isotopeId) {
-          this.study.isotopeName = this.isotopes[i].isotopeName;
-          break;
-        }
-      }
+      const found = this.isotopes.find(i => i.isotopeId === isotopeId);
+      this.study.isotopeName = found ? found.isotopeName : '';
     },
 
     setStudyMachineId(machineId) {
       this.study.machineId = machineId;
     },
 
-    executeAddNewStudy() {
-      if (this.allFieldsAreWithCorrectInput()) {
-        StudyService.sendPostStudyRequest(this.study)
-            .then(response => Navigation.navigateToStudyView(response.data, this.study.isotopeId, this.study.isotopeName))
-            .catch(reason => Navigation.navigateToErrorView())
+    submitStudy(goToStudyView) {
+      if (!this.allFieldsAreWithCorrectInput()) {
+        this.errorMessage = 'Täida kõik väljad';
+        setTimeout(() => (this.errorMessage = ''), 4000);
+        return;
+      }
+      StudyService.sendPostStudyRequest(this.study)
+          .then(response => this.handleNewStudyView(goToStudyView, response))
+          .catch(() => Navigation.navigateToErrorView());
+    },
 
+    handleNewStudyView(goToStudyView, response) {
+      if (goToStudyView) {
+        Navigation.navigateToStudyView(response.data,
+            this.study.isotopeId,
+            this.study.isotopeName
+        );
       } else {
-        this.errorMessage = 'Täida kõik väljad'
-        setTimeout(this.resetErrorMessage, 4000)
+        this.$emit('event-close-modal');
+        this.$emit('event-update-study-table');
       }
     },
 
+
     allFieldsAreWithCorrectInput() {
-      // todo: kuupäeva kontroll
-      return this.selectedMachineId !== 0
+      return (
+          this.study.machineId !== 0 &&
+          this.study.isotopeId !== 0 &&
+          this.study.studyDate !== ''
+      );
     },
 
     getAllMachines() {
@@ -142,10 +156,10 @@ export default {
     handleGetMachineSuccessResponse(response) {
       this.machines = response.data
     },
-  },
 
-  resetErrorMessage() {
-    this.errorMessage = ''
+    resetErrorMessage() {
+      this.errorMessage = ''
+    },
   },
 
   beforeMount() {
