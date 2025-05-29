@@ -1,36 +1,76 @@
 <template>
-  <div class="container text-center">
-    <div class="row">
-      <div class="col mt-4">
-        <h4 class="mt-4"> Kõik uuringud</h4>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="row">
-      <div class="col-12">
-        <StudyTable :studies="studies"/>
-      </div>
-    </div>
+  <div>
+    <ViewStudyDetails
+        v-if="viewStudyModalIsOpen"
+        :modalIsOpen="viewStudyModalIsOpen"
+        :studyId="selectedStudyId"
+        @event-close-modal="viewStudyModalIsOpen = false"
+    />
+
+    <table class="table table-hover table-light table-striped-columns">
+      <thead class="table-dark">
+      <tr>
+        <th>Kuupäev</th>
+        <th>Isotoop</th>
+        <th>Patsientide arv</th>
+        <th>Esimene süstimine</th>
+        <th>Viimane süstimine</th>
+        <th>Kalibratsiooni aktiivsus (MBq)</th>
+        <th>Loputusmahl (mL)</th>
+        <th>Jääk aktiivsus (MBq)</th>
+        <th>Staatus</th>
+        <th></th>
+        <th v-if="isAdmin"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="study in sortedStudies" :key="study.studyId">
+        <td>{{ study.studyDate }}</td>
+        <td>{{ study.isotopeName }}</td>
+        <td>{{ study.studyNrPatients }}</td>
+        <td>{{ study.studyStartTime }}</td>
+        <td>{{ study.studyEndTime }}</td>
+        <td>{{ study.studyTotalActivity }}</td>
+        <td>{{ study.calculationMachineRinseVolume }}</td>
+        <td>{{ study.calculationMachineRinseActivity }}</td>
+        <td>{{ study.studyStatus }}</td>
+        <td>
+          <font-awesome-icon class="text-primary" :icon="['fas', 'expand']" role="button"
+              title="Vaata uuringut" @click="viewStudyDetails(study.studyId)"
+          />
+        </td>
+        <td v-if="isAdmin">
+          <div class="d-flex align-items-center">
+            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button" title="Muuda uuringut"
+                @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
+            />
+<!--            <font-awesome-icon icon="trash" class="text-danger" role="button" title="Kustuta uuring"-->
+<!--                @click="deleteSelectedStudy(study.studyId)"-->
+<!--            />-->
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
+
 <script>
-import AlertDanger from "@/components/alert/AlertDanger.vue";
-import StudyPlannedTable from "@/components/study/StudyPlannedTable.vue";
-import StudyTable from "@/components/study/StudyTable.vue";
 import StudyService from "@/services/StudyService";
 import Navigation from "@/navigations/Navigation";
-
+import ViewStudyDetails from "@/components/modal/ViewStudyDetailsModal.vue";
+import RoleService from "@/services/RoleService";
 export default {
   name: "AllStudiesView",
-  components: {StudyTable, StudyPlannedTable, AlertDanger},
+  components: {ViewStudyDetails},
   data() {
     return {
+      viewStudyModalIsOpen: false,
+      isAdmin: false,
+      selectedStudyId: 0,
       studies: [
         {
           studyId: 0,
-          machineId: 0,
-          machineName: '',
           studyDate: '',
           studyNrPatients: 0,
           studyStartTime: '',
@@ -40,30 +80,50 @@ export default {
           studyStatus: '',
           calculationMachineRinseVolume: null,
           calculationMachineRinseActivity: null,
-          isotopeId: '',
+          isotopeId: 0,
           isotopeName: '',
         }
       ],
-      errorResponse: {
-        message: '',
-        errorCode: 0
-      }
-    }
+    };
   },
+  computed: {
+    sortedStudies() {
+      return this.studies.slice().sort((a, b) => {
+        return new Date(b.studyDate) - new Date(a.studyDate); // Descending by date
+      });
+    },
+  },
+
   methods: {
-    getAllStudies() {
-      StudyService.sendGetStudiesRequest()
-          .then(response => this.handleGetStudiesSuccessResponse(response))
-          .catch(() => Navigation.navigateToErrorView());
+    viewStudyDetails(studyId) {
+      this.selectedStudyId = studyId;
+      this.viewStudyModalIsOpen = true;
     },
 
-    handleGetStudiesSuccessResponse(response) {
-      this.studies = response.data;
+    editSelectedStudy(studyId, isotopeId, isotopeName) {
+      Navigation.navigateToStudyView(studyId, isotopeId, isotopeName);
+    },
+
+    // deleteSelectedStudy(studyId) {
+    //   if (confirm("Kas oled kindel, et soovid selle uuringu kustutada?")) {
+    //     StudyService.sendDeleteStudyRequest(studyId)
+    //         .then(() => {
+    //           this.studies = this.studies.filter(study => study.studyId !== studyId);
+    //         })
+    //         .catch(() => alert("Uuringu kustutamine ebaõnnestus."));
+    //   }
+    // },
+
+    getAllStudies() {
+      StudyService.sendGetStudiesRequest()
+          .then(response => this.studies = response.data)
+          .catch(() => Navigation.navigateToErrorView());
     },
   },
 
   beforeMount() {
+    this.isAdmin = RoleService.isAdmin()
     this.getAllStudies();
   }
-}
+};
 </script>

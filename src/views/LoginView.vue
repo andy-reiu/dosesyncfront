@@ -1,23 +1,26 @@
 <template>
-  <div class="container text-center">
-    <div class="row justify-content-center">
-      <div class="col col-6">
-        <AlertDanger :error-message="errorMessage"/>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col col-6">
+  <div class="login-page">
+    <div class="overlay d-flex align-items-center justify-content-center">
+      <div class="card login-card shadow-lg p-4">
+        <h3 class="text-center mb-4 text-dark">Logi sisse</h3>
+
+        <AlertDanger :error-message="errorMessage" />
+
         <div class="mb-3">
           <label class="form-label">Kasutajanimi</label>
-          <input v-model="username" type="text" class="form-control">
-          <small class="form-text text-muted"> Sisesta kasutajanimi</small>
+          <input v-model="username" type="text" class="form-control" placeholder="Sisesta kasutajanimi" />
         </div>
+
         <div class="mb-3">
-          <label>Parool</label>
-          <input v-model="password" type="password" class="form-control">
-          <small class="form-text text-muted"> Sisesta parool or else</small>
+          <label class="form-label">Parool</label>
+          <input v-model="password" type="password" class="form-control" placeholder="Sisesta parool" />
         </div>
-        <button @click="login" type="submit" class="btn btn-success">Logi sisse</button>
+
+        <button @click="login" type="submit" class="btn btn-success w-100">Logi sisse</button>
+
+        <div class="text-center mt-3">
+          <small class="text-muted">Unustasid parooli? Võta ühendust administraatoriga.</small>
+        </div>
       </div>
     </div>
   </div>

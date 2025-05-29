@@ -45,7 +45,6 @@ import IsotopeService from "@/services/IsotopeService";
 import Navigation from "@/navigations/Navigation";
 import MachineDropdown from "@/components/machine/MachineDropdown.vue";
 import MachineService from "@/services/MachineService";
-import PatientsNumber from "@/components/patientsnumber/PatientsNumber.vue";
 import StudiesTotalActivity from "@/components/activity/StudiesTotalActivity.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import StudyService from "@/services/StudyService";
@@ -54,7 +53,7 @@ export default {
   name: "NewStudyModal",
   components: {
     AlertDanger,
-    StudiesTotalActivity, PatientsNumber, MachineDropdown, IsotopeDropdown: IsotopeDropdown, Modal
+    StudiesTotalActivity, MachineDropdown, IsotopeDropdown: IsotopeDropdown, Modal
   },
   props: {
     modalIsOpen: Boolean,
