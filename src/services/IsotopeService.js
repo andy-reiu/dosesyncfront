@@ -22,10 +22,14 @@ export default {
             }
         )
     },
+
     sendUpdateIsotopeRequest(id, isotopeUpdate) {
         return axios.patch(`/isotope/isotopes/${id}`, isotopeUpdate)
     },
+
     sendDeleteIsotopeRequest(id) {
         return axios.delete(`/isotope/${id}`)
     }
+
+
 }
