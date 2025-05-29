@@ -1,46 +1,38 @@
 <template>
-  <div class="home">
-    <NewStudyModal :modal-is-open="newStudyModalIsOpen"
-                   @event-close-modal="closeStudyModal"
-                   @event-execute-new-study="newStudyModal"
-                   @event-update-study-table="getAllStudies"
-    />
-    <div class="container text-center">
-      <div class="row">
-        <div class="col mt-4">
-          <AlertDanger :error-message="errorMessage"></AlertDanger>
-          <h2 class="text-center mb-3">Planeerimine</h2>
-        </div>
+  <div class="home background-wrapper">
+    <div class="overlay-box container p-4 shadow-sm rounded">
+      <NewStudyModal :modal-is-open="newStudyModalIsOpen"
+                     @event-close-modal="closeStudyModal"
+                     @event-execute-new-study="newStudyModal"
+                     @event-update-study-table="getAllStudies"
+      />
+      <div class="text-center">
+        <AlertDanger :error-message="errorMessage"></AlertDanger>
+        <h2 class="mb-3">Planeerimine</h2>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <StudyCalendar :studies="studies"/>
-        </div>
+      <div>
+        <StudyCalendar :studies="studies"/>
       </div>
-      <div class="row">
-        <div class="row">
-          <div class="col-12">
-            <h4 class="mt-4">🟠 Järgmise kahe nädala uuringud</h4>
-            <StudyPlannedTable :pending-studies="pendingStudies"
-                               :selected-study-id="selectedStudyId"
-                               @event-study-updated="getAllStudies"
-            />
-            <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
-              <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
-                                 @click="openNewStudyModal()"
-              />
-            </div>
-            <h4 class="mt-4">🟡 Täna planeeritud uuring</h4>
-            <StudyTable :studies="todaysStudies"
-                        :selected-study-id="selectedStudyId"
-                        @event-study-updated="getAllStudies"
-            />
-            <h4 class="mt-4">🟢 Salvestatud uuringud (viimased 7 päeva)</h4>
-            <StudyTable :studies="completedStudies"
-                        :selected-study-id="selectedStudyId"
-            />
-          </div>
+      <div>
+        <h4 class="mt-4">🟠 Järgmise kahe nädala uuringud</h4>
+        <StudyPlannedTable :pending-studies="pendingStudies"
+                           :selected-study-id="selectedStudyId"
+                           @event-study-updated="getAllStudies"
+        />
+        <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+          <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
+                             @click="openNewStudyModal()"
+          />
         </div>
+        <h4 class="mt-4">🟡 Täna planeeritud uuring</h4>
+        <StudyTable :studies="todaysStudies"
+                    :selected-study-id="selectedStudyId"
+                    @event-study-updated="getAllStudies"
+        />
+        <h4 class="mt-4">🟢 Salvestatud uuringud (viimased 7 päeva)</h4>
+        <StudyTable :studies="completedStudies"
+                    :selected-study-id="selectedStudyId"
+        />
       </div>
     </div>
   </div>
