@@ -19,10 +19,10 @@ export default {
         )
     },
 
-    sendPutPatientInjectionRequest(studyId, patientInjection) {
+    sendPutPatientInjectionRequest(injectionId, patientInjection) {
         return axios.put('/patient-injection', patientInjection, {
             params: {
-                studyId: studyId,
+                injectionId: injectionId,
             }
         });
     },

@@ -75,6 +75,7 @@ export default {
       patientInjectionToDelete: null,
       patientInjection: [
         {
+          studyId: this.studyId,
           injectionId: 0,
           acc: '',
           patientNationalId: '',
