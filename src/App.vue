@@ -7,6 +7,14 @@
   <div class="d-flex">
     <div class="sidebar p-3 vh-100 border-end d-flex flex-column">
       <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+        <!-- Show if logged in -->
+        <template v-if="isLoggedIn">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/profile-current" exact-active-class="active">
+            <font-awesome-icon icon="user"/>
+            Profiil
+          </router-link>
+        </template>
+      </div>
         <template v-if="isLoggedIn">
           <router-link class="nav-link d-flex align-items-center gap-2" to="/home" exact-active-class="active">
             <font-awesome-icon icon="house"/>
@@ -41,16 +49,6 @@
             User
           </router-link>
         </template>
-
-
-        <!-- Show if logged in -->
-        <template v-if="isLoggedIn">
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/profile" exact-active-class="active">
-            <font-awesome-icon icon="user"/>
-            Profiil
-          </router-link>
-        </template>
-      </div>
 
       <!-- Bottom logout -->
       <div v-if="isLoggedIn" class="mt-auto pt-3 border-top">

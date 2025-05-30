@@ -870,8 +870,7 @@ export default {
     },
 
     getAllCalculationSettings() {
-      CalculationSettingService
-          .sendGetCalculationSettingRequest()
+      CalculationSettingService.sendGetCalculationSettingRequest()
           .then(response =>
               this.calculationSettings = response.data)
           .catch(() => Navigation.navigateToErrorView())
