@@ -1,78 +1,81 @@
 <template>
-  <div class="container mt-5">
-    <!-- Outer card wrapper to create the box -->
-    <div class="card p-4 shadow-sm">
-      <h2 class="text-center mb-4">Doosi kalkulaator</h2>
+  <div class="home background-wrapper">
+    <div class="overlay-box container p-4 shadow-sm rounded mt-5">
+      <!-- Outer card wrapper to create the box -->
+      <div class="card p-4 shadow-sm">
+        <h2 class="text-center mb-4">Doosi kalkulaator</h2>
 
-      <AlertDanger :error-message="errorMessage"/>
-      <AlertSuccess :success-message="successMessage"/>
+        <AlertDanger :error-message="errorMessage"/>
+        <AlertSuccess :success-message="successMessage"/>
 
-      <!-- Isotope Selection -->
-      <div class="row justify-content-center mb-3">
-        <div class="col-lg-6">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Vali isotoop</h5>
-              <select id="isotope" v-model="selectedIsotopeId" @change="handleIsotopeChange" class="form-select mt-2">
-                <option disabled value="0">-- Vali isotoop --</option>
-                <option v-for="isotope in isotopes" :key="isotope.isotopeId" :value="isotope.isotopeId">
-                  {{ isotope.isotopeName }}
-                </option>
-              </select>
-              <div v-if="selectedIsotope" class="mt-2">
-                <small class="text-muted">Poolestusaeg: <strong>{{ selectedIsotope.halfLifeHr }}</strong> tundi</small>
+        <!-- Isotope Selection -->
+        <div class="row justify-content-center mb-3">
+          <div class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Vali isotoop</h5>
+                <select id="isotope" v-model="selectedIsotopeId" @change="handleIsotopeChange" class="form-select mt-2">
+                  <option disabled value="0">-- Vali isotoop --</option>
+                  <option v-for="isotope in isotopes" :key="isotope.isotopeId" :value="isotope.isotopeId">
+                    {{ isotope.isotopeName }}
+                  </option>
+                </select>
+                <div v-if="selectedIsotope" class="mt-2">
+                  <small class="text-muted">Poolestusaeg: <strong>{{ selectedIsotope.halfLifeHr }}</strong> tundi</small>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Input Fields -->
-      <div class="row justify-content-center">
-        <div class="col-md-4 mb-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Kellaaeg algsuses</h5>
-              <input type="time" v-model="calibrationTime" class="form-control mt-2" />
+        <!-- Input Fields -->
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Kellaaeg algsuses</h5>
+                <input type="time" v-model="calibrationTime" class="form-control mt-2" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Kellaaeg lõpus</h5>
+                <input type="time" v-model="injectionTime" class="form-control mt-2" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Aktiivsus alguses (MBq)</h5>
+                <input type="number" v-model.number="initialActivity" class="form-control mt-2" />
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Kellaaeg lõpus</h5>
-              <input type="time" v-model="injectionTime" class="form-control mt-2" />
-            </div>
+        <!-- Calculate Button -->
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <button @click="calculateDecay" class="btn btn-outline-success btn-lg px-4">
+              <font-awesome-icon :icon="['fas', 'calculator']" />
+              Arvuta
+            </button>
           </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Aktiivsus alguses (MBq)</h5>
-              <input type="number" v-model.number="initialActivity" class="form-control mt-2" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Calculate Button -->
-      <div class="row justify-content-center">
-        <div class="col-auto">
-          <button @click="calculateDecay" class="btn btn-primary btn-lg px-4">
-            Arvuta
-          </button>
-        </div>
-      </div>
-
-      <!-- Result -->
-      <div class="row justify-content-center mt-4" v-if="decayedActivity !== null">
-        <div class="col-md-6">
-          <div class="card text-white bg-success shadow">
-            <div class="card-body">
-              <h5 class="card-title">Aktiivsus lõpus</h5>
-              <p class="card-text fs-5">{{ decayedActivity.toFixed(3) }} MBq</p>
+        <!-- Result -->
+        <div class="row justify-content-center mt-4" v-if="decayedActivity !== null">
+          <div class="col-md-6">
+            <div class="card text-white bg-success shadow">
+              <div class="card-body">
+                <h5 class="card-title">Aktiivsus lõpus</h5>
+                <p class="card-text fs-5">{{ decayedActivity.toFixed(3) }} MBq</p>
+              </div>
             </div>
           </div>
         </div>

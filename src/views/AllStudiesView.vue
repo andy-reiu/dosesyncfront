@@ -35,18 +35,21 @@
         <td>{{ study.calculationMachineRinseActivity }}</td>
         <td>{{ study.studyStatus }}</td>
         <td>
-          <font-awesome-icon class="text-primary" :icon="['fas', 'expand']" role="button"
-              title="Vaata uuringut" @click="viewStudyDetails(study.studyId)"
-          />
+          <button class="btn btn-outline-primary btn-sm" title="Vaata uuringut"
+                  @click="viewStudyDetails(study.studyId)">
+            <font-awesome-icon :icon="['fas', 'expand']"/>
+          </button>
         </td>
         <td v-if="isAdmin">
-          <div class="d-flex align-items-center">
-            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button" title="Muuda uuringut"
-                @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)"
-            />
-<!--            <font-awesome-icon icon="trash" class="text-danger" role="button" title="Kustuta uuring"-->
-<!--                @click="deleteSelectedStudy(study.studyId)"-->
-<!--            />-->
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-warning btn-sm" title="Muuda uuringut"
+                    @click="editSelectedStudy(study.studyId, study.isotopeId, study.isotopeName)">
+              <font-awesome-icon icon="pen-to-square"/>
+            </button>
+            <button class="btn btn-outline-danger btn-sm" title="Kustuta uuring"
+                    @click="deleteSelectedStudy(study.studyId)">
+              <font-awesome-icon icon="trash"/>
+            </button>
           </div>
         </td>
       </tr>
