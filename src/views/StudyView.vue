@@ -1,106 +1,136 @@
 <template>
-  <div class="home">
-    <NewCalculationProfileModal :modal-is-open="newCalculationProfileIsOpen"
-                                @event-close-modal="closeCalculationProfileView"
-                                :study-id="studyId"
-                                @event-new-calculation-profile-made="getAllStudiesCalculationProfiles"
-    />
-    <NewPatientInjectionModal :modal-is-open="newPatientInjectionIsOpen"
-                              @event-close-modal="closePatientInjectionsView"
-                              :study-id="studyId"
-                              :patient-injection="patientInjection"
-                              :isotope-id="isotopeId"
-                              @event-new-patient-injection-made="getAllStudiesPatientInjections"
-                              @event-update-patient-id="setPatientInjectionPatientId"
-                              @event-update-patient-weight="setPatientInjectionInjectionWeight"
-                              @event-update-injection-mbq-kg="setPatientInjectionMbqKg"
-                              @event-update-injected-time="setPatientInjectionTime"
-                              @event-update-injected-activity="setPatientInjectionActivity"
-    />
-    <div class="container text-center">
+  <div class="home background-wrapper">
+    <div class="overlay-box container p-4 shadow-sm rounded">
 
-      <!-- Header Section -->
-      <div class="row">
-        <h2>StudyId: {{ studyId }} </h2>
-        <h2>Päevaplaan isotoobi {{ isotopeName }} kasutamiseks. </h2>
-        <div class="col mt-4">
+      <NewCalculationProfileModal
+          :modal-is-open="newCalculationProfileIsOpen"
+          @event-close-modal="closeCalculationProfileView"
+          :study-id="studyId"
+          @event-new-calculation-profile-made="getAllStudiesCalculationProfiles"
+      />
+      <NewPatientInjectionModal
+          :modal-is-open="newPatientInjectionIsOpen"
+          @event-close-modal="closePatientInjectionsView"
+          :study-id="studyId"
+          :patient-injection="patientInjection"
+          :isotope-id="isotopeId"
+          @event-new-patient-injection-made="getAllStudiesPatientInjections"
+          @event-update-patient-id="setPatientInjectionPatientId"
+          @event-update-patient-weight="setPatientInjectionInjectionWeight"
+          @event-update-injection-mbq-kg="setPatientInjectionMbqKg"
+          @event-update-injected-time="setPatientInjectionTime"
+          @event-update-injected-activity="setPatientInjectionActivity"
+      />
+
+      <div class="container text-center">
+        <!-- Header Section -->
+        <div class="row">
+          <h2>StudyId: {{ studyId }} </h2>
+          <h2>Päevaplaan isotoobi {{ isotopeName }} kasutamiseks. </h2>
+          <div class="col mt-4"></div>
         </div>
-      </div>
 
-      <!-- Calculation Profile Section -->
-      <div class="col">
-        <h2 class="text-center mb-3">Kalkulatsiooni profiilid</h2>
-          <CalculationProfile :calculationProfiles="calculationProfiles"
-                              :study-id="studyId"
-                              @event-update-calculation-profile="getAllStudiesCalculationProfiles"
-          />
-          <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
-            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
-                               @click="addCalculationProfileView()"
-            />
-          </div>
-      </div>
-
-      <!-- Patients && Injection Section -->
-      <div class="row">
+        <!-- Calculation Profile Section -->
         <div class="col">
-          <h2 class="text-center mb-3">Patsiendi süstid</h2>
-          <PatientInjection :patientInjections="patientInjections"
-                            :study-id="studyId"
-                            @event-update-patient-injections="getAllStudiesPatientInjections"
+          <h2 class="text-center mb-3">Kalkulatsiooni profiilid</h2>
+          <CalculationProfile
+              :calculationProfiles="calculationProfiles"
+              :study-id="studyId"
+              @event-update-calculation-profile="getAllStudiesCalculationProfiles"
           />
           <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
-            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
-                               @click="addPatientInjectionsView()"
-            />
+            <button class="btn btn-outline-success btn-sm" @click="addCalculationProfileView()"
+                    title="Lisa arvutusprofiil"
+            >
+              <font-awesome-icon icon="plus"/>
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="col">
-        <!-- Machine fill Section -->
-        <h2 class="text-center mb-3">Viaali aktiivsus ja täitmised</h2>
-        <MachineFill :machineFills="machineFills"/>
-      </div>
-
-      <AlertDanger :error-message="errorMessage"/>
-      <AlertSuccess :success-message="successMessage"/>
-
-      <div class="row mt-4 justify-content-center">
-        <div class="col-md-4 text-center">
-          <!-- Rinse Calculation Button -->
-          <button class="btn btn-warning w-100" @click="getCalculationMachineRinseVolume()">
-            Arvuta Loputusmaht
-          </button>
-        </div>
-        <div class="col-md-4 text-center">
-          <!-- Save study -->
-          <button class="btn btn-success w-100" @click="saveStudy">
-            Salvesta kõik
-          </button>
-        </div>
-      </div>
-
-      <!-- Rinse Result Cards -->
-      <div class="row mt-4">
-        <div class="col-md-6">
-
-          <div class="card text-white bg-primary">
-            <div class="card-body">
-              <h5 class="card-title">Loputusmahl</h5>
-              <p class="card-text">
-                {{ calculationMachineRinseVolume }} mL
-              </p>
+        <!-- Patients && Injection Section -->
+        <div class="row">
+          <div class="col">
+            <h2 class="text-center mb-3">Patsiendi süstid</h2>
+            <PatientInjection
+                :patientInjections="patientInjections"
+                :study-id="studyId"
+                @event-update-patient-injections="getAllStudiesPatientInjections"
+            />
+            <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+              <button class="btn btn-outline-success btn-sm" @click="addPatientInjectionsView()"
+                      title="Lisa patsiendi süstid">
+                <font-awesome-icon icon="plus"/>
+              </button>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card text-white bg-success">
-            <div class="card-body">
-              <h5 class="card-title">Jääk aktiivsus</h5>
-              <p class="card-text">
-                {{ calculationMachineRinseActivity }} MBq
-              </p>
+
+        <div class="col">
+          <h2 class="text-center mb-3">Viaali aktiivsus ja täitmised</h2>
+          <MachineFill :machineFills="machineFills"/>
+        </div>
+
+        <AlertDanger :error-message="errorMessage"/>
+        <AlertSuccess :success-message="successMessage"/>
+
+        <div class="row mt-4 justify-content-center">
+          <div class="col-md-4 text-center">
+            <button class="btn btn-outline-primary btn-md px-4" @click="getCalculationMachineRinseVolume()">
+              <font-awesome-icon icon="calculator" class="me-2"/>
+              Arvuta Loputusmaht
+            </button>
+          </div>
+          <div class="col-md-4 text-center">
+            <button class="btn btn-outline-success btn-md px-4" @click="saveStudy">
+              <font-awesome-icon icon="save" class="me-2"/>
+              Salvesta kogu uuring
+            </button>
+          </div>
+        </div>
+
+        <!-- Rinse Result Cards -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="card shadow-sm border-primary">
+              <div class="card-body d-flex align-items-center">
+                <font-awesome-icon icon="tint" class="fa-2x text-primary me-3"/>
+                <div>
+                  <h5 class="card-title">Loputusmaht</h5>
+                  <p class="card-text fs-4">{{ studyResult.calculationMachineRinseVolume }} mL</p>
+                  <div class="progress" style="height: 6px;">
+                    <div
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        :style="{ width: (Math.min(studyResult.calculationMachineRinseVolume, 4) / 4 * 100) + '%' }"
+                        :aria-valuenow="studyResult.calculationMachineRinseVolume"
+                        aria-valuemin="0"
+                        aria-valuemax="4">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card shadow-sm border-success">
+              <div class="card-body d-flex align-items-center">
+                <font-awesome-icon icon="radiation" class="fa-2x text-success me-3"/>
+                <div>
+                  <h5 class="card-title">Jääk aktiivsus</h5>
+                  <p class="card-text fs-4">{{ studyResult.calculationMachineRinseActivity }} MBq</p>
+                  <div class="progress" style="height: 6px;">
+                    <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        :style="{ width: Math.min(studyResult.calculationMachineRinseActivity, 100) + '%' }"
+                        :aria-valuenow="studyResult.calculationMachineRinseActivity"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -198,6 +228,11 @@ export default {
       errorResponse: {
         message: '',
         errorCode: 0
+      },
+
+      studyResult: {
+        calculationMachineRinseVolume: null,
+        calculationMachineRinseActivity: null
       }
     }
   },
@@ -248,32 +283,32 @@ export default {
       this.patientInjection.studyId = this.studyId
     },
 
-    getCalculationMachineRinseVolume(){
+    getCalculationMachineRinseVolume() {
       StudyService.sendGetCalculateStudiesMachineRinseVolumeRequest(this.studyId)
           .then(value => this.handleGetStudiesMachineRinseVolumeSuccessResponse(value))
           .catch(reason => Navigation.navigateToErrorView())
     },
 
-    handleGetStudiesMachineRinseVolumeSuccessResponse(value){
-      this.calculationMachineRinseVolume = value.data
+    handleGetStudiesMachineRinseVolumeSuccessResponse(value) {
+      this.studyResult.calculationMachineRinseVolume = value.data
       this.getCalculationLastMachineRinseActivity()
     },
 
-    getCalculationLastMachineRinseActivity(){
+    getCalculationLastMachineRinseActivity() {
       StudyService.sendGetStudiesLastMachineRinseActivityRequest(this.studyId)
           .then(value => this.handleGetStudiesMachineActivitySuccessResponse(value))
           .catch(reason => Navigation.navigateToErrorView())
     },
 
-    handleGetStudiesMachineActivitySuccessResponse(value){
-      this.calculationMachineRinseActivity = value.data
+    handleGetStudiesMachineActivitySuccessResponse(value) {
+      this.studyResult.calculationMachineRinseActivity = value.data
       this.getAllStudiesMachineFills()
       this.successMessage = 'Loputusmaht arvutatud.'
       setTimeout(this.resetSuccessMessage, 4000)
     },
 
-    saveStudy(){
-      if(this.calculationMachineRinseVolume !== 0){
+    saveStudy() {
+      if (this.calculationMachineRinseVolume !== 0) {
         StudyService.sendPostSaveStudyRequest(this.studyId)
             .then(value => this.handleSendPostSaveStudyRequest())
             .catch(reason => Navigation.navigateToErrorView())
@@ -283,13 +318,19 @@ export default {
       }
     },
 
-    handleSendPostSaveStudyRequest(){
+    sendGetStudyResult() {
+      StudyService.sendGetStudyResultRequest(this.studyId)
+          .then(value => this.studyResult = value.data)
+          .catch(reason => Navigation.navigateToErrorView())
+    },
+
+    handleSendPostSaveStudyRequest() {
       this.successMessage = 'Uuring edukalt salvestatud.'
       setTimeout(this.resetSuccessMessage, 4000)
       Navigation.navigateToHomeView()
     },
 
-    setPatientInjectionPatientId(patientNationalId){
+    setPatientInjectionPatientId(patientNationalId) {
       this.patientInjection.patientNationalId = patientNationalId
     },
 
@@ -297,15 +338,15 @@ export default {
       this.patientInjection.injectionWeight = injectionWeight
     },
 
-    setPatientInjectionMbqKg(activityWeight){
+    setPatientInjectionMbqKg(activityWeight) {
       this.patientInjection.injectionMbqKg = activityWeight
     },
 
-    setPatientInjectionTime(injectedTime){
+    setPatientInjectionTime(injectedTime) {
       this.patientInjection.injectedTime = injectedTime
     },
 
-    setPatientInjectionActivity(injectedActivity){
+    setPatientInjectionActivity(injectedActivity) {
       this.patientInjection.injectedActivity = injectedActivity;
     },
 
@@ -318,7 +359,7 @@ export default {
     },
 
     addPatientInjectionsView() {
-      if (this.calculationProfiles.length === 0){
+      if (this.calculationProfiles.length === 0) {
         this.errorMessage = 'Pole lisatud kalkulatsiooniprofiil.'
         setTimeout(this.resetErrorMessage, 4000)
       } else {
@@ -335,7 +376,7 @@ export default {
       this.errorMessage = ''
     },
 
-    resetSuccessMessage(){
+    resetSuccessMessage() {
       this.successMessage = ''
     }
   },
@@ -345,6 +386,7 @@ export default {
     this.getAllStudiesCalculationProfiles()
     this.getAllStudiesPatientInjections()
     this.getAllStudiesMachineFills()
+    this.sendGetStudyResult()
   },
 }
 </script>

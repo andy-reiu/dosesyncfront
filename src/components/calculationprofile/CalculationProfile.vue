@@ -30,19 +30,15 @@
           <td>{{ calculationProfile.calibratedActivity }}</td>
           <td>{{ calculationProfile.fillVolume }}</td>
           <td v-if="isAdmin">
-            <div class="no-print">
-              <font-awesome-icon
-                  icon="pen-to-square"
-                  class="text-warning me-2"
-                  role="button"
-                  @click="viewCalculationProfileEditView(calculationProfile.calculationProfileId)"
-              />
-              <font-awesome-icon
-                  icon="trash"
-                  class="text-danger"
-                  role="button"
-                  @click="executeDeleteCalculationProfile(calculationProfile.calculationProfileId)"
-              />
+            <div class="d-flex justify-content-center gap-2 no-print">
+              <button class="btn btn-outline-warning btn-sm" title="Muuda profiili"
+                      @click="viewCalculationProfileEditView(calculationProfile.calculationProfileId)">
+                <font-awesome-icon icon="pen-to-square"/>
+              </button>
+              <button class="btn btn-outline-danger btn-sm" title="Kustuta profiil"
+                      @click="executeDeleteCalculationProfile(calculationProfile.calculationProfileId)">
+                <font-awesome-icon icon="trash"/>
+              </button>
             </div>
           </td>
         </tr>

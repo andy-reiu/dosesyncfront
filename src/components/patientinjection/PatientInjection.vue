@@ -36,13 +36,15 @@
         <td>{{ patientInjection.injectedTime }}</td>
         <td>{{ patientInjection.injectedActivity }}</td>
         <td v-if="isAdmin">
-          <div class="no-print">
-            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-                               @click="viewPatientInjectionEditView(patientInjection.injectionId)"
-            />
-            <font-awesome-icon icon="trash" class="text-danger" role="button"
-                               @click="deletePatientInjection(patientInjection.injectionId)"
-            />
+          <div class="d-flex justify-content-center gap-2 no-print">
+            <button class="btn btn-outline-warning btn-sm" title="Muuda süsti"
+                    @click="viewPatientInjectionEditView(patientInjection.injectionId)">
+              <font-awesome-icon icon="pen-to-square" />
+            </button>
+            <button class="btn btn-outline-danger btn-sm" title="Kustuta süst"
+                    @click="deletePatientInjection(patientInjection.injectionId)">
+              <font-awesome-icon icon="trash" />
+            </button>
           </div>
         </td>
       </tr>

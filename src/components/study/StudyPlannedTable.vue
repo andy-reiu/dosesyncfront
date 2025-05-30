@@ -33,13 +33,16 @@
           <td>{{ study.machineName }}</td>
           <td>{{ study.isotopeName }}</td>
           <td v-if="isAdmin">
-            <div class="w-75 mx-auto mb-3">
-              <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-                                 @click="editSelectedStudy(study)"
-              />
-              <font-awesome-icon icon="trash" class="text-danger" role="button"
-                                 @click="prepareDeleteStudy(study)"
-              />
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-outline-primary btn-sm" @click="navigateToStudyView(study)" title="Ava uuring">
+                <font-awesome-icon icon="chevron-right" />
+              </button>
+              <button class="btn btn-outline-warning btn-sm" @click="editSelectedStudy(study)" title="Muuda uuringut">
+                <font-awesome-icon icon="pen-to-square" />
+              </button>
+              <button class="btn btn-outline-danger btn-sm" @click="prepareDeleteStudy(study)" title="Kustuta uuring">
+                <font-awesome-icon icon="trash" />
+              </button>
             </div>
           </td>
         </tr>
@@ -144,6 +147,10 @@ export default {
       this.successMessage = ''
       this.errorMessage = ''
     },
+
+    navigateToStudyView(study){
+      Navigation.navigateToStudyView(study.studyId, study.isotopeId, study.isotopeName)
+    }
   },
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()

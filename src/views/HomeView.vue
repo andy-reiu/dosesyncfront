@@ -20,12 +20,13 @@
                            @event-study-updated="getAllStudies"
         />
         <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
-          <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
-                             @click="openNewStudyModal()"
-          />
+          <button class="btn btn-outline-success btn-sm" title="Lisa uus uuring"
+                  @click="openNewStudyModal()">
+            <font-awesome-icon icon="plus" />
+          </button>
         </div>
-        <h4 class="mt-4">🟡 Täna planeeritud uuring</h4>
-        <StudyTable :studies="todaysStudies"
+        <h4 class="mt-4">🟡 Täna ja tegemata uuringud</h4>
+        <StudyPlannedTable :pending-studies="todaysStudies"
                     :selected-study-id="selectedStudyId"
                     @event-study-updated="getAllStudies"
         />
@@ -66,10 +67,14 @@ export default {
       });
     },
     todaysStudies() {
+      const today = this.today;
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       return this.studies.filter(study => {
+        const studyDate = new Date(study.studyDate);
         return (
-            study.studyStatus === 'P' &&
-            study.studyDate === this.today
+            study.studyStatus === 'P' && (study.studyDate === today ||
+                (studyDate >= sevenDaysAgo && studyDate < new Date(today)))
         );
       });
     },
