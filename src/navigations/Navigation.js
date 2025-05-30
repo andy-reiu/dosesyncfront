@@ -10,7 +10,7 @@ export default {
         router.push({name: 'homeRoute'})
     },
 
-    navigateToLoginView(){
+    navigateToLoginView() {
         router.push({name: 'loginRoute'})
     },
 
@@ -38,9 +38,9 @@ export default {
         router.push({name: 'notAuthorizedRoute'})
     },
 
-    navigateToUsersView(userId) {
+    navigateToUserAccountView(userId) {
         router.push({
-            name: 'usersRoute',
+            name: 'userAccountRoute',
             query: {userId: userId}
         })
     },

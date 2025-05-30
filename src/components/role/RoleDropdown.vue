@@ -2,7 +2,7 @@
 <template>
   <div>
     <select :value="selectedRoleId" @change="handleRoleDropdownChange" class="form-select">
-      <option selected value="0">Please select one</option>
+      <option selected value="0">Vali roll</option>
       <option
           v-for="role in roles"
           :key="role.roleId"

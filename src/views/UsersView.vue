@@ -26,19 +26,21 @@
           <td>{{ user.nationalId }}</td>
           <td>
             <select
-              v-model="user.userStatus"
-              @change="updateUserStatus(user)"
-              class="form-select form-select-sm"
-          >
-            <option value="A">Active</option>
-            <option value="D">Deactive</option>
-          </select>
+                v-model="user.userStatus"
+                @change="updateUserStatus(user)"
+                class="form-select form-select-sm"
+            >
+              <option value="A">Active</option>
+              <option value="D">Deactive</option>
+            </select>
           </td>
           <td>
             <font-awesome-icon
                 icon="pen-to-square"
                 class="text-warning me-2"
-                role="button"/>
+                role="button"
+                @click="navigateToUserAccountView(user.userId)"
+            />
             <!--@click="startEditUserAccount"-->
           </td>
         </tr>
@@ -126,6 +128,10 @@ export default {
       UserService.sendGetUserRequest()
           .then(response => this.users = response.data)
           .catch(() => Navigation.navigateToErrorView())
+    },
+
+    navigateToUserAccountView(userId) {
+      Navigation.navigateToUserAccountView(userId)
     },
 
   },
