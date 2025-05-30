@@ -18,6 +18,15 @@ export default {
         )
     },
 
+    sendGetStudyResultRequest(studyId) {
+        return axios.get('/study/result', {
+                params: {
+                    studyId: studyId,
+                }
+            }
+        )
+    },
+
     sendGetCalculateStudiesMachineRinseVolumeRequest(studyId) {
         return axios.get('/study/machine-rinse-volume', {
                 params: {

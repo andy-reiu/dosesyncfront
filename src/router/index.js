@@ -7,6 +7,8 @@ import StudyView from "@/views/StudyView.vue";
 import UsersView from "@/views/UsersView.vue";
 import TechnicConfigurationView from "@/views/TechnicConfigurationView.vue";
 import UserAccountView from "@/views/UserAccountView.vue";
+import DoseCalculatorView from "@/views/DoseCalculatorView.vue";
+import AllStudiesView from "@/views/AllStudiesView.vue";
 
 
 const routes = [
@@ -50,6 +52,17 @@ const routes = [
         name: 'technicRoute',
         component: TechnicConfigurationView
     },
+    {
+        path: '/dose-calculation',
+        name: 'doseCalculationRoute',
+        component: DoseCalculatorView
+    },
+    {
+        path: '/all-studies',
+        name: 'allStudiesRoute',
+        component: AllStudiesView
+    },
+
 
 ]
 

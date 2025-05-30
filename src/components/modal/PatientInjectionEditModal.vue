@@ -58,10 +58,10 @@ export default {
   },
   methods: {
     executeUpdatePatientInjection() {
-      PatientInjectionService.sendPutPatientInjectionRequest(this.studyId, this.patientInjection)
-          .then(() => {
-            this.$emit('event-close-modal');
-          })
+      console.log(this.patientInjection.injectionId)
+      this.patientInjection.studyId = this.studyId;
+      PatientInjectionService.sendPutPatientInjectionRequest(this.patientInjection.injectionId, this.patientInjection)
+          .then(() => this.$emit('event-close-modal'))
           .catch(() => Navigation.navigateToErrorView());
     }
   }

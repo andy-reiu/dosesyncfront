@@ -12,29 +12,19 @@
             <font-awesome-icon icon="house"/>
             Kodu
           </router-link>
-
-          <template v-if="isAdmin && isLoggedIn">
-            <router-link class="nav-link d-flex align-items-center gap-2" to="/study" exact-active-class="active">
-              <font-awesome-icon icon="calculator"/>
-              Kalkulaator
-            </router-link>
-          </template>
-
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/f18-calculator"
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/dose-calculation"
                        exact-active-class="active">
             <font-awesome-icon icon="calculator"/>
-            F18 kalkulaator
+            Doosi kalkulaator
           </router-link>
 
-          <router-link class="nav-link d-flex align-items-center gap-2" to="/logs" exact-active-class="active">
+          <router-link class="nav-link d-flex align-items-center gap-2" to="/all-studies" exact-active-class="active">
             <font-awesome-icon icon="file-alt"/>
-            Logid
+            Kõik uuringud
           </router-link>
         </template>
+
         <!-- Show only if admin and logged in -->
-
-
-        <!--        // tehnik-->
         <template v-if="isAdmin && isLoggedIn">
           <router-link class="nav-link d-flex align-items-center gap-2"
                        to="/technic"

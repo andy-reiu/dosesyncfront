@@ -1,49 +1,54 @@
 <template>
-  <EditStudyModal
-      :modal-is-open="editStudyModalIsOpen"
-      @event-close-modal="editStudyModalIsOpen = false"
-      :study="study"
-      @event-study-updated="handleUpdateStudyRequest"
-      @event-new-machine-selected="setMachineId"
-      @event-new-isotope-selected="setIsotopeId"
-      @event-update-date="setDate"
-  />
-  <ConfirmDeleteModal
-      :show="viewDeleteModalIsOpen"
-      :item-name="studyPendingToDelete?.studyDate || 'selle uuringu'"
-      @confirm="confirmDeleteStudy"
-      @cancel="viewDeleteModalIsOpen = false"
-  />
-  <div class="">
-    <AlertSuccess :success-message="successMessage"/>
-    <AlertDanger :error-message="errorMessage"/>
-    <table class="table table-hover table-light table-striped-columns">
-      <thead class="table-dark">
-      <tr>
-        <th>Kuupäev</th>
-        <th>Seade</th>
-        <th>Isotoop</th>
-        <th v-if="isAdmin"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="study in pendingStudies" :key="study.studyId">
-        <td>{{ study.studyDate }}</td>
-        <td>{{ study.machineName }}</td>
-        <td>{{ study.isotopeName }}</td>
-        <td v-if="isAdmin">
-          <div class="w-75 mx-auto mb-3">
-            <font-awesome-icon icon="pen-to-square" class="text-warning me-2" role="button"
-                               @click="editSelectedStudy(study)"
-            />
-            <font-awesome-icon icon="trash" class="text-danger" role="button"
-                @click="prepareDeleteStudy(study)"
-            />
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div>
+    <EditStudyModal
+        :modal-is-open="editStudyModalIsOpen"
+        @event-close-modal="editStudyModalIsOpen = false"
+        :study="study"
+        @event-study-updated="handleUpdateStudyRequest"
+        @event-new-machine-selected="setMachineId"
+        @event-new-isotope-selected="setIsotopeId"
+        @event-update-date="setDate"
+    />
+    <ConfirmDeleteModal
+        :show="viewDeleteModalIsOpen"
+        :item-name="studyPendingToDelete?.studyDate || 'selle uuringu'"
+        @confirm="confirmDeleteStudy"
+        @cancel="viewDeleteModalIsOpen = false"
+    />
+    <div class="">
+      <AlertSuccess :success-message="successMessage"/>
+      <AlertDanger :error-message="errorMessage"/>
+      <table class="table table-hover table-light table-striped-columns">
+        <thead class="table-dark">
+        <tr>
+          <th>Kuupäev</th>
+          <th>Seade</th>
+          <th>Isotoop</th>
+          <th v-if="isAdmin"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="study in pendingStudies" :key="study.studyId">
+          <td>{{ study.studyDate }}</td>
+          <td>{{ study.machineName }}</td>
+          <td>{{ study.isotopeName }}</td>
+          <td v-if="isAdmin">
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-outline-primary btn-sm" @click="navigateToStudyView(study)" title="Ava uuring">
+                <font-awesome-icon icon="chevron-right" />
+              </button>
+              <button class="btn btn-outline-warning btn-sm" @click="editSelectedStudy(study)" title="Muuda uuringut">
+                <font-awesome-icon icon="pen-to-square" />
+              </button>
+              <button class="btn btn-outline-danger btn-sm" @click="prepareDeleteStudy(study)" title="Kustuta uuring">
+                <font-awesome-icon icon="trash" />
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <script>
@@ -142,6 +147,10 @@ export default {
       this.successMessage = ''
       this.errorMessage = ''
     },
+
+    navigateToStudyView(study){
+      Navigation.navigateToStudyView(study.studyId, study.isotopeId, study.isotopeName)
+    }
   },
   beforeMount() {
     this.isAdmin = RoleService.isAdmin()

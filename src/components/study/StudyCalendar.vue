@@ -2,7 +2,6 @@
   <div>
     <h5>See nädal</h5>
     <FullCalendar :options="calendarOptionsWeek1" />
-
     <h5 class="mt-4">Järgmine nädal</h5>
     <FullCalendar :options="calendarOptionsWeek2" />
   </div>

@@ -1,49 +1,51 @@
 <template>
   <div>
 
-    <!-- KASUTAJATE HALDUS  -->
     <div class="w-75 mx-auto mb-5">
-      <h2 class="text-center mb-3">Kasutaja kontod</h2>
-
-
-      <!--NB! muuda esilehele kuvatava tabeli sisu nii, et see võtaks userist ja profiilist
-      kokku valitud väljad : kasutajanimi, isikukood, ees ja perenimi, roll, staatus-->
+      <h2 class="text-center mb-3">Kasutajad</h2>
       <table class="table table-hover table-light table-striped-columns">
         <thead class="table-dark">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Kasutajanimi</th>
-          <th scope="col">Parool</th>
           <th scope="col">Roll</th>
+          <th scope="col">Eesnimi</th>
+          <th scope="col">Perekonnanimi</th>
+          <th scope="col">Isikukood</th>
           <th scope="col">Staatus</th>
-          <th scope="col">""""</th>
-
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-
-        <tr v-for="user in users" :key="user.userId">
+        <tr v-for="user in sortedUsers" :key="user.userId" :class="{ 'table-danger': user.userStatus === 'D' }">
           <td>{{ user.userId }}</td>
           <td>{{ user.username }}</td>
-          <td>{{ user.password }}</td>
-          <td>{{ user.role }}</td>
-          <td>{{ user.status }}</td>
-
+          <td>{{ user.roleName }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.nationalId }}</td>
           <td>
-
+            <select
+                v-model="user.userStatus"
+                @change="updateUserStatus(user)"
+                class="form-select form-select-sm"
+            >
+              <option value="A">Active</option>
+              <option value="D">Deactive</option>
+            </select>
+          </td>
+          <td>
             <font-awesome-icon
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"
                 @click="navigateToUserAccountView(user.userId)"
             />
-
+            <!--@click="startEditUserAccount"-->
           </td>
-
         </tr>
         </tbody>
       </table>
-
 
       <!-- + button -->
       <div class="d-flex justify-content-end mt-2">
@@ -60,46 +62,6 @@
           @event-save-isotope="createUser"
       />
 
-
-      <!-- PROFIILID  -->
-      <div class="w-75 mx-auto mb-5">
-        <h2 class="text-center mb-3">Profiilid</h2>
-        <table class="table table-hover table-light table-striped-columns">
-          <thead class="table-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Amet</th>
-            <th scope="col">Isikukood</th>
-            <th scope="col">Eesnimi</th>
-            <th scope="col">Perekonnanimi</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telefon</th>
-            <th scope="col">Loodud</th>
-            <th scope="col">Muudetud</th>
-
-
-          </tr>
-          </thead>
-          <tbody>
-
-          <tr v-for="profile in profiles" :key="profile.profileId">
-            <td>{{ profile.profileId }}</td>
-            <td>{{ profile.occupation }}</td>
-            <td>{{ profile.nationalId }}</td>
-            <td>{{ profile.firstName }}</td>
-            <td>{{ profile.lastName }}</td>
-            <td>{{ profile.email }}</td>
-            <td>{{ profile.phoneNumber }}</td>
-            <td>{{ profile.createdAt }}</td>
-            <td>{{ profile.updatedAt }}</td>
-
-
-          </tr>
-          </tbody>
-        </table>
-
-
-      </div>
     </div>
   </div>
 
@@ -108,7 +70,6 @@
 import AddUserModal from "@/components/modal/AddUserModal.vue";
 import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
-import ProfileService from "@/services/ProfileService";
 
 export default {
   name: 'UsersView',
@@ -120,39 +81,33 @@ export default {
       userId: Number(sessionStorage.getItem(('userId'))),
       roleName: sessionStorage.getItem('roleName'),
 
-      users: [
-        {
-          userId: 0,
-          username: '',
-          password: '',
-          role: '',
-          status: ''
-        }
-      ],
-
-      profiles: [
-        {
-          profileId: 0,
-          occupation: '',
-          nationalId: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
-          createdAt: '',
-          updatedAt: '',
-
-        }
-      ],
-
+      users: [{
+        userId: null,
+        username: '',
+        userStatus: '',
+        roleId: null,
+        roleName: '',
+        profileId: null,
+        firstName: '',
+        lastName: '',
+        nationalId: '',
+      }],
       errorResponse: {
         message: '',
-        errorCode: ''
+        errorCode:
+            ''
       }
-
     }
   },
   methods: {
+
+
+    updateUserStatus(user) {
+      UserService.sendUpdateUserStatusRequest(user.userId, user.userStatus)
+          .then(() => this.getAllUsers())
+          .catch(error => console.error(error))
+    },
+
     createUser(userData) {
       UserService.sendPostUserRequest(userData)
           //refresh list
@@ -160,7 +115,6 @@ export default {
           .catch(error => console.error(error))
 
     },
-
 
     startAddUser() {
       this.showAddUser = true
@@ -170,17 +124,9 @@ export default {
       this.showAddUser = false
     },
 
-
-
     getAllUsers() {
-      UserService.sendGetUsersRequest()
+      UserService.sendGetUserRequest()
           .then(response => this.users = response.data)
-          .catch(() => Navigation.navigateToErrorView())
-    },
-
-    getAllProfiles() {
-      ProfileService.sendGetUsersProfilesRequest()
-          .then(response => this.profiles = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
 
@@ -188,18 +134,22 @@ export default {
       Navigation.navigateToUserAccountView(userId)
     },
 
+  },
 
-    // //
-    // getAllProfiles() {
-    //   ProfileService.sindGetProfileRequest()
-    //       .then(response => this.profiles =response.data())
-    //       .catch(() => Navigation. navigateToErrorView())
-    // }
+  computed: {
+
+    sortedUsers() {
+      return [...this.users].sort((a, b) => {
+        if (a.userStatus !== b.userStatus) {
+          return a.userStatus === 'A' ? -1 : 1
+        }
+        return a.userId - b.userId
+      })
+    },
   },
 
   beforeMount() {
     this.getAllUsers()
-    this.getAllProfiles()
   }
 
 }

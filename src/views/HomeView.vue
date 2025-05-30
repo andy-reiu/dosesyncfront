@@ -1,47 +1,43 @@
 <template>
-  <div class="home">
-    <NewStudyModal :modal-is-open="newStudyModalIsOpen"
-                   @event-close-modal="closeStudyModal"
-                   @event-execute-new-study="newStudyModal"
-                   @event-update-study-table="getAllStudies"
-    />
-    <div class="container text-center">
-      <div class="row">
-        <div class="col mt-4">
-          <AlertDanger :error-message="errorMessage"></AlertDanger>
-          <h2 class="text-center mb-3">Planeerimine</h2>
-        </div>
+  <div class="home background-wrapper">
+    <div class="overlay-box container p-4 shadow-sm rounded">
+      <NewStudyModal :modal-is-open="newStudyModalIsOpen"
+                     @event-close-modal="closeStudyModal"
+                     @event-execute-new-study="newStudyModal"
+                     @event-update-study-table="getAllStudies"
+      />
+      <div class="text-center">
+        <AlertDanger :error-message="errorMessage"></AlertDanger>
+        <h2 class="mb-3">Planeerimine</h2>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <StudyCalendar :studies="studies"/>
-        </div>
+      <div>
+        <StudyCalendar :studies="studies"/>
       </div>
-      <div class="row">
-        <div class="row">
-          <div class="col-12">
-            <h4 class="mt-4">🟠 Planeeritav uuring</h4>
-            <StudyPlannedTable :pending-studies="pendingStudies"
-                               :selected-study-id="selectedStudyId"
-                               @event-study-updated="getAllStudies"
-            />
-          </div>
-          <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
-            <font-awesome-icon icon="plus" class="fa-2x text-success" role="button"
-                               @click="openNewStudyModal()"
-            />
-          </div>
-          <div class="col-12">
-            <h4 class="mt-4">🟢 Salvestatud uuringud</h4>
-            <StudyTable :studies="completedStudies"
-                        :selected-study-id="selectedStudyId" />
-          </div>
+      <div>
+        <h4 class="mt-4">🟠 Järgmise kahe nädala uuringud</h4>
+        <StudyPlannedTable :pending-studies="pendingStudies"
+                           :selected-study-id="selectedStudyId"
+                           @event-study-updated="getAllStudies"
+        />
+        <div v-if="isAdmin" class="d-flex justify-content-end mt-2">
+          <button class="btn btn-outline-success btn-sm" title="Lisa uus uuring"
+                  @click="openNewStudyModal()">
+            <font-awesome-icon icon="plus" />
+          </button>
         </div>
+        <h4 class="mt-4">🟡 Täna ja tegemata uuringud</h4>
+        <StudyPlannedTable :pending-studies="todaysStudies"
+                    :selected-study-id="selectedStudyId"
+                    @event-study-updated="getAllStudies"
+        />
+        <h4 class="mt-4">🟢 Salvestatud uuringud (viimased 7 päeva)</h4>
+        <StudyTable :studies="completedStudies"
+                    :selected-study-id="selectedStudyId"
+        />
       </div>
     </div>
   </div>
 </template>
-
 <script>
 
 import StudyService from "@/services/StudyService";
@@ -57,13 +53,43 @@ export default {
   name: 'HomeView',
   components: {StudyPlannedTable, NewStudyModal, AlertDanger, StudyTable, StudyCalendar},
   computed: {
+    today() {
+      return new Date().toISOString().split('T')[0];
+    },
     pendingStudies() {
-      return this.studies.filter(study => study.studyStatus === 'P');
+      const today = new Date();
+      const twoWeeksLater = new Date();
+      twoWeeksLater.setDate(today.getDate() + 14);
+
+      return this.studies.filter(study => {
+        const studyDate = new Date(study.studyDate);
+        return study.studyStatus === 'P' && studyDate > today && studyDate <= twoWeeksLater;
+      });
+    },
+    todaysStudies() {
+      const today = this.today;
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      return this.studies.filter(study => {
+        const studyDate = new Date(study.studyDate);
+        return (
+            study.studyStatus === 'P' && (study.studyDate === today ||
+                (studyDate >= sevenDaysAgo && studyDate < new Date(today)))
+        );
+      });
     },
     completedStudies() {
-      return this.studies.filter(study => study.studyStatus === 'C');
+      const today = new Date();
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(today.getDate() - 7);
+
+      return this.studies.filter(study => {
+        const studyDate = new Date(study.studyDate);
+        return study.studyStatus === 'C' && studyDate >= sevenDaysAgo && studyDate <= today;
+      });
     }
   },
+
   data() {
     return {
       newStudyModalIsOpen: false,
@@ -86,7 +112,7 @@ export default {
           studyStatus: '',
           calculationMachineRinseVolume: null,
           calculationMachineRinseActivity: null,
-          isotopeId:'',
+          isotopeId: '',
           isotopeName: '',
         }
       ],
@@ -99,15 +125,15 @@ export default {
 
   methods: {
 
-    openNewStudyModal(){
+    openNewStudyModal() {
       this.newStudyModalIsOpen = true;
     },
 
-    closeStudyModal(){
+    closeStudyModal() {
       this.newStudyModalIsOpen = false;
     },
 
-    newStudyModal(){
+    newStudyModal() {
       this.newStudyModalIsOpen = false;
       Navigation.navigateToStudyView();
     },

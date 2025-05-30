@@ -15,9 +15,8 @@ export default {
     },
 
     sendUpdateMachineStatusRequest(id, machineStatus) {
-        console.log(id)
-        console.log(machineStatus)
-        return axios.patch('/machine/' + id + '/patch-status', null,
+
+        return axios.patch('/machine/' + id + '/machine-status', null,
             {
                 params: {
                     status: machineStatus,
@@ -25,5 +24,13 @@ export default {
             }
         )
     },
+    sendUpdateMachineRequest(id, machineUpdate) {
+        return axios.patch(`/machine/machines/${id}`, machineUpdate)
+    },
 
-};
+
+    sendDeleteMachineRequest(id) {
+        return axios.delete(`/machine/machines/${id}`)
+    },
+
+}

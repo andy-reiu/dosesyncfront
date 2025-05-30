@@ -173,3 +173,205 @@ main {
 .fc-daygrid-day-number {
     color: black !important;
 }
+
+@media print {
+    /* Hide all buttons */
+    button {
+        display: none !important;
+    }
+
+    /* Hide close button specifically */
+    .btn-close {
+        display: none !important;
+    }
+
+    /* Hide modal footer (usually contains buttons) */
+    .modal-footer {
+        display: none !important;
+    }
+
+    /* Only show modal content */
+    body * {
+        visibility: hidden;
+    }
+
+    .modal-content, .modal-content * {
+        visibility: visible;
+    }
+
+    .modal-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+.badge-status {
+    padding: 4px 8px;
+    border-radius: 0.375rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+}
+
+.badge-pending {
+    background-color: #ffc107; /* yellow */
+}
+
+.badge-in-progress {
+    background-color: #17a2b8; /* blue */
+}
+
+.badge-completed {
+    background-color: #28a745; /* green */
+}
+
+.badge-unknown {
+    background-color: #6c757d; /* gray */
+}
+
+.login-page {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/39/Viru_Raba_Aerofoto.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(255, 255, 255, 0.85); /* Optional soft white overlay */
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    border: none;
+    background-color: #ffffffee; /* Semi-transparent white */
+    border-radius: 1rem;
+}
+
+.logout-card-content {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    background-color: #ffffffee;
+    border-radius: 1rem;
+    font-size: 0.95rem;
+}
+
+.logout-image {
+    max-height: 140px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.background-wrapper {
+    position: relative;
+    min-height: 100vh;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/39/Viru_Raba_Aerofoto.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* no opacity here! */
+}
+
+.background-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.15);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.overlay-box {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    margin: 3rem auto;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    padding: 2rem;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-right: 1px solid #ddd;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    /* slightly rounded corners on left side */
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    z-index: 10;
+}
+
+.sidebar .nav-link {
+    color: #333;
+    font-weight: 500;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e9f5ff;
+    color: #1bbb68;
+    text-decoration: none;
+}
+
+.sidebar .nav-link.active {
+    background-color: #1bbb68;
+    color: white !important;
+    font-weight: 600;
+}
+
+.sidebar .nav-link .fa-icon,
+.sidebar .nav-link svg {
+    font-size: 1.1rem;
+    color: inherit;
+}
+
+.sidebar .nav-link.d-flex {
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar button.nav-link {
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    color: #dc3545;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar button.nav-link:hover {
+    background-color: #f8d7da;
+    color: #b02a37;
+}
+
+.mt-auto.pt-3.border-top {
+    border-color: #eee !important;
+    margin-top: auto !important;
+    padding-top: 1rem !important;
+}
+
