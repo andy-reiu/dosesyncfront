@@ -3,7 +3,7 @@
     <div>
       <h2 class="text-center mb-3">Isotoobid</h2>
       <table class="table table-hover table-light table-striped-columns">
-        <thead class="table-dark">
+        <thead  class="table-dark">
         <tr>
           <th>ID</th>
           <th>Isotoobi nimetus</th>
