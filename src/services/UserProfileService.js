@@ -2,9 +2,10 @@ import axios from "axios";
 
 export default {
 
-    sendGetUserProfileRequest(){
+    sendGetUsersProfilesRequest(){
         return axios.get('/profiles')
     }
+
 
 }
 
@@ -12,7 +13,7 @@ export default {
 //import axios from "axios";
 //
 // export default {
-//    sendGetUserRequest(){
+//    sendGetUsersRequest(){
 //        return axios.get('/users')
 //    },
 //

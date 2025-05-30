@@ -46,7 +46,7 @@
                        to="/users"
                        exact-active-class="active">
             <font-awesome-icon icon="users"/>
-            User
+            Kasutajad
           </router-link>
         </template>
 
