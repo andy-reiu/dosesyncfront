@@ -1,16 +1,6 @@
 <template>
 
-  <div class="container text-center">
 
-    <div class="row justify-content-center">
-      <div class="col col-5">
-        <AlertSuccess :success-message="successMessage"/>
-        <AlertDanger :error-message="errorMessage"/>
-        <h1 v-if="isEdit">Muuda kasutaja infot</h1>
-        <h1 v-else>Lisa kasutaja</h1>
-      </div>
-    </div>
-  </div>
 
 
   <!--  KASUTAJA INFO source tables: user, role-->
@@ -153,12 +143,11 @@
 <script>
 import UserService from "@/services/UserService";
 import ProfileService from "@/services/ProfileService";
-import AlertDanger from "@/components/alert/AlertDanger.vue";
-import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+
 
 export default {
   name: "UserAccountView",
-  components: {AlertSuccess, AlertDanger},
+
   // components: {AlertSuccess, AlertDanger, UserImage, UserDetailsInput, RoleDropdown},
   // LOO USERSDETAILSINPUT!!!
   data() {
