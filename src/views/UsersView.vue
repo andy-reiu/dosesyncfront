@@ -1,7 +1,6 @@
 <template>
   <div>
 
-    <!-- KASUTAJATE HALDUS  -->
     <div class="w-75 mx-auto mb-5">
       <h2 class="text-center mb-3">Kasutajad</h2>
       <table class="table table-hover table-light table-striped-columns">
@@ -9,48 +8,42 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Kasutajanimi</th>
-          <th scope="col">Parool</th>
           <th scope="col">Roll</th>
+          <th scope="col">Eesnimi</th>
+          <th scope="col">Perekonnanimi</th>
+          <th scope="col">Isikukood</th>
           <th scope="col">Staatus</th>
-          <th scope="col">""""</th>
-
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <!--        <tr>-->
-        <!--          <th scope="row">1</th>-->
-        <!--          <td>testkasutaja</td>-->
-        <!--          <td>39104152516</td>-->
-        <!--          <td>Otto</td>-->
-        <!--          <td>Motto</td>-->
-        <!--          <td>Planeerimine</td>-->
-        <!--          <td>A</td>-->
-        <!--          <td>-->
-
-
-
-
-
-        <tr v-for="user in users" :key="user.userId">
+        <tr v-for="user in sortedUsers" :key="user.userId" :class="{ 'table-danger': user.userStatus === 'D' }">
           <td>{{ user.userId }}</td>
           <td>{{ user.username }}</td>
-          <td>{{ user.password }}</td>
-          <td>{{ user.role }}</td>
-          <td>{{ user.status }}</td>
-
+          <td>{{ user.roleName }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.nationalId }}</td>
           <td>
-
+            <select
+              v-model="user.userStatus"
+              @change="updateUserStatus(user)"
+              class="form-select form-select-sm"
+          >
+            <option value="A">Active</option>
+            <option value="D">Deactive</option>
+          </select>
+          </td>
+          <td>
             <font-awesome-icon
                 icon="pen-to-square"
                 class="text-warning me-2"
                 role="button"/>
             <!--@click="startEditUserAccount"-->
           </td>
-
         </tr>
         </tbody>
       </table>
-
 
       <!-- + button -->
       <div class="d-flex justify-content-end mt-2">
@@ -86,39 +79,33 @@ export default {
       userId: Number(sessionStorage.getItem(('userId'))),
       roleName: sessionStorage.getItem('roleName'),
 
-      users: [
-        {
-          userId: 0,
-          username: '',
-          password: '',
-          role: '',
-          status: ''
-        }
-      ],
-
-      profiles: [
-        {
-          profileId: 0,
-          occupation: '',
-          nationalId: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
-          createdAt: '',
-          updatedAt: '',
-          hospitalName: '',
-        }
-      ],
-
+      users: [{
+        userId: null,
+        username: '',
+        userStatus: '',
+        roleId: null,
+        roleName: '',
+        profileId: null,
+        firstName: '',
+        lastName: '',
+        nationalId: '',
+      }],
       errorResponse: {
         message: '',
-        errorCode: ''
+        errorCode:
+            ''
       }
-
     }
   },
   methods: {
+
+
+    updateUserStatus(user) {
+      UserService.sendUpdateUserStatusRequest(user.userId, user.userStatus)
+          .then(() => this.getAllUsers())
+          .catch(error => console.error(error))
+    },
+
     createUser(userData) {
       UserService.sendPostUserRequest(userData)
           //refresh list
@@ -126,7 +113,6 @@ export default {
           .catch(error => console.error(error))
 
     },
-
 
     startAddUser() {
       this.showAddUser = true
@@ -141,12 +127,19 @@ export default {
           .then(response => this.users = response.data)
           .catch(() => Navigation.navigateToErrorView())
     },
-    //
-    // getAllProfiles() {
-    //   ProfileService.sindGetProfileRequest()
-    //       .then(response => this.profiles =response.data())
-    //       .catch(() => Navigation. navigateToErrorView())
-    // }
+
+  },
+
+  computed: {
+
+    sortedUsers() {
+      return [...this.users].sort((a, b) => {
+        if (a.userStatus !== b.userStatus) {
+          return a.userStatus === 'A' ? -1 : 1
+        }
+        return a.userId - b.userId
+      })
+    },
   },
 
   beforeMount() {
