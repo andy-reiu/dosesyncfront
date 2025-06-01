@@ -1,13 +1,20 @@
 <template>
   <div>
+    <AlertSuccess :success-message="successMessage"/>
+    <AlertDanger :error-message="errorMessage"/>
     <ViewStudyDetails
         v-if="viewStudyModalIsOpen"
         :modalIsOpen="viewStudyModalIsOpen"
         :studyId="selectedStudyId"
         @event-close-modal="viewStudyModalIsOpen = false"
     />
-
-    <table class="table table-hover table-light table-striped-columns">
+    <ConfirmDeleteModal
+        :show="viewDeleteModalIsOpen"
+        :item-name="studyPendingToDelete?.studyDate || 'selle uuringu'"
+        @confirm="confirmDeleteStudy"
+        @cancel="viewDeleteModalIsOpen = false"
+    />
+    <table class="table table-hover table-light table-striped-columns spaced-table">
       <thead class="table-dark">
       <tr>
         <th>Kuupäev</th>
@@ -47,7 +54,7 @@
               <font-awesome-icon icon="pen-to-square"/>
             </button>
             <button class="btn btn-outline-danger btn-sm" title="Kustuta uuring"
-                    @click="deleteSelectedStudy(study.studyId)">
+                    @click="prepareDeleteStudy(study)">
               <font-awesome-icon icon="trash"/>
             </button>
           </div>
@@ -63,9 +70,12 @@ import StudyService from "@/services/StudyService";
 import Navigation from "@/navigations/Navigation";
 import ViewStudyDetails from "@/components/modal/ViewStudyDetailsModal.vue";
 import RoleService from "@/services/RoleService";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 export default {
   name: "AllStudiesView",
-  components: {ViewStudyDetails},
+  components: {AlertSuccess, AlertDanger, ConfirmDeleteModal, ViewStudyDetails},
   data() {
     return {
       viewStudyModalIsOpen: false,
@@ -87,6 +97,10 @@ export default {
           isotopeName: '',
         }
       ],
+      viewDeleteModalIsOpen: false,
+      studyPendingToDelete: null,
+      successMessage: '',
+      errorMessage: '',
     };
   },
   computed: {
@@ -107,20 +121,33 @@ export default {
       Navigation.navigateToStudyView(studyId, isotopeId, isotopeName);
     },
 
-    // deleteSelectedStudy(studyId) {
-    //   if (confirm("Kas oled kindel, et soovid selle uuringu kustutada?")) {
-    //     StudyService.sendDeleteStudyRequest(studyId)
-    //         .then(() => {
-    //           this.studies = this.studies.filter(study => study.studyId !== studyId);
-    //         })
-    //         .catch(() => alert("Uuringu kustutamine ebaõnnestus."));
-    //   }
-    // },
+    confirmDeleteStudy() {
+      StudyService.sendDeleteStudyPendingRequest(this.studyPendingToDelete.studyId)
+          .then(() => this.handleDeleteStudyResponse())
+          .catch(() => Navigation.navigateToErrorView());
+    },
+
+    handleDeleteStudyResponse() {
+      this.$emit('event-study-updated');
+      this.studyPendingToDelete = null;
+      this.viewDeleteModalIsOpen = false;
+      this.setTimedOutSuccessMessage("Uuring on edukalt kustutatud.");
+    },
+
+    prepareDeleteStudy(study) {
+      this.studyPendingToDelete = study;
+      this.viewDeleteModalIsOpen = true;
+    },
 
     getAllStudies() {
       StudyService.sendGetStudiesRequest()
           .then(response => this.studies = response.data)
           .catch(() => Navigation.navigateToErrorView());
+    },
+
+    setTimedOutSuccessMessage(message) {
+      this.successMessage = message
+      setTimeout(this.resetMessages, 4000)
     },
   },
 

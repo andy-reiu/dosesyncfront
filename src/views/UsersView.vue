@@ -1,6 +1,19 @@
 <template>
   <div>
-
+    <AddUserModal
+        :modal-is-open="showAddUser"
+        @event-close-modal="closeAddUser"
+        @event-save-isotope="createUser"
+    />
+    <UserAccountEditModal
+        v-if="viewEditModalIsOpen && userInfo && profileInfo"
+        :modal-is-open="viewEditModalIsOpen"
+        :user-info="userInfo"
+        :profile-info="profileInfo"
+        :selected-user-id="selectedUserid"
+        @event-update-users="getAllUsers"
+        @event-close-modal="viewEditModalIsOpen = false"
+    />
     <div class="w-75 mx-auto mb-5">
       <h2 class="text-center mb-3">Kasutajad</h2>
       <table class="table table-hover table-light table-striped-columns">
@@ -35,13 +48,12 @@
             </select>
           </td>
           <td>
-            <font-awesome-icon
-                icon="pen-to-square"
-                class="text-warning me-2"
-                role="button"
-                @click="navigateToUserAccountView(user.userId)"
-            />
-            <!--@click="startEditUserAccount"-->
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-outline-warning btn-sm" title="Muuda kasutajakontot"
+                      @click="navigateToUserAccountView(user.userId)">
+                <font-awesome-icon icon="pen-to-square"/>
+              </button>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -49,19 +61,11 @@
 
       <!-- + button -->
       <div class="d-flex justify-content-end mt-2">
-        <font-awesome-icon
-            icon="plus"
-            class="fa-2x text-success"
-            role="button"
-            @click="startAddUser"/>
+        <button class="btn btn-outline-success btn-sm" title="Lisa kasutaja"
+                @click="startAddUser">
+          <font-awesome-icon icon="plus"/>
+        </button>
       </div>
-      <!-- add user modal -->
-      <AddUserModal
-          :modal-is-open="showAddUser"
-          @event-close-modal="closeAddUser"
-          @event-save-isotope="createUser"
-      />
-
     </div>
   </div>
 
@@ -70,17 +74,21 @@
 import AddUserModal from "@/components/modal/AddUserModal.vue";
 import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
+import UserAccountEditModal from "@/components/account/UserAccountEditModal.vue";
+import ProfileService from "@/services/ProfileService";
 
 export default {
   name: 'UsersView',
-  components: {AddUserModal},
+  components: {UserAccountEditModal, AddUserModal},
   data() {
     return {
       showAddUser: false,
+      viewEditModalIsOpen: false,
 
       userId: Number(sessionStorage.getItem(('userId'))),
       roleName: sessionStorage.getItem('roleName'),
 
+      selectedUserid: 0,
       users: [{
         userId: null,
         username: '',
@@ -96,7 +104,10 @@ export default {
         message: '',
         errorCode:
             ''
-      }
+      },
+
+      userInfo: [],
+      profileInfo: [],
     }
   },
   methods: {
@@ -110,10 +121,8 @@ export default {
 
     createUser(userData) {
       UserService.sendPostUserRequest(userData)
-          //refresh list
           .then(() => this.getAllUsers())
           .catch(error => console.error(error))
-
     },
 
     startAddUser() {
@@ -130,14 +139,27 @@ export default {
           .catch(() => Navigation.navigateToErrorView())
     },
 
-    navigateToUserAccountView(userId) {
-      Navigation.navigateToUserAccountView(userId)
+    executeGetUserInfo(selectedUserId) {
+      UserService.sendGetUserInfoRequest(selectedUserId)
+          .then(response => this.userInfo = response.data)
     },
 
+    executeGetProfileInfo(selectedUserId) {
+      ProfileService.sendGetUserProfileInfoRequest(selectedUserId)
+          .then(response => this.profileInfo = response.data)
+    },
+
+    navigateToUserAccountView(selectedUserId) {
+      Promise.all([this.executeGetUserInfo(selectedUserId), this.executeGetProfileInfo(selectedUserId)])
+          .then(() => {
+            this.selectedUserid = selectedUserId
+            this.viewEditModalIsOpen = true
+          })
+          .catch(error => Navigation.navigateToErrorView(error))
+    },
   },
 
   computed: {
-
     sortedUsers() {
       return [...this.users].sort((a, b) => {
         if (a.userStatus !== b.userStatus) {

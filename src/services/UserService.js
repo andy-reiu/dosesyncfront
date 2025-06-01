@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default {
-   sendGetUserRequest(userId) {
+   sendGetUserInfoRequest(userId) {
        return axios.get('/user',{
            params: {
                userId: userId
@@ -30,5 +30,13 @@ export default {
 
     sendGetUserRequest() {
        return axios.get('/admin-view/users')
+    },
+
+    sendPutUpdateUserRequest(selectedUserId, userInfo) {
+        return axios.put('/user/update', userInfo, {
+            params: {
+                selectedUserId: selectedUserId,
+            }
+        });
     },
 }

@@ -3,7 +3,7 @@
     <div>
       <h2 class="text-center mb-3">Isotoobid</h2>
       <table class="table table-hover table-light table-striped-columns">
-        <thead  class="table-dark">
+        <thead class="table-dark">
         <tr>
           <th>ID</th>
           <th>Isotoobi nimetus</th>
@@ -100,32 +100,27 @@
           </span>
             </template>
             <template v-else>
-              <font-awesome-icon
-                  icon="pen-to-square"
-                  class="text-warning me-2"
-                  role="button"
-                  style="cursor: pointer"
-                  @click="startEditIsotope(isotope)"
-              />
-              <font-awesome-icon
-                  icon="trash"
-                  class="text-danger"
-                  role="button"
-                  style="cursor: pointer"
-                  @click="openDeleteConfirmation('isotope', isotope.isotopeId, isotope.isotopeName)"
-              />
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-warning btn-sm" title="Muuda isotoopi"
+                        @click="startEditIsotope(isotope)">
+                  <font-awesome-icon icon="pen-to-square"/>
+                </button>
+                <button
+                    class="btn btn-outline-danger btn-sm" title="Kustuta isotoobi"
+                    @click="openDeleteConfirmation('isotope', isotope.isotopeId, isotope.isotopeName)">
+                  <font-awesome-icon icon="trash"/>
+                </button>
+              </div>
             </template>
           </td>
         </tr>
         </tbody>
       </table>
       <div class="d-flex justify-content-end mt-2">
-        <font-awesome-icon
-            icon="plus"
-            class="fa-2x text-success"
-            role="button"
-            @click="startAddIsotope"
-        />
+        <button class="btn btn-outline-success btn-sm" title="Lisa isotoop"
+                @click="startAddIsotope">
+          <font-awesome-icon icon="plus"/>
+        </button>
       </div>
       <AddIsotopeModal
           :modal-is-open="showAddIsotope"
@@ -255,30 +250,26 @@
             </span>
             </template>
             <template v-else>
-              <font-awesome-icon
-                  icon="pen-to-square"
-                  class="text-warning me-2"
-                  role="button"
-                  @click="startEditCalculationSetting(cs)"
-              />
-              <font-awesome-icon
-                  icon="trash"
-                  class="text-danger"
-                  role="button"
-                  @click="openDeleteConfirmation('calculationsetting', cs.settingId, 'kalkulatsiooni säte')"
-              />
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-warning btn-sm" title="Muuda kalkulatsiooni sätet"
+                        @click="startEditCalculationSetting(cs)">
+                  <font-awesome-icon icon="pen-to-square"/>
+                </button>
+                <button class="btn btn-outline-danger btn-sm" title="Kustuta kalkulatsiooni säte"
+                        @click="openDeleteConfirmation('calculationsetting', cs.settingId, 'kalkulatsiooni säte')">
+                  <font-awesome-icon icon="trash"/>
+                </button>
+              </div>
             </template>
           </td>
         </tr>
         </tbody>
       </table>
       <div class="d-flex justify-content-end mt-2">
-        <font-awesome-icon
-            icon="plus"
-            class="fa-2x text-success"
-            role="button"
-            @click="startAddCalculationSetting"
-        />
+        <button class="btn btn-outline-success btn-sm" title="Lisa kalkulatsiooni säte"
+                @click="startAddCalculationSetting">
+          <font-awesome-icon icon="plus"/>
+        </button>
         <AddCalculationSettingModal
             :modal-is-open="showAddCalculationSetting"
             @event-close-modal="closeAddCalculationSetting"
@@ -391,18 +382,16 @@
               </span>
             </template>
             <template v-else>
-              <font-awesome-icon
-                  icon="pen-to-square"
-                  class="text-warning me-2"
-                  role="button"
-                  @click="startEditMachine(machine)"
-              />
-              <font-awesome-icon
-                  icon="trash"
-                  class="text-danger"
-                  role="button"
-                  @click="openDeleteConfirmation('machine', machine.machineId, machine.machineName)"
-              />
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-warning btn-sm" title="Muuda seadet"
+                        @click="startEditMachine(machine)">
+                  <font-awesome-icon icon="pen-to-square"/>
+                </button>
+                <button class="btn btn-outline-danger btn-sm" title="Kustuta seade"
+                        @click="openDeleteConfirmation('machine', machine.machineId, machine.machineName)">
+                  <font-awesome-icon icon="trash"/>
+                </button>
+              </div>
             </template>
           </td>
         </tr>
@@ -411,12 +400,10 @@
       </table>
 
       <div class="d-flex justify-content-end mt-2">
-        <font-awesome-icon
-            icon="plus"
-            class="fa-2x text-success"
-            role="button"
-            @click="startAddMachine"
-        />
+        <button class="btn btn-outline-success btn-sm" title="Lisa seade"
+                @click="startAddMachine">
+          <font-awesome-icon icon="plus"/>
+        </button>
         <AddMachineModal
             :modal-is-open="showAddMachine"
             @event-close-modal="closeAddMachine"
@@ -472,32 +459,28 @@
           </span>
             </template>
             <template v-else>
-              <font-awesome-icon
-                  icon="pen-to-square"
-                  class="text-warning me-2"
-                  role="button"
-                  style="cursor: pointer"
-                  @click="startEditHospital(hospital)"
-              />
-              <font-awesome-icon
-                  icon="trash"
-                  class="text-danger"
-                  role="button"
-                  style="cursor: pointer"
-                  @click="openDeleteConfirmation('isotope', hospital.hospitalId, hospital.hospitalId)"
-              />
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-warning btn-sm" title="Muuda haiglat"
+                        @click="startEditHospital(hospital)">
+                  <font-awesome-icon icon="pen-to-square"/>
+                </button>
+                <button class="btn btn-outline-danger btn-sm" title="Kustuta haigla"
+                        @click="openDeleteConfirmation('hospital', hospital.hospitalId, hospital.hospitalId)">
+                  <font-awesome-icon icon="trash"/>
+                </button>
+              </div>
             </template>
           </td>
         </tr>
         </tbody>
       </table>
       <div class="d-flex justify-content-end mt-2">
-        <font-awesome-icon
-            icon="plus"
-            class="fa-2x text-success"
-            role="button"
-            @click="startAddHospital"
-        />
+        <div>
+          <button class="btn btn-outline-success btn-sm" title="Lisa haigla"
+                  @click="startAddHospital">
+            <font-awesome-icon icon="plus"/>
+          </button>
+        </div>
       </div>
       <AddHospitalModal
           :modal-is-open="showAddHospital"
@@ -524,7 +507,14 @@ import AddHospitalModal from "@/components/modal/AddHospitalModal.vue";
 
 export default {
   name: 'TechnicConfigurationView',
-  components: {HospitalsDropdown,AddHospitalModal, AddIsotopeModal, AddCalculationSettingModal, AddMachineModal, ConfirmDeleteModal},
+  components: {
+    HospitalsDropdown,
+    AddHospitalModal,
+    AddIsotopeModal,
+    AddCalculationSettingModal,
+    AddMachineModal,
+    ConfirmDeleteModal
+  },
   data() {
     return {
       showAddIsotope: false,
@@ -848,7 +838,7 @@ export default {
       this.showAddMachine = true
     },
 
-    closeAddHospital(){
+    closeAddHospital() {
       this.showAddHospital = false
     },
 

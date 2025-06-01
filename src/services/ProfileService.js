@@ -13,7 +13,7 @@ export default {
         return axios.get('/profiles')
     },
 
-    sendGetUserProfileRequest(userId) {
+    sendGetUserProfileInfoRequest(userId) {
         return axios.get('/userprofile', {
             params: {
                 userId: userId
@@ -21,4 +21,11 @@ export default {
         })
     },
 
+    sendPutUpdateProfileRequest(userId, profileInfo) {
+        return axios.put('/profile/update', profileInfo, {
+            params: {
+                userId: userId,
+            }
+        });
+    },
 }

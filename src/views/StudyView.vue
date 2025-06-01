@@ -114,7 +114,7 @@
 
           <div class="col-md-6">
             <div class="card shadow-sm border-success">
-              <div class="card-body d-flex align-items-center">
+              <div class="card-body d-flex align-items-center flex-column">
                 <font-awesome-icon icon="radiation" class="fa-2x text-success me-3"/>
                 <div>
                   <h5 class="card-title">Jääk aktiivsus</h5>
@@ -125,10 +125,13 @@
                         role="progressbar"
                         :style="{ width: Math.min(studyResult.calculationMachineRinseActivity, 100) + '%' }"
                         :aria-valuenow="studyResult.calculationMachineRinseActivity"
-                        aria-valuemin="0"
-                        aria-valuemax="100">
+                        aria-valuemin="0" aria-valuemax="100">
                     </div>
                   </div>
+                </div>
+                <!-- Warning message -->
+                <div v-if="isRinseActivityLow" class="alert alert-warning mt-3 w-100 text-center">
+                  <strong>Hoiatus:</strong> Jääk aktiivsus on alla 100 MBq!
                 </div>
               </div>
             </div>
@@ -166,6 +169,12 @@ export default {
     AlertDanger,
     CalculationProfile,
     NewStudyModal
+  },
+  computed: {
+    isRinseActivityLow() {
+      return this.studyResult.calculationMachineRinseActivity !== null
+          && this.studyResult.calculationMachineRinseActivity < 100;
+    }
   },
 
   data() {
@@ -308,13 +317,13 @@ export default {
     },
 
     saveStudy() {
-      if (this.calculationMachineRinseVolume !== 0) {
+      if (this.studyResult.calculationMachineRinseVolume != null && this.studyResult.calculationMachineRinseVolume > 0) {
         StudyService.sendPostSaveStudyRequest(this.studyId)
             .then(value => this.handleSendPostSaveStudyRequest())
-            .catch(reason => Navigation.navigateToErrorView())
+            .catch(reason => Navigation.navigateToErrorView());
       } else {
-        this.errorMessage = 'Pole kalkulatsiooni tehtud.'
-        setTimeout(this.resetErrorMessage, 4000)
+        this.errorMessage = 'Pole kalkulatsiooni tehtud.';
+        setTimeout(this.resetErrorMessage, 4000);
       }
     },
 
