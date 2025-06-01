@@ -48,7 +48,8 @@ export default {
       },
       loginResponse: {
         userId: 0,
-        roleName: ''
+        roleName: '',
+        profileId: ''
       }
     }
   },
@@ -76,6 +77,7 @@ export default {
     handleLoginSuccessResponse(response) {
       this.loginResponse = response.data
       sessionStorage.setItem('userId', this.loginResponse.userId)
+      sessionStorage.setItem('profileId', this.loginResponse.profileId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       this.$emit('event-update-nav-menu')
       Navigation.navigateToHomeView()

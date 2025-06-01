@@ -13,12 +13,20 @@ export default {
         return axios.get('/profiles')
     },
 
-    sendGetUserProfileInfoRequest(userId) {
+    sendGetUserProfileRequest(userId) {
         return axios.get('/userprofile', {
             params: {
                 userId: userId
             }
         })
+    },
+
+    sendUpdateProfileRequest(changedValues) {
+        return axios.put('/api/profile-update', changedValues)
+    },
+
+    sendGetCurrentProfileRequest() {
+        return axios.get(`/api/profile-current?profileId=${sessionStorage.getItem("profileId")}`)
     },
 
     sendPutUpdateProfileRequest(userId, profileInfo) {
