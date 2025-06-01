@@ -22,7 +22,7 @@ export default {
     },
 
     sendPutUpdateProfileRequest(userId, profileInfo) {
-        return axios.put('/profile/update', profileInfo, {
+        return axios.put('/account-profile/update', profileInfo, {
             params: {
                 userId: userId,
             }
