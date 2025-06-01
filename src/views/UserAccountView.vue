@@ -108,7 +108,7 @@ export default {
     },
   },
 
-  beforeMount() {
+  mounted() {
     this.getUser()
     this.getUserProfile()
   }

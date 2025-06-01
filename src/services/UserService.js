@@ -1,21 +1,21 @@
 import axios from "axios";
 
 export default {
-   sendGetUserInfoRequest(userId) {
-       return axios.get('/user',{
-           params: {
-               userId: userId
-           }
-       })
-   },
+    sendGetUserInfoRequest(userId) {
+        return axios.get('/user', {
+            params: {
+                userId: userId
+            }
+        })
+    },
 
-    sendGetUsersRequest(){
-       return axios.get('/users')
-   },
+    sendGetUsersRequest() {
+        return axios.get('/users')
+    },
 
-   sendPostUserRequest(userData) {
-       return axios.post('/users', userData)
-   },
+    sendPostUserRequest(userData) {
+        return axios.post('/users', userData)
+    },
 
     sendUpdateUserStatusRequest(userId, userStatus) {
 
@@ -29,7 +29,7 @@ export default {
     },
 
     sendGetUserRequest() {
-       return axios.get('/admin-view/users')
+        return axios.get('/admin-view/users')
     },
 
     sendPutUpdateUserRequest(selectedUserId, userInfo) {
