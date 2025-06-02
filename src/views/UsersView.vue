@@ -5,7 +5,7 @@
         <AddUserModal
             :modal-is-open="showAddUser"
             @event-close-modal="closeAddUser"
-            @event-save-isotope="createUser"
+            @event-save-user="createUser"
         />
         <UserAccountEditModal
             v-if="viewEditModalIsOpen && userInfo && profileInfo"
@@ -79,7 +79,6 @@ import UserService from "@/services/UserService";
 import Navigation from "@/navigations/Navigation";
 import UserAccountEditModal from "@/components/account/UserAccountEditModal.vue";
 import ProfileService from "@/services/ProfileService";
-import UserProfileService from "@/services/UserProfileService";
 
 export default {
   name: 'UsersView',
@@ -177,7 +176,6 @@ export default {
   beforeMount() {
     this.getAllUsers()
   }
-
 }
 
 </script>

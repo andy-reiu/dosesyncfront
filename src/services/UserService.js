@@ -9,16 +9,11 @@ export default {
         })
     },
 
-    sendGetUsersRequest() {
-        return axios.get('/users')
-    },
-
     sendPostUserRequest(userData) {
-        return axios.post('/users', userData)
+        return axios.post('/user', userData)
     },
 
     sendUpdateUserStatusRequest(userId, userStatus) {
-
         return axios.patch('/admin-view/' + userId + '/user-status', null,
             {
                 params: {

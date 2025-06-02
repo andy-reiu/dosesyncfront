@@ -301,6 +301,8 @@ export default {
     handleGetStudiesMachineRinseVolumeSuccessResponse(value) {
       this.studyResult.calculationMachineRinseVolume = value.data
       this.getCalculationLastMachineRinseActivity()
+      this.getAllStudiesPatientInjections()
+      this.getAllStudiesMachineFills()
     },
 
     getCalculationLastMachineRinseActivity() {
@@ -311,9 +313,9 @@ export default {
 
     handleGetStudiesMachineActivitySuccessResponse(value) {
       this.studyResult.calculationMachineRinseActivity = value.data
-      this.getAllStudiesMachineFills()
       this.successMessage = 'Loputusmaht arvutatud.'
       setTimeout(this.resetSuccessMessage, 4000)
+      this.getAllStudiesMachineFills()
     },
 
     saveStudy() {

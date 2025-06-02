@@ -128,10 +128,10 @@ export default {
     },
 
     handleDeleteStudyResponse() {
-      this.$emit('event-study-updated');
       this.studyPendingToDelete = null;
       this.viewDeleteModalIsOpen = false;
       this.setTimedOutSuccessMessage("Uuring on edukalt kustutatud.");
+      this.getAllStudies()
     },
 
     prepareDeleteStudy(study) {

@@ -37,6 +37,7 @@
             <label class="form-label">Vali roll</label>
             <RoleDropdown
                 :roles="roles"
+                :selected-role-id="newUser.roleId"
                 @event-new-role-selected="setUserRole"
             />
           </div>
@@ -44,10 +45,7 @@
           <div class="col-md-6 mb-3">
             <label class="form-label">Kinnita parool</label>
             <input
-                v-model="confirmPassword"
-                type="password"
-                class="form-control"
-                required
+                v-model="confirmPassword" type="password" class="form-control" required
             />
             <div v-if="confirmPassword && !passwordsMatch" class="text-danger mt-1" style="font-size: 0.9em;">
               Paroolid ei ühti!
@@ -57,7 +55,7 @@
           <div class="col-md-6 mb-3">
             <label class="form-label">Staatus</label>
             <input
-                v-model="newUser.status"
+                v-model="newUser.userStatus"
                 type="text"
                 class="form-control"
                 required
@@ -70,7 +68,6 @@
         <!-- Profiili info -->
         <h6>Profiili info</h6>
         <div class="row">
-          <!-- your existing profiili inputs in two columns -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Eesnimi</label>
             <input type="text" class="form-control" v-model="newUser.firstName" />
@@ -92,7 +89,7 @@
             <HospitalsDropdown
                 :selected-hospital-id="newUser.hospitalId"
                 :hospitals="hospitals"
-                @event-selected-hospital="newUser.hospitalId = $event"
+                @event-new-hospital-selected="setSelectedHospital"
             />
           </div>
           <div class="col-md-6 mb-3">
@@ -108,7 +105,7 @@
     </template>
 
     <template #footer>
-      <button @click="addUser" class="btn btn-outline-success">
+      <button @click="addUser" class="btn btn-outline-success" :disabled="!passwordsMatch">
         Salvesta kasutaja
       </button>
     </template>
@@ -116,7 +113,6 @@
 </template>
 
 <script>
-
 import Modal from "@/components/modal/Modal.vue";
 import HospitalsDropdown from "@/components/hospital/HospitalsDropdown.vue";
 import RoleDropdown from "@/components/role/RoleDropdown.vue";
@@ -126,7 +122,7 @@ import RoleService from "@/services/RoleService";
 
 export default {
   name: "AddUserModal",
-  components: {RoleDropdown, HospitalsDropdown, Modal},
+  components: { RoleDropdown, HospitalsDropdown, Modal },
   props: {
     modalIsOpen: Boolean
   },
@@ -134,34 +130,37 @@ export default {
   data() {
     return {
       newUser: {
+        roleId: '',
+        //roleName: '',
         username: '',
         password: '',
-        role: '',
-        status: '',
+        userStatus: '',
+        hospitalId: '',
+        //hospitalName: '',
+        occupationName: '',
+        nationalId: '',
         firstName: '',
         lastName: '',
-        nationalId: '',
-        occupationName: '',
-        hospitalId: null,
         email: '',
         phoneNumber: '',
       },
       confirmPassword: '',
-      hospitals:[],
+      hospitals: [],
       roles: []
     }
   },
+
   computed: {
     passwordsMatch() {
       return this.newUser.password === this.confirmPassword;
     }
   },
-  methods: {
 
+  methods: {
     getAllHospitals() {
       HospitalService.sendGetHospitalRequest()
           .then(response => this.hospitals = response.data)
-          .catch(() => Navigation.navigateToErrorView())
+          .catch(() => Navigation.navigateToErrorView());
     },
 
     getAllRoles() {
@@ -170,17 +169,24 @@ export default {
           .catch(() => Navigation.navigateToErrorView())
     },
 
+    setUserRole(roleId) {
+      this.newUser.roleId = roleId
+    },
+
+    setSelectedHospital(hospitalId) {
+      this.newUser.hospitalId = hospitalId
+    },
+
     addUser() {
-      this.$emit('event-save-user', this.newUser)
-      this.$emit('event-close-modal')
+      if (!this.passwordsMatch) return;
+      this.$emit('event-save-user', this.newUser);
+      this.$emit('event-close-modal');
     }
   },
 
   beforeMount() {
-    this.getAllHospitals()
-    this.getAllRoles()
+    this.getAllHospitals();
+    this.getAllRoles();
   }
 }
 </script>
-
-
