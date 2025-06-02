@@ -2,11 +2,7 @@
   <div>
     <select :value="selectedHospitalId" @change="handleHospitalDropdownChange" :class="$attrs.class" class="form-select w-100">
       <option disabled value="">Vali haigla</option>
-      <option
-          v-for="hospital in hospitals"
-          :key="hospital.hospitalId"
-          :value="hospital.hospitalId"
-      >
+      <option v-for="hospital in hospitals" :key="hospital.hospitalId" :value="hospital.hospitalId">
         {{ hospital.hospitalName }}
       </option>
     </select>

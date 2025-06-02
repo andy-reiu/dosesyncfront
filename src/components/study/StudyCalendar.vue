@@ -27,10 +27,10 @@ export default {
       week1Start: weekStart,
       week2Start: nextWeekStart,
       isotopeColors: {
-        'Tc-99m': '#81756d',   // Orange-red
+        'Tc-99m': '#1c25cf',   // Orange-red
         'F18': '#c11d1d',      // Lime green
-        'I131': '#1bbb68',     // Dodger blue
-        'FPyl': '#a170b1',     // Dark violet
+        'I131': '#0a6839',     // Dodger blue
+        'FPyl': '#aa1e98',     // Dark violet
       }
     }
   },

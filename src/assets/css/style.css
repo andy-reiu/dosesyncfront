@@ -439,3 +439,7 @@ select:focus {
     opacity: 0.85;
     cursor: pointer;
 }
+
+.spaced-table {
+    margin-top: 40px;
+}

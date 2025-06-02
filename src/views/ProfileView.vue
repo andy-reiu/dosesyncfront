@@ -1,110 +1,114 @@
 <template>
-  <div class="container mt-5">
-    <div class="card mx-auto p-4" style="max-width: 600px;">
-      <!-- Profile Picture -->
-      <div class="d-flex justify-content-center mb-3">
-        <img
-            :src="userImage || defaultImage"
-            class="rounded-circle border"
-            width="100"
-            height="100"
-            alt="Profile"
-        />
-      </div>
-      <div class="text-center mb-3">
-        <label for="imageUpload" class="btn btn-sm btn-outline-primary">
-          <i class="fa fa-camera me-2"></i>Muuda profiilipilti
-        </label>
-        <input
-            id="imageUpload"
-            type="file"
-            class="d-none"
-            @change="onImageSelected"
-        />
-      </div>
+  <div class="background-wrapper">
+    <div class="overlay-box">
+      <div class="container mt-5">
+        <div class="card mx-auto p-4" style="max-width: 600px;">
+          <!-- Profile Picture -->
+          <div class="d-flex justify-content-center mb-3">
+            <img
+                :src="userImage || defaultImage"
+                class="rounded-circle border"
+                width="100"
+                height="100"
+                alt="Profile"
+            />
+          </div>
+          <div class="text-center mb-3">
+            <label for="imageUpload" class="btn btn-sm btn-outline-primary">
+              <i class="fa fa-camera me-2"></i>Muuda profiilipilti
+            </label>
+            <input
+                id="imageUpload"
+                type="file"
+                class="d-none"
+                @change="onImageSelected"
+            />
+          </div>
 
-      <!-- Name -->
-      <h4 class="text-center mb-3">{{ profiles.firstName }} {{ profiles.lastName }}</h4>
+          <!-- Name -->
+          <h4 class="text-center mb-3">{{ profiles.firstName }} {{ profiles.lastName }}</h4>
 
-      <!-- Info -->
-      <div class="mb-2"><strong>Ametikoht: </strong> {{ profiles.occupation }}</div>
-      <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospital }}</div>
-      <div class="mb-2"><strong>Isikukood: </strong> {{ profiles.nationalId }}</div>
+          <!-- Info -->
+          <div class="mb-2"><strong>Ametikoht: </strong> {{ profiles.occupation }}</div>
+          <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospital }}</div>
+          <div class="mb-2"><strong>Isikukood: </strong> {{ profiles.nationalId }}</div>
 
-      <hr />
+          <hr />
 
-      <!-- Editable Info -->
-      <div class="mb-3">
-        <label>Email</label>
-        <input
-            type="email"
-            class="form-control"
-            v-model="profiles.email"
-            :readonly="!editMode"
-        />
-      </div>
+          <!-- Editable Info -->
+          <div class="mb-3">
+            <label>Email</label>
+            <input
+                type="email"
+                class="form-control"
+                v-model="profiles.email"
+                :readonly="!editMode"
+            />
+          </div>
 
-      <div class="mb-3">
-        <label>Telefoninumber</label>
-        <input
-            type="text"
-            class="form-control"
-            v-model="profiles.phoneNumber"
-            :readonly="!editMode"
-        />
-      </div>
+          <div class="mb-3">
+            <label>Telefoninumber</label>
+            <input
+                type="text"
+                class="form-control"
+                v-model="profiles.phoneNumber"
+                :readonly="!editMode"
+            />
+          </div>
 
-      <!-- Password Update Section -->
-      <div v-if="editMode && showPasswordUpdate" class="mb-3">
-        <label>Vana parool</label>
-        <input
-            type="password"
-            class="form-control"
-            v-model="oldPassword"
-            placeholder="Vana parool"
-        />
+          <!-- Password Update Section -->
+          <div v-if="editMode && showPasswordUpdate" class="mb-3">
+            <label>Vana parool</label>
+            <input
+                type="password"
+                class="form-control"
+                v-model="oldPassword"
+                placeholder="Vana parool"
+            />
 
-        <label class="mt-3">Uus parool</label>
-        <input
-            type="password"
-            class="form-control"
-            v-model="newPassword"
-            placeholder="Uus parool"
-        />
+            <label class="mt-3">Uus parool</label>
+            <input
+                type="password"
+                class="form-control"
+                v-model="newPassword"
+                placeholder="Uus parool"
+            />
 
-        <input
-            type="password"
-            class="form-control mt-2"
-            v-model="confirmPassword"
-            placeholder="Kinnita uus parool"
-        />
+            <input
+                type="password"
+                class="form-control mt-2"
+                v-model="confirmPassword"
+                placeholder="Kinnita uus parool"
+            />
 
-        <div v-if="passwordMismatch" class="text-danger mt-1">
-          Paroolid ei ühti
-        </div>
-      </div>
+            <div v-if="passwordMismatch" class="text-danger mt-1">
+              Paroolid ei ühti
+            </div>
+          </div>
 
-      <!-- Action Buttons -->
-      <div class="d-flex justify-content-between mt-4">
-        <button class="btn btn-secondary" @click="toggleEditMode">
-          {{ editMode ? 'Cancel' : 'Edit' }}
-        </button>
-        <div class="d-flex gap-2">
-          <button
-              class="btn btn-outline-primary"
-              v-if="editMode && !showPasswordUpdate"
-              @click="showPasswordUpdate = true"
-          >
-            Uuenda parooli
-          </button>
-          <button
-              class="btn btn-primary"
-              v-if="editMode"
-              @click="saveChanges"
-              :disabled="showPasswordUpdate && (passwordMismatch || !oldPassword)"
-          >
-            Salvesta
-          </button>
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-between mt-4">
+            <button class="btn btn-secondary" @click="toggleEditMode">
+              {{ editMode ? 'Cancel' : 'Edit' }}
+            </button>
+            <div class="d-flex gap-2">
+              <button
+                  class="btn btn-outline-primary"
+                  v-if="editMode && !showPasswordUpdate"
+                  @click="showPasswordUpdate = true"
+              >
+                Uuenda parooli
+              </button>
+              <button
+                  class="btn btn-primary"
+                  v-if="editMode"
+                  @click="saveChanges"
+                  :disabled="showPasswordUpdate && (passwordMismatch || !oldPassword)"
+              >
+                Salvesta
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

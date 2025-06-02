@@ -29,4 +29,11 @@ export default {
         return axios.get(`/api/profile-current?profileId=${sessionStorage.getItem("profileId")}`)
     },
 
+    sendPutUpdateProfileRequest(userId, profileInfo) {
+        return axios.put('/account-profile/update', profileInfo, {
+            params: {
+                userId: userId,
+            }
+        });
+    },
 }

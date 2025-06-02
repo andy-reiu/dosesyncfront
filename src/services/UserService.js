@@ -1,24 +1,19 @@
 import axios from "axios";
 
 export default {
-   sendGetUserRequest(userId) {
-       return axios.get('/user',{
-           params: {
-               userId: userId
-           }
-       })
-   },
+    sendGetUserInfoRequest(userId) {
+        return axios.get('/user', {
+            params: {
+                userId: userId
+            }
+        })
+    },
 
-    sendGetUsersRequest(){
-       return axios.get('/users')
-   },
-
-   sendPostUserRequest(userData) {
-       return axios.post('/users', userData)
-   },
+    sendPostUserRequest(userData) {
+        return axios.post('/user', userData)
+    },
 
     sendUpdateUserStatusRequest(userId, userStatus) {
-
         return axios.patch('/admin-view/' + userId + '/user-status', null,
             {
                 params: {
@@ -29,6 +24,14 @@ export default {
     },
 
     sendGetUserRequest() {
-       return axios.get('/admin-view/users')
+        return axios.get('/admin-view/users')
+    },
+
+    sendPutUpdateUserRequest(selectedUserId, userInfo) {
+        return axios.put('/user/update', userInfo, {
+            params: {
+                selectedUserId: selectedUserId,
+            }
+        });
     },
 }

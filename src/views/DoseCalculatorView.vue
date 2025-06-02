@@ -55,10 +55,7 @@
                 <input type="number" v-model.number="initialActivity" class="form-control mt-2" />
               </div>
             </div>
-          </div>++
-
-          +
-
+          </div>
         </div>
 
         <!-- Calculate Button -->

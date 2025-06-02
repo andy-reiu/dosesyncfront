@@ -1,13 +1,8 @@
-
 <template>
   <div>
     <select :value="selectedRoleId" @change="handleRoleDropdownChange" class="form-select">
       <option selected value="0">Vali roll</option>
-      <option
-          v-for="role in roles"
-          :key="role.roleId"
-          :value="role.roleId"
-      >
+      <option v-for="role in roles" :key="role.roleId" :value="role.roleId">
         {{ role.roleName }}
       </option>
     </select>
@@ -19,9 +14,9 @@
 export default {
   name: "RoleDropdown",
   props: {
-    roles:{
+    roles: {
       type: Array,
-          },
+    },
     selectedRoleId: {
       type: Number,
       default: 0
@@ -30,7 +25,7 @@ export default {
 
   methods: {
     handleRoleDropdownChange(event) {
-      this.$emit('event-new-role-selected',Number(event.target.value))
+      this.$emit('event-new-role-selected', Number(event.target.value))
     }
   }
 
