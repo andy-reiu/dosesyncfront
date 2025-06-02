@@ -14,18 +14,18 @@ export default {
         return axios.post('/machine/machines', machineData)
     },
 
-    sendUpdateMachineStatusRequest(id, machineStatus) {
+    sendUpdateMachineStatusRequest(machineId, machineStatus) {
 
-        return axios.patch('/machine/' + id + '/machine-status', null,
+        return axios.patch('/machine/' + machineId + '/machine-status', null,
             {
                 params: {
-                    status: machineStatus,
+                    machineStatus: machineStatus,
                 }
             }
         )
     },
-    sendUpdateMachineRequest(id, machineUpdate) {
-        return axios.patch(`/machine/machines/${id}`, machineUpdate)
+    sendUpdateMachineRequest(machineId, machineUpdate) {
+        return axios.patch(`/machine/machines/${machineId}`, machineUpdate)
     },
 
 

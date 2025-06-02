@@ -28,6 +28,17 @@
             />
           </div>
           <div class="col-md-6 mb-3">
+            <label class="form-label">Kinnita parool</label>
+            <input
+                type="password"
+                class="form-control"
+                v-model="confirmPassword"
+            />
+            <div v-if="confirmPassword && !passwordsMatch" class="text-danger mt-1" style="font-size: 0.9em;">
+              Paroolid ei ühti!
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
             <label class="form-label">Staatus</label>
             <input type="text" class="form-control" v-model="userInfo.status"/>
           </div>
@@ -115,10 +126,15 @@ export default {
   data() {
     return {
       hospitals: [],
-      roles: []
+      roles: [],
+      confirmPassword: '',
     }
   },
-
+  computed: {
+    passwordsMatch() {
+      return this.userInfo.password === this.confirmPassword;
+    },
+  },
   methods: {
 
     executeUpdateUserEdit() {
