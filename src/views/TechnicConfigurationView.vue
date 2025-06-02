@@ -537,7 +537,7 @@ export default {
       deleteTarget: {
         id: null,
         type: null,
-        label: ""
+        label: ''
       },
 
       hospitals: [],
