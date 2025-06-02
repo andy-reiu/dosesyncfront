@@ -131,12 +131,10 @@ export default {
     return {
       newUser: {
         roleId: '',
-        //roleName: '',
         username: '',
         password: '',
         userStatus: '',
         hospitalId: '',
-        //hospitalName: '',
         occupationName: '',
         nationalId: '',
         firstName: '',
