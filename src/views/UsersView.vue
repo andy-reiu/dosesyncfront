@@ -91,11 +91,11 @@ export default {
         firstName: '',
         lastName: '',
         nationalId: '',
+
       }],
       errorResponse: {
         message: '',
-        errorCode:
-            ''
+        errorCode: ''
       }
     }
   },

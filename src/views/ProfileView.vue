@@ -4,7 +4,7 @@
       <!-- Profile Picture -->
       <div class="d-flex justify-content-center mb-3">
         <img
-            :src="userImage || defaultImage"
+            :src="imageData || defaultImage"
             class="rounded-circle border"
             width="100"
             height="100"
@@ -28,7 +28,7 @@
 
       <!-- Info -->
       <div class="mb-2"><strong>Ametikoht: </strong> {{ profiles.occupation }}</div>
-      <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospital }}</div>
+      <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospitalName }}</div>
       <div class="mb-2"><strong>Isikukood: </strong> {{ profiles.nationalId }}</div>
 
       <hr />
@@ -114,6 +114,7 @@
 <script>
 import ProfileService from "@/services/ProfileService";
 import Navigation from "@/navigations/Navigation";
+import response from "html2pdf.js";
 
 export default {
   name: 'ProfileBox',
@@ -124,14 +125,14 @@ export default {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
-      userImage: '',
+      imageData: '',
       defaultImage: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
       profiles: {
         profileId: '',
         firstName: '',
         lastName: '',
         occupation: '',
-        hospital: '',
+        hospitalName: '',
         nationalId: '',
         email: '',
         phoneNumber: '',
@@ -163,7 +164,7 @@ export default {
         phoneNumber: this.profiles.phoneNumber,
         oldPassword: this.oldPassword || null,
         newPassword: this.newPassword || null,
-        base64Image: this.userImage !== this.defaultImage ? this.userImage : null
+        imageData: this.imageData !== this.defaultImage ? this.imageData : null
       };
 
       ProfileService.sendUpdateProfileRequest(changedValues)
@@ -177,20 +178,23 @@ export default {
           });
     },
     onImageSelected(imageSelected) {
-      const file = imageSelected.target.files[0]
-      if (file) {
+      const userImage = imageSelected.target.files[0]
+      if (userImage) {
         const reader = new FileReader()
         reader.onload = e => {
-          this.userImage = e.target.result
+          this.imageData = e.target.result
         };
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(userImage)
       }
     },
     getCurrentProfile() {
-      const profileId = sessionStorage.getItem('profileId');
+      const profileId = sessionStorage.getItem('profileId')
       if (!profileId) return
       ProfileService.sendGetCurrentProfileRequest()
-          .then(response => this.profiles = response.data)
+          .then(response => {
+            this.profiles = response.data
+            this.imageData = response.data.imageData || this.defaultImage
+          })
           .catch(() => Navigation.navigateToErrorView())
 
     },
