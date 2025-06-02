@@ -13,8 +13,8 @@ export default {
         return axios.post('/isotope/isotopes', isotopeData)
     },
 
-    sendUpdateIsotopeStatusRequest(id, isotopeStatus) {
-        return axios.patch('/isotope/' + id + '/isotope-status', null,
+    sendUpdateIsotopeStatusRequest(isotopeId, isotopeStatus) {
+        return axios.patch('/isotope/' + isotopeId + '/isotope-status', null,
             {
                 params: {
                     status: isotopeStatus
@@ -23,12 +23,12 @@ export default {
         )
     },
 
-    sendUpdateIsotopeRequest(id, isotopeUpdate) {
-        return axios.patch(`/isotope/isotopes/${id}`, isotopeUpdate)
+    sendUpdateIsotopeRequest(isotopeId, isotopeUpdate) {
+        return axios.patch(`/isotope/isotopes/${isotopeId}`, isotopeUpdate)
     },
 
-    sendDeleteIsotopeRequest(id) {
-        return axios.delete(`/isotope/${id}`)
+    sendDeleteIsotopeRequest(isotopeId) {
+        return axios.delete(`/isotope/${isotopeId}`)
     }
 
 
