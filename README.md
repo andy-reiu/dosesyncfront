@@ -24,13 +24,11 @@ This repository contains the client-side codebase responsible for the user exper
 - Seamless integration with the backend REST API  
 
 🛠️ Tech Stack  
-- React 18+  
+- Vue 3
 - TypeScript  
 - Axios for API communication  
-- React Router  
-- Material-UI (or Tailwind CSS)  
-- Redux Toolkit or Context API  
-- Vite / Webpack for bundling  
+- Vue Router  
+- Bootstrap  
 
 ## 📝 Prerequisites
 
