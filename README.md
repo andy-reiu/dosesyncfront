@@ -1,30 +1,44 @@
-# 🖥️ DoseSync – Frontend
+☢️ DoseSync – Frontend v1
 
-This is the frontend application for DoseSync, built with Vue 3. 
-It provides the user interface to interact with the DoseSync backend API, managing medical dosing data in a user-friendly way.
+A user-friendly web interface for managing patient scheduling and dose planning in the Nuclear Department.
 
-## 🚀 Features
+The frontend allows staff to plan today's or the week's schedule—when to inject, how much to inject, and monitor remaining doses after injections. It supports role-based access and interacts seamlessly with the backend system to ensure accurate, real-time data.
 
-- Vue 3 Composition API
-- Vue Router for navigation
-- Axios for HTTP requests
-- Bootstrap 5 for responsive UI components
-- FontAwesome icons
-- FullCalendar integration for scheduling or calendar views
-- PDF generation using html2pdf.js
-- Date handling with date-fns
+There are user interfaces for managing calculations, hospital data, and isotopes.  
+DoseSync provides two user roles:  
+- **Admins** (Doctors or Physicists) who can create and modify plans  
+- **Technicians** who can view schedules and dose information only  
 
-## 🛠️ Tech Stack
+Schedules and data can also be exported as PDFs for reporting and offline use.
 
-- Vue 3
-- Vue Router
-- Axios
-- Bootstrap 5
-- FontAwesome
-- FullCalendar
-- html2pdf.js
-- date-fns
+---
+DoseSync Frontend is built with React and communicates with the backend via REST APIs.  
+This repository contains the client-side codebase responsible for the user experience and UI interactions.
 
+🚀 Features  
+- Modern, responsive interface for daily/weekly injection planning  
+- Secure login and role-based access  
+- Real-time dose calculation feedback from backend  
+- PDF export of schedules  
+- Easy configuration of hospitals, isotopes, and user profiles  
+- Seamless integration with the backend REST API  
+
+🛠️ Tech Stack  
+- React 18+  
+- TypeScript  
+- Axios for API communication  
+- React Router  
+- Material-UI (or Tailwind CSS)  
+- Redux Toolkit or Context API  
+- Vite / Webpack for bundling  
+
+## 📝 Prerequisites
+
+- Node.js 18+  
+- npm or yarn  
+- A running instance of the [DoseSync Backend](https://github.com/andy-reiu/dosesyncback)
+
+### Getting Started
 ## Project setup
 ```
 npm install
@@ -40,6 +54,8 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 👤 Authors
 
+- **Andy Reiu** – *El Capitan* – [andy-reiu](https://github.com/andy-reiu)
+- **Kevin Kuusk** – *El Equipo* – [baluuba](https://github.com/baluuba)
+- **Olga Kuvatova** – *El Equipo* – [apelsina365](https://github.com/Apelsinka365)
