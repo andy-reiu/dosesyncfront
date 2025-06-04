@@ -7,8 +7,8 @@
         <tr>
           <th>ID</th>
           <th>Isotoobi nimetus</th>
-          <th>Half-Life (hr)</th>
-          <th>Unit</th>
+          <th>Poolestus aeg (hr)</th>
+          <th>Ühik</th>
           <th>Staatus</th>
           <th></th>
         </tr>
@@ -135,12 +135,12 @@
         <thead class="table-dark">
         <tr>
           <th>ID</th>
-          <th>Min Activity</th>
-          <th>Max Activity</th>
-          <th>Min Volume</th>
-          <th>Injection Interval</th>
-          <th>Patsiendi kaal</th>
-          <th>Aktiivsus süstlas</th>
+          <th>Miinimum aktiivsus (mBq)</th>
+          <th>Maksimaalne aktiivsus (mBq)</th>
+          <th>Miinimum süstekogus (mL)</th>
+          <th>Süstimise aja interval (min)</th>
+          <th>Patsiendi kaal (kg)</th>
+          <th>Aktiivsus süstlas (kg*MBq)</th>
           <th></th>
         </tr>
         </thead>
@@ -286,7 +286,7 @@
         <tr>
           <th>ID</th>
           <th>Masina nimetus</th>
-          <th>Serial</th>
+          <th>Seeria nr</th>
           <th>Haigla</th>
           <th>Masina kirjeldus</th>
           <th>Staatus</th>
