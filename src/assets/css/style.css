@@ -443,3 +443,10 @@ select:focus {
 .spaced-table {
     margin-top: 40px;
 }
+
+.centered-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+}

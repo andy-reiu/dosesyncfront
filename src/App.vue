@@ -54,7 +54,7 @@
       <div v-if="isLoggedIn" class="mt-auto pt-3 border-top">
         <button class="nav-link d-flex align-items-center gap-2 text-start w-100" @click="startLogOutProcess">
           <font-awesome-icon icon="right-from-bracket"/>
-          Log out
+          Logi välja
         </button>
       </div>
     </div>

@@ -1,94 +1,102 @@
 <template>
-  <div class="container mt-5">
-    <div class="card mx-auto p-4" style="max-width: 600px;">
-      <div class="d-flex justify-content-center mb-3">
-        <img
-            :src="imageData || defaultImage"
-            class="rounded-circle border"
-            width="100"
-            height="100"
-            alt="Profile"
-        />
-      </div>
-      <div class="text-center mb-3" v-if="editMode">
-        <label for="imageUpload" class="btn btn-sm btn-outline-primary">
-          <i class="fa fa-camera me-2"></i>Muuda profiilipilti
-        </label>
-        <input
-            id="imageUpload"
-            type="file"
-            class="d-none"
-            @change="onImageSelected"
-        />
-      </div>
-      <h4 class="text-center mb-3">{{ profiles.firstName }} {{ profiles.lastName }}</h4>
-      <div class="mb-2"><strong>Ametikoht: </strong> {{ profiles.occupation }}</div>
-      <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospitalName }}</div>
-      <div class="mb-2"><strong>Isikukood: </strong> {{ profiles.nationalId }}</div>
-      <hr />
-      <div class="mb-3">
-        <label>Email</label>
-        <input
-            type="email"
-            class="form-control"
-            v-model="profiles.email"
-            :readonly="!editMode"
-        />
-      </div>
-      <div class="mb-3">
-        <label>Telefoninumber</label>
-        <input
-            type="text"
-            class="form-control"
-            v-model="profiles.phoneNumber"
-            :readonly="!editMode"
-        />
-      </div>
-      <div v-if="editMode && showPasswordUpdate" class="mb-3">
-        <label>Vana parool</label>
-        <input
-            type="password"
-            class="form-control"
-            v-model="oldPassword"
-            placeholder="Vana parool"
-        />
-        <label class="mt-3">Uus parool</label>
-        <input
-            type="password"
-            class="form-control"
-            v-model="newPassword"
-            placeholder="Uus parool"
-        />
-        <input
-            type="password"
-            class="form-control mt-2"
-            v-model="confirmPassword"
-            placeholder="Kinnita uus parool"
-        />
-        <div v-if="passwordMismatch" class="text-danger mt-1">
-          Paroolid ei ühti
-        </div>
-      </div>
-      <div class="d-flex justify-content-between mt-4">
-        <button class="btn btn-secondary" @click="toggleEditMode">
-          {{ editMode ? 'Katkesta' : 'Muuda' }}
-        </button>
-        <div class="d-flex gap-2">
-          <button
-              class="btn btn-outline-primary"
-              v-if="editMode && !showPasswordUpdate"
-              @click="showPasswordUpdate = true"
-          >
-            Uuenda parooli
-          </button>
-          <button
-              class="btn btn-primary"
-              v-if="editMode"
-              @click="saveChanges"
-              :disabled="showPasswordUpdate && (passwordMismatch || !oldPassword)"
-          >
-            Salvesta
-          </button>
+  <div class="background-wrapper centered-box">
+    <div class="overlay-box container p-4 shadow-sm rounded" style="width: 100%; max-width: 600px;">
+      <div class="card mx-auto p-4" style="max-width: 600px;">
+        <div class="container mt-5">
+          <div class="card mx-auto p-4" style="max-width: 600px;">
+            <div class="d-flex justify-content-center mb-3">
+              <img
+                  :src="imageData || defaultImage"
+                  class="rounded-circle border"
+                  width="100"
+                  height="100"
+                  alt="Profile"
+              />
+            </div>
+            <div class="text-center mb-3" v-if="editMode">
+              <label for="imageUpload" class="btn btn-sm btn-outline-primary">
+                <i class="fa fa-camera me-2"></i>Muuda profiilipilti
+              </label>
+              <input
+                  id="imageUpload"
+                  type="file"
+                  class="d-none"
+                  @change="onImageSelected"
+              />
+            </div>
+            <h4 class="text-center mb-3">{{ profiles.firstName }} {{ profiles.lastName }}</h4>
+            <div class="mb-2"><strong>Ametikoht: </strong> {{ profiles.occupation }}</div>
+            <div class="mb-2"><strong>Haigla: </strong> {{ profiles.hospitalName }}</div>
+            <div class="mb-2"><strong>Isikukood: </strong> {{ profiles.nationalId }}</div>
+            <hr/>
+            <div class="mb-3">
+              <label>Email</label>
+              <input
+                  type="email"
+                  class="form-control"
+                  v-model="profiles.email"
+                  :readonly="!editMode"
+              />
+            </div>
+            <div class="mb-3">
+              <label>Telefoninumber</label>
+              <input
+                  type="text"
+                  class="form-control"
+                  v-model="profiles.phoneNumber"
+                  :readonly="!editMode"
+              />
+            </div>
+            <AlertDanger :error-message="errorMessage"/>
+            <AlertSuccess :success-message="successMessage"/>
+            <div v-if="editMode && showPasswordUpdate" class="mb-3">
+              <label>Vana parool</label>
+              <input
+                  type="password"
+                  class="form-control"
+                  v-model="oldPassword"
+                  placeholder="Vana parool"
+              />
+              <label class="mt-3">Uus parool</label>
+              <input
+                  type="password"
+                  class="form-control"
+                  v-model="newPassword"
+                  placeholder="Uus parool"
+              />
+              <input
+                  type="password"
+                  class="form-control mt-2"
+                  v-model="confirmPassword"
+                  placeholder="Kinnita uus parool"
+              />
+              <div v-if="passwordMismatch" class="text-danger mt-1">
+                Paroolid ei ühti
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-secondary" @click="toggleEditMode">
+                {{ editMode ? 'Katkesta' : 'Muuda' }}
+              </button>
+              <div class="d-flex gap-2">
+                <button
+                    class="btn btn-outline-primary"
+                    v-if="editMode && !showPasswordUpdate"
+                    @click="showPasswordUpdate = true"
+                >
+                  Uuenda parooli
+                </button>
+                <button
+                    class="btn btn-primary"
+                    v-if="editMode"
+                    @click="saveChanges"
+                    :disabled="showPasswordUpdate && (passwordMismatch || !oldPassword)"
+                >
+                  Salvesta
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -98,9 +106,12 @@
 <script>
 import ProfileService from "@/services/ProfileService"
 import Navigation from "@/navigations/Navigation"
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 export default {
   name: 'ProfileBox',
+  components: {AlertDanger, AlertSuccess},
   data() {
     return {
       editMode: false,
@@ -120,7 +131,9 @@ export default {
         nationalId: '',
         email: '',
         phoneNumber: '',
-      }
+      },
+      errorMessage: '',
+      successMessage: '',
     }
   },
   computed: {
@@ -157,12 +170,13 @@ export default {
 
       ProfileService.sendUpdateProfileRequest(changedValues)
           .then(() => {
-            alert('Profiil edukalt uuendatud');
+            this.successMessage = 'Profiil edukalt uuendatud.'
+            setTimeout(this.resetSuccessMessage, 4000)
             this.toggleEditMode();
           })
           .catch((error) => {
-            console.error('Uuendamise viga:', error);
-            alert('Profiili uuendamine ebaõnnestus');
+            this.errorMessage = 'Profiili uuendamine ebaõnnestus.'
+            setTimeout(this.resetErrorMessage, 4000)
           })
     },
     onImageSelected(imageSelected) {
@@ -191,6 +205,13 @@ export default {
           })
           .catch(() => Navigation.navigateToErrorView())
     },
+    resetSuccessMessage() {
+      this.successMessage = ''
+    },
+    resetErrorMessage() {
+      this.errorMessage = ''
+    },
+
   },
   beforeMount() {
     this.getCurrentProfile()
