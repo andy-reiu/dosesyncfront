@@ -1,6 +1,6 @@
 ☢️ DoseSync – Frontend v1
 
-A user-friendly web interface for managing patient scheduling and dose planning in the Nuclear Department.
+A web interface for managing patient scheduling and dose planning in the Nuclear Department.
 
 The frontend allows staff to plan today's or the week's schedule - when to inject, how much to inject, and monitor remaining doses after injections. 
 Role-based access and interacts with the backend system to ensure accurate, real-time data.
@@ -24,8 +24,8 @@ DoseSync Frontend is built with Vue and communicates with the backend via REST A
 - Responsive interface for daily/weekly injection planning  
 - Real-time dose calculation feedback from backend  
 - PDF export of schedules  
-- Easy configuration of hospitals, isotopes, and user profiles  
-- Seamless integration with the backend REST API
+- Configuration of hospitals, isotopes, and user profiles  
+- Integration with the backend REST API
 - Account management
 
 🛠️ Tech Stack  
