@@ -15,7 +15,7 @@ Schedules and data can also be exported as PDFs for reporting and offline use.
 
 ---
 ![HomeView](https://github.com/user-attachments/assets/86a24c2b-2685-4c47-ac35-814bc376de12)
-![Uploading StudyView.PNG…]()
+![StudyView](https://github.com/user-attachments/assets/e70d158f-81cf-4077-a4bc-789c37af02e5)
 ![AdminView](https://github.com/user-attachments/assets/e242241c-c9d7-4019-96c2-98c4d80f5594)
 
 DoseSync Frontend is built with Vue and communicates with the backend via REST APIs.  
