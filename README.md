@@ -2,7 +2,7 @@
 
 A user-friendly web interface for managing patient scheduling and dose planning in the Nuclear Department.
 
-The frontend allows staff to plan today's or the week's schedule—when to inject, how much to inject, and monitor remaining doses after injections. 
+The frontend allows staff to plan today's or the week's schedule - when to inject, how much to inject, and monitor remaining doses after injections. 
 Role-based access and interacts with the backend system to ensure accurate, real-time data.
 
 There are user interfaces for managing calculations, hospital data, and isotopes.  
