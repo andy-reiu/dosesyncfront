@@ -5,7 +5,7 @@
       @event-logout-confirmed="executeLogOut"
   />
   <div class="d-flex">
-    <div class="sidebar p-3 vh-100 border-end d-flex flex-column">
+    <div class="sidebar p-3 border-end d-flex flex-column position-sticky top-0" style="height: 100vh;">
       <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
         <!-- Show if logged in -->
         <template v-if="isLoggedIn">
